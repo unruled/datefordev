@@ -1,0 +1,228 @@
+:javascript
+  $(function () {
+    var jqconsole = $('#console').jqconsole("#{t('dateprog_console_version')}\n#{t('dateprog_console')}\n", '>>> ');
+    jqconsole.RegisterShortcut('R', function() {
+      this.Clear();  
+    });
+    var startPrompt = function () {
+      
+      jqconsole.Prompt(true, function (input) {
+        if ( input == '' ) {
+        } else if ( input == 'help' ) {
+
+          jqconsole.Append($("<div>#{t('dateprog_commands')}</div>").css('font-size', '15px'));
+          
+       } else if ( "unlock" == input ) {
+         $.ajax({
+           type: "POST",
+           cache: false,
+           url: "/skills",
+           dataType: "html",
+           success: function(data, textStatus, xhr) {
+            jqconsole.Append($("<div>"+data+"</div>"));
+           }
+         });
+         
+       } else if ( /unlock /i.test(input) ) {
+         var res = input.split(" ");
+         $.ajax({
+           type: "POST",
+           cache: false,
+           url: "/skills",
+           data: { id: res[1]} ,
+           dataType: "json",
+           success: function(data, textStatus, xhr) {
+            if (data.question) {
+              jqconsole.Append($("<div>"+data.question+"</div>"));
+              jqconsole.SetPromptText(data.answer);
+            } else {
+              jqconsole.Append($("<div>"+data.msg+"</div>"));
+            }  
+           }
+         });                   
+          
+       } else if ( /find /i.test(input) ) {
+         jqconsole.Append($("<div id='find-girls'>#{t('please_wait')}</div>"));       
+         var res = input.split(" ");
+         $.ajax({
+           type: "POST",
+           cache: false,
+           url: "/console_girls",
+           data: { console_find: res[1]} ,
+           dataType: "html",
+           success: function(data, textStatus, xhr) {
+            $("#find-girls").hide();
+            jqconsole.Append($("<div>"+data+"</div>"));
+             //jqconsole.Write(res[1] + '\n');
+           }
+         });
+
+       } else if ( /next /i.test(input) ) {
+         jqconsole.Append($("<div id='find-girls'>#{t('please_wait')}</div>"));       
+         var res = input.split(" ");
+         $.ajax({
+           type: "POST",
+           cache: false,
+           url: "/console_girls",
+           data: { console_find: res[1], page: "yes"} ,
+           dataType: "html",
+           success: function(data, textStatus, xhr) {
+            $("#find-girls").hide();
+            jqconsole.Append($("<div>"+data+"</div>"));
+             //jqconsole.Write(res[1] + '\n');
+           }
+         });            
+         
+       } else if ( /more /i.test(input) ) {
+         var res = input.split(" ");
+         $.ajax({
+           type: "POST",
+           cache: false,
+           url: "/console_girls",
+           data: { console_more: res[1]} ,
+           dataType: "html",
+           success: function(data, textStatus, xhr) {
+            jqconsole.Append($("<div>"+data+"</div>"));
+             //jqconsole.Write(res[1] + '\n');
+           }
+         });                
+         
+         
+       } else if ( /send /i.test(input) ) {
+         var res = input.split("-m");
+         var res1 = res[0];
+         var res2 = res[1];
+         var res = res1.split(" ");
+         $.ajax({
+           type: "POST",
+           cache: false,
+           url: "/console_girls",
+           data: 'console_more='+res[1]+'&msg='+res2,
+           dataType: "html",
+           success: function(data, textStatus, xhr) {
+            jqconsole.Append($("<div>"+data+"</div>"));
+             //jqconsole.Write(res[1] + '\n');
+           }
+         });                
+         
+       } else if ( "inbox" == input ) {
+         var res = input.split(" ");
+         $.ajax({
+           type: "POST",
+           cache: false,
+           url: "/console_girls",
+           data: { inbox: "true"} ,
+           dataType: "html",
+           success: function(data, textStatus, xhr) {
+            jqconsole.Append($("<div>"+data+"</div>"));
+             //jqconsole.Write(res[1] + '\n');
+           }
+         });  
+         
+       } else if ( /read /i.test(input) ) {
+         var res = input.split(" ");
+         $.ajax({
+           type: "POST",
+           cache: false,
+           url: "/console_girls",
+           data: 'console_more='+res[1]+'&inbox=true',
+           dataType: "html",
+           success: function(data, textStatus, xhr) {
+            jqconsole.Append($("<div>"+data+"</div>"));
+             //jqconsole.Write(res[1] + '\n');
+           }
+         });                
+
+       } else if ( /reply /i.test(input) ) {
+         var res = input.split("-m");
+         var res1 = res[0];
+         var res2 = res[1];
+         var res = res1.split(" ");
+         $.ajax({
+           type: "POST",
+           cache: false,
+           url: "/console_girls",
+           data: 'console_msg_reply='+res[1]+'&inbox=true&msg='+res2,
+           dataType: "html",
+           success: function(data, textStatus, xhr) {
+            jqconsole.Append($("<div>"+data+"</div>"));
+             //jqconsole.Write(res[1] + '\n');
+           }
+         });    
+       } else if ( /-> /i.test(input) ) {
+         var res = input.split("->");
+         $.ajax({
+           type: "POST",
+           cache: false,
+           url: "/skill_question_answers",
+           data: 'answer='+res[1],
+           dataType: "json",
+           success: function(data, textStatus, xhr) {
+            if (data.question) {
+              jqconsole.Append($("<div>"+data.question+"</div>"));
+              jqconsole.SetPromptText(data.answer);
+            } else {
+              jqconsole.Append($("<div>"+data.msg+"</div>"));
+            }            
+           }
+         });              
+       } else if ( "profile" == input ) {
+         $.ajax({
+           type: "POST",
+           cache: false,
+           url: "/programmer_profile",
+           dataType: "html",
+           success: function(data, textStatus, xhr) {
+            jqconsole.Append($("<div>"+data+"</div>"));
+           }
+         });
+
+       } else if ( "profile E" == input ) {
+         $.ajax({
+           type: "POST",
+           cache: false,
+           url: "/programmer_profile",
+           data: 'profile=true',
+           dataType: "json",
+           success: function(data, textStatus, xhr) {
+            jqconsole.SetPromptText(data.field);
+           }
+         });
+
+       } else if ( /Name: /i.test(input) || /Age: /i.test(input) || /Gender - type male or female: /i.test(input) || /City: /i.test(input) || /Country - enter 2 letter country code: /i.test(input) || /About Me: /i.test(input) || /AvatarURL - you may copy and paste: /i.test(input) || /Password: /i.test(input) || /Enable email notifications about new messages - set true or false: /i.test(input) ) {
+        var res = input.split(": ");
+        
+        if ( res[0] == "AvatarURL - you may copy and paste" ) {
+          res[1] = res[1].replace(";", "--");
+          jqconsole.Append($("<div id='avatar-url'>#{t('please_wait')}</div>"));
+        }
+        
+        if ( res[0] == "About Me" ) {
+          jqconsole.Append($("<div>#{t('do_you_want_to_change_password')}</div>"));
+        }        
+         
+         $.ajax({
+           type: "POST",
+           cache: false,
+           url: "/programmer_profile",
+           data: 'field='+res[0]+'&val='+res[1]+'&profile=true',
+           dataType: "json",
+           success: function(data, textStatus, xhr) {
+            $("#avatar-url").hide(); 
+            if (data.msg) {
+              jqconsole.Append($("<div>"+data.msg+"</div>"));
+            }
+            if (data.field) {
+              jqconsole.SetPromptText(data.field);
+            }
+           }
+         });                                               
+       } else {
+         jqconsole.Write("#{t('command_not_found')}\n");
+       }
+        
+        startPrompt();
+      });
+    };
+    startPrompt();
+  });          

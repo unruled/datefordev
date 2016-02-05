@@ -1,0 +1,12 @@
+.col-md-12
+  %h5
+    = t("upload_new_avatar_pic")
+  %p
+    = t("upload_new_avatar_pic_instruction", :battery_size => current_user.battery_increase_percentage(50.0)).html_safe
+
+  %a.profile.open-profile{ :href => profile_path, :class => "btn btn-sm btn-primary", :id => "loader", "data-no-turbolink" => true}
+    %i.fa.fa-user
+    %em.message
+      = t("open_my_profile")
+  %p.clearb
+.row

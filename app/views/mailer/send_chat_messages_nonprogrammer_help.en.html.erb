@@ -1,0 +1,27 @@
+<p>Hi <%= @user.name %>,</p>
+
+<p>Starting a conversation with a programmer is not that easy!</p>
+
+<p>Here are some tips on starting a conversation with programmer</p>
+
+<p>
+- ask programmer about most beloved programming language;<br />
+- ask about favorite computer game? and why this game is so cool?<br />
+- ask about favorite ways to spend time without computers;<br />
+- ask about that function in your smartphone you can't understand how it works<br />
+- almost all programmers LOVE gadgets. Ask what is the collest smartphone or wearable gadget would be great to have this year?
+</p>
+
+<p>
+	<%= link_to "Click here to open your account", notification_confirmation_url(@user.notification_token, 'yes') %>
+</p>
+
+
+<p>P.S.: If you are having issues with the service then don't heistate to drop us a line at <a href="mailto:support@demo.com?subject=Need%20Help">support@demo.com</a>.</p>
+
+<p>thanks,<br />
+DateProg Team.</p>
+
+<p style="font-size: 10px;">
+	this email was sent from unmonitored address. <%= link_to "to unsubscribe from these notifications please click here", notification_confirmation_url(@user.notification_token, 'stop') %>
+</p>

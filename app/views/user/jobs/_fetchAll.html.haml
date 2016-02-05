@@ -1,0 +1,54 @@
+.fetchall
+  %table.table.table-hover.col-lg-12
+    %thead
+      %tr
+        %th.col-lg-4=t("title")
+        %th.col-lg-2=t("approved")
+        %th.col-lg-5= t("actions")
+        %th.col-lg-1
+
+    %tbody
+      - if @o_all.size > 0
+        - @o_all.each do |o_row|
+          %tr
+            - is_published = o_row.is_published
+
+            %td.col-lg-4
+              = link_to edit_user_job_path(o_row), "data-no-turbolink" => true, :class=> (is_published ? 'btn btn-primary btn-sm disabled' : 'btn btn-primary btn-sm') do
+                %i.fa.fa-bars.fa-2x
+                = o_row.title
+            
+            %td.col-lg-2
+              - if is_published
+                - if o_row.is_approved
+                  %i.fa.fa-check.fa-2x.text-success
+                - else
+                  =t("waiting_for_approval_by_moderator")
+              - else 
+                = link_to user_jobs_path(:publish => true, :job_id => o_row.id), :title => t("publish"), "data-no-turbolink"=> true, :class=> 'btn btn-primary btn-sm', :data => { :confirm => t("are_you_sure_to_publish") } do
+                  %i.fa.fa-list.fa-2x
+                  =t("publish")
+                
+            %td.col-lg-5
+              .btn-toolbar
+                - unless is_published                  
+                  = link_to edit_user_job_path(o_row), "data-no-turbolink" => true, :class=>'btn btn-primary btn-sm'  do
+                    %i.fa.fa-pencil-square-o.fa-2x
+                    =t("edit")
+                  
+
+                -# // clone button is available always! so user may clone published job
+                = link_to user_jobs_path(:clone => true, :job_id => o_row.id), :title => t("clone"), "data-no-turbolink" => true, :class=>"btn btn-primary btn-sm"  do
+                  %i.fa.fa-files-o.fa-2x              
+                  = t("clone")
+
+            %td.col-lg-1
+              - unless is_published
+                = link_to user_job_path(o_row), :method => :delete, :data => { :confirm => t("are_you_sure_to_delete") }, :class=>"btn btn-primary btn-sm"  do
+                  %i.fa.fa-times.fa-2x
+      - else
+        %tr
+          %th{:colspan => "3"}= t("record_not_found")
+
+  .right
+    = will_paginate @o_all

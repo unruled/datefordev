@@ -1,0 +1,31 @@
+<p>Hi <%= @user.name %>,</p>
+
+<p>Thank you for joining Date A Programmer site, the online dating service for programmers!</p>
+
+<p>By the way - we have a FREE GIFT for you! You will have VIP status for the first 7 days for FREE! Your profile will be highlighted and placed on top of all results! </p>
+
+<p>Here are few quick start tips:</p>
+
+<p>
+- Upload a photo to your profile to get higher ranking in search results;<br />
+- Each profile includes the so called "Private" part with additonal photo and additional information that is visible only to allowed users only.<br />
+</p>
+
+<p>
+Happy online dating!
+</p>
+
+<p>
+	<%= link_to "Click here to open your account", notification_confirmation_url(@user.notification_token, 'yes') %>
+</p>
+
+<p>P.S.: If you are having issues with the service then don't heistate to drop us a line at <a href="mailto:support@demo.com?subject=Need%20Help">support@demo.com</a>.</p>
+
+<p>
+thanks,<br />
+DateProg Team.
+</p>
+
+<p style="font-size: 10px;">
+	this email was sent from unmonitored address. <%= link_to "to unsubscribe from these notifications please click here", notification_confirmation_url(@user.notification_token, 'stop') %>
+</p>

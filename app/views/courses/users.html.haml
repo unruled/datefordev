@@ -1,0 +1,18 @@
+-# // rendering chat messages
+= render :partial => "girls/messages/index"
+
+.show-profile-box
+  .row
+    .col-lg-12
+      - if current_user.profile_completed?
+        .left
+          = link_to t("back"), course_path(@course), :class => "btn btn-primary", :id => "loader", "data-no-turbolink" => true
+        .right
+          %h4= @course.title
+          = t("members")
+.row
+  .col-md-12
+    #filter_users
+      = render :partial => "girls/all_users"
+
+#result

@@ -1,0 +1,34 @@
+-#.row
+  .col-lg-8.col-lg-offset-2
+    %p.help-block.text-success#text-success
+    = form_for @invite, :remote => true, :html => {:id => "inviteForm", :class => "form-horizontal", :novalidate => "" } do
+      %p.help-block.text-danger.text-errors
+      .row.control-group
+        .form-group.col-xs-12.floating-label-form-group.controls
+          %input#name1.form-control{:placeholder => t("invite_name"), :type => "text", :value => "", :name => "invite[name1]"}/
+          %input#email1.form-control{:placeholder => t("invite_email"), :type => "text", :value => "", :name => "invite[email1]"}/
+          %p.help-block.text-danger.text-email-error
+
+      .row.control-group
+        .form-group.col-xs-12.floating-label-form-group.controls
+          %input#name2.form-control{:placeholder => t("invite_name"), :type => "text", :value => "", :name => "invite[name2]"}/
+          %input#email2.form-control{:placeholder => t("invite_email"), :type => "text", :value => "", :name => "invite[email2]"}/
+          
+
+      .row.control-group
+        .form-group.col-xs-12.floating-label-form-group.controls
+          %input#name2.form-control{:placeholder => t("invite_name"), :type => "text", :value => "", :name => "invite[name3]"}/
+          %input#email2.form-control{:placeholder => t("invite_email"), :type => "text", :value => "", :name => "invite[email3]"}/
+
+      .row.control-group
+        .form-group.col-xs-12.floating-label-form-group.controls
+          %label= t("invitation_text_header")
+          %textarea#body.form-control{:placeholder => t("invitation_text_header"), :rows => "5", :name => "invite[body]"}
+            = t("invitation_text_default_body")
+
+      .row.modal-footer
+        .form-group.col-xs-12
+          %button.btn.btn-success.btn-sm{:type => "submit", :id => "invite-btn"}= t("send_invitation")
+          %button.btn.btn-default.btn-sm{"data-dismiss" => "modal", :type => "button"}= t("cancel")
+
+

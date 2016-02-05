@@ -1,0 +1,23 @@
+.signin-header
+  %h4.text-center.login-title= t("sign_in_with_emai").html_safe
+.account-wall
+  -#= image_tag "login_icon.png", :class => "profile-img"
+  = form_for(@user, :url => session_path(@user), :html => { :role => 'form', :class => "form-signin", :id => 'new_sign_in'}, authenticity_token: true) do |f|
+    -#= hidden_field_tag :authenticity_token, form_authenticity_token
+    - if params[:sign_in].present?
+      .form-group
+        - flash.each do |name, msg|
+          = content_tag :div, msg, :id => "flash_#{name}", :class => "alert alert-warning"
+    .form-group
+      = f.email_field :email, :autofocus => true, class: 'form-control', :placeholder => t("email"), :value => session[:email]
+      .clearb &nbsp;  
+      = f.password_field :password, class: 'form-control',  :placeholder => t("password")
+      = f.hidden_field "sign_in", :value => "sign_in", :name => "sign_in"
+      .checkbox
+        %label
+          = f.check_box "remember_me"
+          = t("remember_me")
+    .form-group
+      = f.submit t("sign_in"), :class => 'btn btn-primary', :data => {:disable_with => "processing in..."}
+
+      = link_to t("forgot_pass"), new_password_path(resource_name), :class => "btn btn-default pull-right"

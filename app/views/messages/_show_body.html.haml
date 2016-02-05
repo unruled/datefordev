@@ -1,0 +1,20 @@
+#chat-room-header
+  .row
+    .col-lg-12.text-center
+      .clearfix
+  .row
+  - if @report_abuse.present?
+    .text-center
+      .alert.alert-warning
+        %h4=t("you_are_blocked_by_user", user: @recipient.name)  
+  - else
+    .col-lg-12.p15
+      .left
+        %h5=@recipient.name
+      .right
+        %h5
+          -#%a.portfolio-link{"data-toggle" => "modal", :href => "#portfolioModal#{@recipient.id}"}
+          %a.portfolio-link{:href => profile_show_url(@recipient.id), :target => "_blank"}
+            .caption
+              .caption-content
+                = t('profile')    

@@ -1,0 +1,155 @@
+= form_for @user_detail, :url => save_profile_detail_path, :method => 'post', :remote => true, :html => {:id => "avatar1_form", :class => "form-horizontal",  :multipart => true, :novalidate => "" } do |f|
+  = hidden_field_tag :authenticity_token, form_authenticity_token
+  .row
+    .col-lg-12
+    
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("choose_photo")
+        .col-sm-9
+          .fileUpload.btn.btn-primary
+            %span= t("choose_photo")
+            %input#avatar1.upload{:type => "file", :name => "user_detail[avatar1]"}/
+          - if @user_detail.avatar1.present?
+            .clearb &nbsp;
+            .image-fixer
+              = image_tag @user_detail.avatar1(:medium), :id => "avatar_thumb1", :class => "img-responsive"
+          - else
+            .clearb &nbsp;
+            .wrapper-img
+              %div
+                = image_tag "noimage.gif", :id => "avatar_thumb1", :width => "256", :height => "256", :alt => t("upload_your_photo"), :title => t("upload_your_photo"), :class => "img-responsive"
+              .desc_content=t("upload_your_photo")
+          #image-loader1{:style => "display:none;"}
+            = image_tag 'loader.gif'
+            = t("uploading_please_wait")
+          .photo-save-msg#photo-success1{:style => "display:none;"}
+            %p.alert-success= t("photo_uploaded_successfully")
+          .photo-save-msg#photo-error-type-msg1
+            %p.alert-warning= t("avatar_error_type_msg")
+          .photo-save-msg#photo-error-size-msg1
+            %p.alert-warning= t("avatar_big_error_size_msg")
+= form_for @user_detail, :url => save_profile_detail_path, :method => 'post', :remote => true, :html => {:id => "avatar2_form", :class => "form-horizontal",  :multipart => true, :novalidate => "" } do |f|
+  = hidden_field_tag :authenticity_token, form_authenticity_token
+  .row
+    .col-lg-12
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("choose_photo")
+        .col-sm-9
+          .fileUpload.btn.btn-primary
+            %span= t("choose_photo")
+            %input#avatar2.upload{:type => "file", :name => "user_detail[avatar2]"}/
+          - if @user_detail.avatar1.present?
+            .clearb &nbsp;
+            .image-fixer
+              = image_tag @user_detail.avatar2(:medium), :id => "avatar_thumb2"
+          - else
+            .clearb &nbsp;     
+            .wrapper-img
+              %div
+                = image_tag "noimage.gif", :id => "avatar_thumb2", :width => "256", :height => "256", :alt => t("upload_your_photo"), :title => t("upload_your_photo"), :class => "img-responsive"
+              .desc_content=t("upload_your_photo")
+
+          #image-loader2{:style => "display:none;"}
+            = image_tag "loader.gif"            
+            = t("uploading_please_wait")
+          .photo-save-msg#photo-success2{:style => "display:none;"}
+            %p.alert-success= t("photo_uploaded_successfully")            
+          .photo-save-msg#photo-error-type-msg2
+            %p.alert-warning= t("avatar_error_type_msg")
+          .photo-save-msg#photo-error-size-msg2
+            %p.alert-warning= t("avatar_big_error_size_msg")
+    
+
+= form_for "", :url => save_profile_detail_path, :method => 'post', :remote => true, :html => {:id => "profileDetailForm", :class => "form-horizontal",  :multipart => true, :novalidate => "" } do
+  = hidden_field_tag :authenticity_token, form_authenticity_token
+  .row
+    .col-lg-12
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_from")
+        .col-sm-9
+          %input#required.form-control{:placeholder => t("profile_from"), :type => "text", :value => "#{@user_detail.from}", :name => "user_detail[from]"}/
+        
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_fav_movie")
+        .col-sm-9
+          %input#required.form-control{:placeholder => t("profile_fav_movie"), :type => "text", :value => "#{@user_detail.fav_movie}", :name => "user_detail[fav_movie]"}/
+          
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_last_movie")
+        .col-sm-9         
+          %input#required.form-control{:placeholder => t("profile_last_movie"), :type => "text", :value => "#{@user_detail.last_movie}", :name => "user_detail[last_movie]"}/
+      
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_last_book")
+        .col-sm-9
+          %input#required.form-control{:placeholder => t("profile_last_book"), :type => "text", :value => "#{@user_detail.last_book}", :name => "user_detail[last_book]"}/
+          
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_fav_singer")
+        .col-sm-9
+          %input#required.form-control{:placeholder => t("profile_fav_singer"), :type => "text", :value => "#{@user_detail.fav_singer}", :name => "user_detail[fav_singer]"}/
+      
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_like_animals")
+        .col-sm-9
+          %input#required.form-control{:placeholder => t("profile_like_animals"), :type => "text", :value => "#{@user_detail.like_animals}", :name => "user_detail[like_animals]"}/
+          
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_like_live")
+        .col-sm-9
+          %input#required.form-control{:placeholder => t("profile_like_live"), :type => "text", :value => "#{@user_detail.like_live}", :name => "user_detail[like_live]"}/    
+          
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_make_laugh")
+        .col-sm-9
+          %textarea#required.form-control{:placeholder => t("profile_make_laugh"), :rows => "5", :name => "user_detail[make_laugh]"}
+            = @user_detail.make_laugh
+      
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_make_cry")
+        .col-sm-9
+          %textarea#required.form-control{:placeholder => t("profile_make_cry"), :rows => "5", :name => "user_detail[make_cry]"}
+            = @user_detail.make_cry
+            
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_my_dream")
+        .col-sm-9
+          %textarea.form-control#required{:placeholder => t("profile_my_dream"), :rows => "5", :name => "user_detail[my_dream]"}
+            = @user_detail.my_dream
+          
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_skype_name")
+        .col-sm-9
+          %input#skype_name.form-control{:placeholder => t("profile_skype_name"), :type => "text", :value => "#{@user_detail.skype_name}", :name => "user_detail[skype_name]"}/
+          
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_social_network_links")
+        .col-sm-9
+          %textarea#social_network_links.form-control{:placeholder => t("profile_social_network_links"), :rows => "5", :name => "user_detail[social_network_links]"}
+            = @user_detail.social_network_links
+
+      .form-group 
+        .col-sm-9.col-sm-offset-3
+          %p.help-block.text-danger#error-profile-detail
+          %p.help-block.text-success#notice-profile-detail
+      .form-group 
+        .col-sm-9.col-sm-offset-3
+          .col-sm-3
+            %button.btn.btn-primary{:type => "submit", :id => "", :onclick => "$('#detail-loader-image').show()"}= t("update")
+          .col-sm-3
+            %div{style: "display:none;", id: "detail-loader-image", class: ""}
+              = image_tag "loader.gif"                

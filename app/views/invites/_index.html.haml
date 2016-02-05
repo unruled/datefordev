@@ -1,0 +1,40 @@
+-#- referral_url = "#{BASE_URL}sign-up/#{current_user.referral_code}"
+-##inviteModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+        %h4#myModalLabel.modal-title
+          = t("link_to_signup")
+
+        %h5#myModalLabel.modal-title.text-center
+          = t("invite_friends_to_view_more_result")
+      .modal-body
+        %section
+          .col-md-12
+              %div#copy-paste.box-shadow:onclick => "select_all(this)"}
+                = "#{BASE_URL}sign-up/#{current_user.referral_code}"
+          .col-md-12
+            .share-button-block
+              - if current_user.email.include? "gmail"
+                - invite_link = "http://mail.google.com/mail/?view=cm&fs=1&su=#{t('email_subject')}&body=#{t('email_body')} #{referral_url}"
+              - else
+                - invite_link = "mailto:FRIEND@EMAIL?subject=#{t('email_subject')}&body=#{t('email_body')}  #{referral_url}"
+              %strong
+                = link_to t("mail_to_friends"), invite_link, :class => "btn btn-sm btn-primary", :target => "_blank", :onclick => "track_google_analytics('invite_google', '#{current_user.referral_code}')"
+
+              %a.twitter.share-item{:href => "//twitter.com/intent/tweet?text=#{t('share_summary')} #{referral_url}", :target => "_blank", :class => "btn btn-sm btn-primary", :onclick => "track_google_analytics('invite_twitter', '#{current_user.referral_code}')"}
+                %i.fa.fa-twitter
+                %em.message
+                  = t("share_via_twitter")
+                  &nbsp;&nbsp;
+
+              %a.facebook.share-item{:href => "//www.facebook.com/sharer/sharer.php?u=#{referral_url}", :class => "btn btn-sm btn-primary", :target => "_blank", :onclick => "track_google_analytics('invite_facebook', '#{current_user.referral_code}')"}
+                %i.fa.fa-facebook
+                %em.message
+                  = t("share_via_facebook")
+
+              %a.linkedin.share-item.last{:href => "//www.linkedin.com/shareArticle?mini=true&url=#{referral_url}&title=#{t('share_title')}&summary=#{t('share_summary')}&source=", :target => "_blank", :class => "btn btn-sm btn-primary", :onclick => "track_google_analytics('invite_linkedin', '#{current_user.referral_code}')"}
+                %i.fa.fa-linkedin
+                %em.message
+                  = t("share_via_linkedin")

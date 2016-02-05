@@ -1,0 +1,4 @@
+%h5
+  = hidden_field_tag "user[notification]", ''
+  = check_box_tag "user[notification]", true, current_user.notification, :onclick => "track_google_analytics('chat-notification', '#{current_user.referral_code}')"
+  = t("notification_enable")

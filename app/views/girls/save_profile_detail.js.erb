@@ -1,0 +1,126 @@
+$("#detail-loader-image").hide();
+$("#image-loader1").hide();
+$("#image-loader2").hide();
+<% if @notice.present? %>
+	$("#error-profile-detail").html(" ");
+	$("#notice-profile-detail").html("<%= @notice %>");
+	$("#photo-success1").hide();
+	$("#photo-success2").hide();
+<% end %>
+<% if @error.present? %>
+	$("#notice-profile-detail").html(" ");
+	$("#error-profile-detail").html("<%= @error %>");
+	$("#photo-success1").hide();
+	$("#photo-success2").hide();
+<% end %>
+
+<% if @photo_notice1.present? %>
+	$("#photo-success1").show();
+<% end %>
+
+<% if @photo_notice2.present? %>
+	$("#photo-success2").show();
+<% end %>
+
+$( "#private-profile input,textarea" ).each(function() {
+	if ($(this).attr("id") == "required") {
+	    if ($(this).val().length == 0) {
+	        $(this).addClass('error-border');
+	    } else {
+	        $(this).removeClass('error-border');
+	    }
+
+	}
+});
+
+$('#private-profile select').each(function(e) {
+    if ($(this).attr("id") == "required") {
+        if ($(this).val().length == 0) {
+            $(this).addClass('error-border');
+        } else {
+            $(this).removeClass('error-border');
+        }
+
+    }
+});
+
+
+  $("#avatar1").change(function(){
+  	  $("#image-loader1").show();
+      readURLAvatar1(this);
+      $(this).closest('form').submit();
+  });
+  
+  $("#avatar2").change(function(){
+  	  $("#image-loader2").show();
+      readURLAvatar2(this);
+      $(this).closest('form').submit();
+  });
+
+function readURLAvatar1(input) {
+  if (input.files && input.files[0]) {
+  	var f = input.files[0];
+  	var t = f.type;
+  	var s = f.size;
+  	if (t == "image/gif" || t == "image/jpeg" || t == "image/png") {
+  		if (s < 5000000) {
+		    var reader = new FileReader();
+		    reader.onload = function (e) {
+		        $('#avatar_thumb1').attr('src', e.target.result);
+				$("#photo-error-size-msg1").hide();
+				$("#photo-error-type-msg1").hide();
+		        $("#photo-save-msg1").show();
+		    }
+		    reader.readAsDataURL(input.files[0]);
+		} else {
+			$("#image-loader1").hide();
+			$("#photo-success1").hide();
+			$('#avatar_thumb1').attr('src', "noimage.gif");
+			$("#photo-save-msg1").hide();
+			$("#photo-error-type-msg1").hide();
+			$("#photo-error-size-msg1").show();
+		}    
+	} else {
+		$("#image-loader1").hide();
+		$("#photo-success1").hide();
+		$('#avatar_thumb1').attr('src', "noimage.gif");
+		$("#photo-save-msg1").hide();
+		$("#photo-error-size-msg1").hide();
+		$("#photo-error-type-msg1").show();
+	}    
+  }
+}
+
+function readURLAvatar2(input) {
+  if (input.files && input.files[0]) {
+  	var f = input.files[0];
+  	var t = f.type;
+  	var s = f.size;
+  	if (t == "image/gif" || t == "image/jpeg" || t == "image/png") {
+  		if (s < 5000000) {
+		    var reader = new FileReader();
+		    reader.onload = function (e) {
+		        $('#avatar_thumb2').attr('src', e.target.result);
+				$("#photo-error-size-msg2").hide();
+				$("#photo-error-type-msg2").hide();
+		        $("#photo-save-msg1").show();
+		    }
+		    reader.readAsDataURL(input.files[0]);
+		} else {
+			$("#image-loader2").hide();
+			$("#photo-success2").hide();
+			$('#avatar_thumb2').attr('src', "noimage.gif");
+			$("#photo-save-msg2").hide();
+			$("#photo-error-type-msg2").hide();
+			$("#photo-error-size-msg2").show();
+		}    
+	} else {
+		$("#image-loader2").hide();
+		$("#photo-success2").hide();
+		$('#avatar_thumb2').attr('src', "noimage.gif");
+		$("#photo-save-msg2").hide();
+		$("#photo-error-size-msg2").hide();
+		$("#photo-error-type-msg2").show();
+	}    
+  }
+}  

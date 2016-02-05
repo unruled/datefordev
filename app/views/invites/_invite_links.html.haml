@@ -1,0 +1,8 @@
+-#.row
+  .col-lg-8.col-lg-offset-2
+    - if current_user.email.include? "gmail"
+      - invite_link = "http://mail.google.com/mail/?view=cm&fs=1&su=#{t('email_subject')}&body=#{t('email_body')} #{BASE_URL}sign-up/#{current_user.referral_code}"
+    - else
+      - invite_link = "mailto:FRIEND@EMAIL?subject=#{t('email_subject')}&body=#{t('email_body')} #{BASE_URL}sign-up/#{current_user.referral_code}"
+    %h1.text-center
+      = link_to t("mail_to_friends"), invite_link, :class => "btn btn-primary", :target => "_blank"

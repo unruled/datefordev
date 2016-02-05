@@ -1,0 +1,23 @@
+- if devise_mapping.omniauthable?
+  - resource_class.omniauth_providers.each do |provider|
+    - if provider.to_s == 'google'
+      = link_to omniauth_authorize_path(resource_name, provider), :class => "btn btn-primary btn-lg", :title => provider do
+        %i.fa.fa-google-square.fa-2x
+        =t("google")
+    - elsif provider.to_s == 'facebook'
+      = link_to omniauth_authorize_path(resource_name, provider), :class => "btn btn-primary btn-lg", :title => provider do
+        %i.fa.fa-facebook-square.fa-2x
+        =t("facebook")
+    - elsif provider.to_s == 'linkedin'
+      = link_to omniauth_authorize_path(resource_name, provider), :class => "btn btn-primary btn-lg", :title => provider do
+        %i.fa-bg.fa.fa-linkedin-square.fa-2x
+        =t("linkedin")
+    - elsif provider.to_s == 'github'
+      = link_to omniauth_authorize_path(resource_name, provider), :class => "btn btn-primary btn-lg", :title => provider do
+        %i.fa-bg.fa.fa-github-square.fa-2x
+        =t("github")
+    &nbsp;
+%p
+  = t("note_will_not_post_without_your_permission")
+%p.clearb
+%p= link_to t("show_more_login_options"), "javascript:void(0);", :title => t("show_more_login_options"), :class => "btn btn-default btn-sm", :onclick => "$('#u-login-id').toggle();"

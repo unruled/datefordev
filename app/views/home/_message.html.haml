@@ -1,0 +1,8 @@
+- if message_id.present?  
+  %div{:id => "div_update_#{girl_or_prog.id}_#{message_id}"}
+  - message_form_id = "messageForm#{girl_or_prog.id}#{message_id}"   
+- else
+  %div{:id => "div_update_#{girl_or_prog.id}"}
+    =# render :partial => "messages/show_messages" 
+  - message_form_id = "messageForm#{girl_or_prog.id}"
+    

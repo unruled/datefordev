@@ -1,0 +1,5 @@
+<% if @requested == true %>
+	alert("<%= t('you_have_already_requested')%>");
+<% else %>
+	$("#request_<%= params[:user_id] %>").html("<div class='name-green'><strong><%= t("you_have_asked_to_view_private_profile") %></strong></div>");	
+<% end %>	

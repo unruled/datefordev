@@ -1,0 +1,32 @@
+-# // render light version of user profile
+-#.row
+  = render :partial => "girls/show_profile", :locals => { :user => @recipient, :chat => false, :tips => '', :mobile_chat_version => true }
+  .clearfix
+
+.row
+  %div.feed_jscroll_msg
+    .left.txt-left#chat_room
+      - if @messages.present?
+        - @messages.each_with_index do |message, k|
+          - sender = message.sender
+          - if sender == current_user
+            = "<div class='chatboxmessage'><span class='chatboxmessagefrom'>#{t('me')}: </span><span class='chatboxmessagecontent'>#{message.body}</span></div><div class='chatboxmessage'><span class='chatboxinfo'>#{time_difference(message.created_at)}</span></div>".html_safe
+          - else
+            = "<div class='chatboxmessage'><span class='chatboxmessagefrom'>#{sender.name}: </span><span class='chatboxmessagecontent'>#{message.body}</span></div><div class='chatboxmessage'><span class='chatboxinfo'>#{time_difference(message.created_at)}</span></div>".html_safe            
+          %br
+                
+-# render :partial => "chat_box", :locals => { :recipient_id => @recipient.id }
+          
+:javascript
+  $(function() {
+    
+    $('.message_body').keypress(function(e) {
+      if (e.keyCode == 13 && !e.shiftKey) {
+        e.preventDefault();
+        $("form[name='messageForm']").submit();
+        $("#chat_room").animate({ scrollTop: $('#chat_room').height()+5000}, 1000);
+      }
+    });
+    $("#chat_room").animate({ scrollTop: $('#chat_room').height()+5000}, 1000);
+    $('.message_body').focus();             
+  });  

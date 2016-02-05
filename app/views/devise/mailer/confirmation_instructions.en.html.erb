@@ -1,0 +1,12 @@
+<p>Hi <%= @resource.name %>,</p>
+
+<p>Thank you for signing-up at Date A Programmer!<p>
+
+<p>
+<%= link_to "Please confirm your registration by simply clicking here.", confirmation_url(@resource, confirmation_token: @token, sign_in: true) %>
+</p>
+
+<p>P.S.: if it was not you then please just ignore this email.</p>
+
+<p>thanks,<br />
+DateProg Team</p>

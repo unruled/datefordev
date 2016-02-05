@@ -1,0 +1,9 @@
+#notification-profile
+  .checkbox
+    %label
+      - if current_user.notification_profile
+        %input{"data-size" => "large", :checked => "", "data-toggle" => "toggle", :type => "checkbox", :id => "notify-profile"}
+          = t("send_notification_about_new_profiles")
+      - else
+        %input{"data-size" => "large", "data-toggle" => "toggle", :type => "checkbox", :id => "notify-profile"}
+          = t("send_notification_about_new_profiles")

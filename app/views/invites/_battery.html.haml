@@ -1,0 +1,92 @@
+-#- referral_url = "#{BASE_URL}sign-up/#{current_user.referral_code}"
+-#- if modal
+  #batteryModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+    .modal-dialog
+      .modal-content
+        .row
+          #myTabContent.tab-content
+            #share-link.tab-pane.fade.in.active
+              .modal-header
+                %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+                  %span{"aria-hidden" => "true"} &times;
+                %h5#myModalLabel.modal-title.text-center
+                  = t("follow_instruction_to_increase_battery_capacity")
+
+              %section
+                .col-md-12
+                  %h5#myModalLabel.modal-title
+                    .col-md-4
+                      .battery
+                        %div
+                    .col-md-8
+                      = t("battery_capacity_instruction", :battery_size => current_user.battery_capacity_remain_duration).html_safe
+              %p.clearb
+              .modal-body.modal-body-battery
+                .panel.with-nav-tabs.panel-primary
+                  .panel-heading
+                    %ul#batteryTabs.nav.nav-tabs
+                      %li.active
+                        %a{"data-toggle" => "tab", :href => "#invite-friends-modal"}
+                          = t("battery_tabs.invite_friends")
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#upload-photo-modal"}
+                          = t("battery_tabs.upload_photo")
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#pass-test-modal"}
+                          = t("battery_tabs.pass_test")
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#other-modal"}
+                          = t("battery_tabs.other")
+                  #batteryTabContent.tab-content
+                    #invite-friends-modal.tab-pane.fade.in.active
+                      = render :partial => "invites/blocks/invite_friends", :locals => { :referral_url => referral_url }
+                    #upload-photo-modal.tab-pane.fade
+                      = render :partial => "invites/blocks/upload_photo", :locals => { :referral_url => referral_url }
+                    #pass-test-modal.tab-pane.fade
+                      = render :partial => "invites/blocks/pass_test"
+                    #other-modal.tab-pane.fade
+                      = render :partial => "invites/blocks/other"
+
+- else
+  %div
+    .modal-dialog
+      .modal-content
+        .row
+          #myTabContent.tab-content
+            #share-link.tab-pane.fade.in.active
+              .modal-header
+                .alert.alert-danger
+                  %h5#myModalLabel.modal-title
+                    = t("you_have_reached_the_battery_limit").html_safe
+              %p.clearb
+              .modal-body.modal-body-battery
+                %section
+                  .col-md-12
+                    %h5#myModalLabel.modal-title
+                      = t("battery_capacity_instruction", :battery_size => current_user.battery_capacity_remain_duration).html_safe
+              %p.clearb
+              .modal-body.modal-body-battery
+                .panel.with-nav-tabs.panel-primary
+                  .panel-heading
+                    %ul#batteryTabs.nav.nav-tabs
+                      %li.active
+                        %a{"data-toggle" => "tab", :href => "#invite-friends"}
+                          = t("battery_tabs.invite_friends")
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#upload-photo"}
+                          = t("battery_tabs.upload_photo")
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#pass-test"}
+                          = t("battery_tabs.pass_test")
+                      %li
+                        %a{"data-toggle" => "tab", :href => "#other"}
+                          = t("battery_tabs.other")
+                  #batteryTabContent.tab-content
+                    #invite-friends.tab-pane.fade.in.active
+                      = render :partial => "invites/blocks/invite_friends", :locals => { :referral_url => referral_url }
+                    #upload-photo.tab-pane.fade
+                      = render :partial => "invites/blocks/upload_photo", :locals => { :referral_url => referral_url }
+                    #pass-test.tab-pane.fade
+                      = render :partial => "invites/blocks/pass_test"
+                    #other.tab-pane.fade
+                      = render :partial => "invites/blocks/other"

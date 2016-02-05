@@ -1,0 +1,26 @@
+= content_for :page_title, "Jobs"
+-# // rendering chat messages
+- if current_user
+  = render :partial => "girls/messages/index"
+
+- if current_user && current_user.is_instructor
+  .form.form-inline
+    .row
+      .col-lg-12
+        .form-group.control-group.pull-right.btn-toolbar
+          = link_to user_jobs_path, :class => "btn btn-primary pull-right", "data-no-turbolink" => true do
+            %i.fa.fa-pencil.fa-1x.fa-inverse
+            = t("edit_your_jobs")
+            
+          = link_to new_user_job_path, :class => 'btn btn-primary pull-right', :title => t('add'), "data-no-turbolink" => true do
+            %i.fa.fa-plus.fa-1x.fa-inverse
+            = t("add_job")
+.row
+  = render :partial => "filter_jobs"
+#result
+
+-# Go to www.addthis.com/dashboard to customize your tools -->
+%script{:src => "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-54d65a655e66e6b3", :type => "text/javascript", :async=>"async"}
+  
+
+

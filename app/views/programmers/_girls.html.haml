@@ -1,0 +1,69 @@
+- unless current_user.profile_completed?
+  %section
+    .container
+      .row
+        .col-lg-12.text-center
+          %h3= t("please_complete_profile_to_find_girl")
+- else
+  %section
+    .container
+      .row
+        .col-lg-12.text-center
+          %h3= t("found_girls", count: @girls.count)
+          %hr.star-primary/
+          %h3.right
+            = link_to t("new_search"), programmers_path, :class => "btn btn-sm btn-primary"
+      .row
+        %div.feed_jscroll
+          - if @girls.present?
+            - @girls.each_with_index do |girl, k|
+              %div#portfolio
+                .col-sm-3.portfolio-item
+                  -#%a.portfolio-link{"data-toggle" => "modal", :href => "#portfolioModal#{girl.id}"}
+                  %a.portfolio-link{:href => profile_show_url(girl.id), :target => "_blank"}
+                    .caption
+                      .caption-content
+                        = "#{girl.name} - #{girl.city}, #{girl.country}"
+                    - profile_image = girl.avatar.exists? ? girl.avatar(:medium) : "girl-default.png"    
+                    = image_tag profile_image, :id => "img-responsive", :width => "256", :height => "256"
+                  .text-center
+                    = "#{girl.name} - #{girl.city}, #{girl.country}"
+                    
+              .portfolio-modal.modal.fade{"aria-hidden" => "true", :role => "dialog", :tabindex => "-1", :id => "portfolioModal#{girl.id}"}
+                .modal-content
+                  .close-modal{"data-dismiss" => "modal"}
+                    .lr
+                      .rl
+                  .container
+                    .row
+                      .col-lg-8.col-lg-offset-2
+                        .modal-body
+                          %h2=girl.name
+                          %hr.star-primary/
+                          - profile_image = girl.avatar.exists? ? girl.avatar(:medium) : "girl-default.png"
+                          = image_tag profile_image, :id => "img-responsive", :width => "256", :height => "256"
+                          %p
+                            = girl.about_me
+                          %ul.list-inline.item-details
+                            %li
+                              = t("age")
+                              %strong
+                                = girl.user_age
+                            %li
+                              = t("city")
+                              %strong
+                                = girl.city
+                            %li
+                              = t("country")
+                              %strong
+                                = girl.country
+                                
+                          .col-lg-12.text-center
+                            %h3= t("send_msg")
+                            %hr.star-primary/
+                      .row
+                        .col-lg-8.col-lg-offset-2
+                          = render :partial => "home/message", :locals => { :girl_or_prog => girl }
+            = link_to 'next', next_girls_path(:page => 2), :remote => true
+            :javascript
+              $('.feed_jscroll').jscroll();

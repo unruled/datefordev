@@ -1,0 +1,11 @@
+<%- if controller_name != 'sessions' %>
+  <%= link_to t("sign_in"), new_session_path(resource_name), :class => "btn btn-default btn-lg" %><div class="clearb">&nbsp;</div>
+<% end -%>
+
+<%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+  <%= link_to t("forgot_pass"), new_password_path(resource_name), :class => "btn btn-default btn-lg" %><div class="clearb">&nbsp;</div>
+<% end -%>
+
+<%#- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+  <%#= link_to t("did_not_received_confirmation"), new_confirmation_path(resource_name), :class => "btn btn-default btn-lg" %>
+<%# end -%>

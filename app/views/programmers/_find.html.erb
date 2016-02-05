@@ -1,0 +1,29 @@
+<% if params[:console_more].present? %>
+	<% 
+		profile_image = girl.avatar.exists? ? girl.avatar(:medium) : "girl-default.png"
+		height = "200"
+		width = "200"
+	 %>
+<% else %>	
+	<% 
+		profile_image = girl.avatar.exists? ? girl.avatar(:thumb) : "girl-default.png"
+		height = "100"
+		width = "100"		
+	%>
+<% end %>
+	
+<br />
+<table width='100%' cellspacing='2' colspan='2'>
+	<tr>
+		<td width='3%'><%= i %></td>
+		<td width='3%'>&nbsp;</td>
+		<td width='10%'>
+			<strong><%= t('uid') %> <%= girl.id %></strong><br />
+			<%= image_tag profile_image, :width=> width, :height=>height %><br />
+			<%= t("matching_ratio", ratio: ratio_hash[k]) %><br />
+		</td>
+		<td width='3%'>&nbsp;</td>
+		<td valign='top' width='81%'><br /><br /><%= girl.profile %></td>
+	</tr>
+</table>
+<hr />

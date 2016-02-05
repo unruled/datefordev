@@ -1,0 +1,20 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %title= content_for?(:page_title) ? yield(:page_title) + " | " + t('date_a_programmer')  : t('date_a_programmer')
+
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}/
+    %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}/
+    = favicon_link_tag 'demo.ico'
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+  %body
+    = render :partial => "layouts/header"          
+    - flash.each do |name, msg|
+      - if controller.controller_name == "home"
+        = content_tag :div, msg, :id => "flash_#{name}", :class => "alert"
+    = yield
+  .clear
+  = render :partial => "layouts/footer"

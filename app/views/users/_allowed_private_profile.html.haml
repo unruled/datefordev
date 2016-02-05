@@ -1,0 +1,25 @@
+.row
+  - if @allowed_profiles.present?
+    - @allowed_profiles.each do |profile|
+      .col-lg-12
+        - allow_from = profile.allow_from
+        - if allow_from.present?
+          %div{:id => "access_delete_#{profile.id}"}
+            .form-group
+              %label.col-sm-3.control-label.text-right{:for => ""}                 
+                - if allow_from.avatar(:thumb).present?
+                  = link_to ("#{image_tag allow_from.avatar(:thumb), id: :thumb_avatar} #{allow_from.name}".html_safe), profile_show_url(allow_from.id), :id => "loader", "data-no-turbolink" => true
+                - else            
+                  = link_to allow_from.name, profile_show_url(allow_from.id), :id => "loader", "data-no-turbolink" => true                      
+              .col-sm-9
+                %span{:id => "allow_#{profile.id}"}
+                  - if profile.allow
+                    = link_to t("disallow"), allow_disallow_user_path(profile.id), :remote => true, :class => "btn btn-sm btn-primary", :data => { :confirm => t("are_you_sure") }
+                  - else  
+                    = link_to t("allow"), allow_disallow_user_path(profile.id), :remote => true, :class => "btn btn-sm btn-primary", :data => { :confirm => t("are_you_sure") }
+                %span  
+                  = link_to t("delete"), delete_profile_access_user_path(profile.id), :remote => true, :class => "btn btn-sm btn-danger", :data => { :confirm => t("are_you_sure") }
+  - else
+    .form-group 
+      .col-sm-9.col-sm-offset-3
+        %h5=t("no_records_found")              

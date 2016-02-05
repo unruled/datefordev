@@ -1,0 +1,31 @@
+.row
+  = render :partial => "girls/show_profile", :locals => { :user => @recipient, :chat => false, :tips => '', :mobile_chat_version => false }
+  .clearfix
+
+.row
+  .col-lg-12
+    .left.txt-left#chat_room.chat_room
+      - if @messages.present?
+        - @messages.each_with_index do |message, k|
+          - sender = message.sender
+          - if sender == current_user
+            = "<i class='name-blue'>#{t('me')}</i>   --  <strong>#{message.body} - </strong><i>#{time_difference(message.created_at)}</i>".html_safe
+          - else  
+            = "<i class='name-green'>#{sender.name}</i>   --  <strong>#{message.body} - </strong><i>#{time_difference(message.created_at)}</i>".html_safe
+          %br
+                
+= render :partial => "messages/chat_box_mobile", :locals => { :recipient_id => @recipient.id }
+          
+:javascript
+  $(function() {
+    
+    $('.message_body').keypress(function(e) {
+      if (e.keyCode == 13 && !e.shiftKey) {
+        e.preventDefault();
+        $("form[name='messageForm']").submit();
+        $("#chat_room").animate({ scrollTop: $('#chat_room').height()+5000}, 1000);
+      }
+    });
+    $("#chat_room").animate({ scrollTop: $('#chat_room').height()+5000}, 1000);
+    $('.message_body').focus();
+  });  

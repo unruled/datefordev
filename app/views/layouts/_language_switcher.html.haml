@@ -1,0 +1,21 @@
+.btn-group.language-switcher
+  %button.btn.btn-primary.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :type => "button"}
+    - case I18n.locale
+    - when :en
+      %i.famfamfam-flag-us
+      = t("en")
+    - when :ru
+      %i.famfamfam-flag-ru
+      = t("ru")
+    %span.caret
+  %ul.dropdown-menu{:role => "menu"}
+    - if I18n.locale != :en
+      %li
+        = link_to url_for(params.merge(:locale => "en")), :id => "loader", "data-no-turbolink" => true do
+          %i.famfamfam-flag-us
+          = t("en")
+    - if I18n.locale != :ru
+      %li
+        = link_to url_for(params.merge(:locale => "ru")), :id => "loader", "data-no-turbolink" => true do
+          %i.famfamfam-flag-ru
+          = t("ru")

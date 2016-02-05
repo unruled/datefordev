@@ -1,0 +1,95 @@
+- referral_url = "#{BASE_URL}sign-up/#{current_user.referral_code}"
+
+#vipModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          &times;
+        %h4#myModalLabel.modal-title.text-center.bg-default
+          = t("vip_status")
+          -# progress bar with completed courses
+          - is_vip_status = current_user.is_vip_status?
+          - completed_courses_count = is_vip_status ? vip_status : current_user.completed_courses_count
+          - remain_count = vip_status - completed_courses_count
+          - completed_courses_count.times do
+            .vip-status-true
+          - remain_count.times do
+            .vip-status-false
+          .clearb          
+        
+      .modal-body
+        %div
+          - if is_vip_status
+            %h5.text-center= t("you_have_a_vip_status")
+          - else
+            .col-md-12.center
+              %h5= t("vip_status_instruction_dialog", friend_count: (vip_status - completed_courses_count))
+              .clearb
+        %div
+          %h5.text-center= t("vip_features")
+          %p= t("vip_feature1")
+          %p= t("vip_feature2")
+          %p= t("vip_feature3")
+          %p= t("vip_feature4")
+          %p= t("vip_feature5")
+          
+        %div
+          .btn-toolbar.pull-right
+            = link_to courses_path, :class => "btn btn-primary" do
+              %i.fa-bg.fa.fa-book.fa-1x
+              = t("courses")
+              
+            = link_to new_user_course_path, :class => "btn btn-primary" do
+              %i.fa.fa-plus.fa-1x.fa-inverse
+              = t("add_course")
+  
+      -#.modal-body
+        .col-md-12
+          - if current_user.is_vip_status?
+            %h5.text-center= t("you_have_a_vip_status")
+          - else
+            .col-md-12.center
+              %h5= t("vip_status_instruction", friend_count: (vip_status - current_user.referral_count))
+              .clearb
+        .col-md-12
+          %h5.text-center= t("vip_features")
+          %p= t("vip_feature1")
+          %p= t("vip_feature2")
+          %p= t("vip_feature3")
+          %p= t("vip_feature4")
+          %p= t("vip_feature5")
+        .col-md-12
+          %h5
+            = t("copy_link_and_share")
+          %input.box-shadow.form-control{:onclick => "select_all(this, '#{current_user.referral_code}');", :value => "#{BASE_URL}sign-up/#{current_user.referral_code}"}
+        .row
+          .col-md-12
+            %h4
+              %strong=t("invite_friends_via")
+            - if current_user.email.include? "gmail"
+              - invite_link = "http://mail.google.com/mail/?view=cm&fs=1&su=#{t('email_subject')}&body=#{t('email_body')} #{referral_url}"
+            - else
+              - invite_link = "mailto:FRIEND@EMAIL?subject=#{t('email_subject')}&body=#{t('email_body')}  #{referral_url}"
+            
+            -# = link_to t("mail_to_friends"), invite_link, :class => "btn btn-sm btn-primary", :target => "_blank" do
+            %a.btn.btn-primary.btn-sm{:href => invite_link, :target => "_blank", :onclick => "track_google_analytics('gmail', '#{current_user.referral_code}')"}
+              %i.fa.fa-envelope.fa-inverse
+                = t("mail_to_friends")
+
+            %a.btn.btn-primary.btn-sm{:href => "//vkontakte.ru/share.php?url=#{referral_url}&title=#{t('share_title')}&description=#{t('share_summary')}&noparse=true", :target => "_blank", :onclick => "track_google_analytics('vkontakte', '#{current_user.referral_code}')"}
+              %i.fa.fa-vk.fa-inverse
+                = t("share_via_vkontakte")
+
+            %a.btn.btn-primary.btn-sm{:href => "//twitter.com/intent/tweet?text=#{t('share_summary')} #{referral_url}", :target => "_blank", :onclick => "track_google_analytics('twitter', '#{current_user.referral_code}')"}
+              %i.fa.fa-twitter.fa-inverse
+                = t("share_via_twitter")
+                &nbsp;&nbsp;
+
+            %a.btn.btn-primary.btn-sm{:href => "//www.facebook.com/sharer/sharer.php?u=#{referral_url}", :target => "_blank", :onclick => "track_google_analytics('facebook', '#{current_user.referral_code}')"}
+              %i.fa.fa-facebook.fa-inverse
+                = t("share_via_facebook")
+
+            %a.btn.btn-primary.btn-sm{:href => "//www.linkedin.com/shareArticle?mini=true&url=#{referral_url}&title=#{t('share_title')}&summary=#{t('share_summary')}&source=", :target => "_blank", :onclick => "track_google_analytics('linkedin', '#{current_user.referral_code}')"}
+              %i.fa.fa-linkedin.fa-inverse
+                = t("share_via_linkedin")

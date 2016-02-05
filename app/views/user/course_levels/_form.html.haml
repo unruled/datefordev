@@ -1,0 +1,104 @@
+.col-lg-12
+  .form-group
+    .btn-toolbar
+      = link_to user_course_course_levels_path(@course), :class => "btn btn-primary btn-sm" do
+        %i.fa.fa-inverse.fa-arrow-left
+        = t("back_to_list_of_levels")
+        
+.col-lg-12.container#course-level-form
+  = form_for [:user, @course, @course_level], :html => { :class => 'form-horizontal' }, :remote => true do |f|
+    = f.hidden_field :course_id, :value => @course.id
+    %div.control-group
+      .form-group
+        %label=t("title")
+        = f.text_field :title, :class => "form-control"
+        #title-error
+    %div.control-group
+      .form-group
+        %label=t("position")
+        = f.number_field :position, in: 1..999, step: 1, :class => 'form-control'
+        #position-error
+
+    -# // display description field for levels only, hiding for is_question types
+    - if @course_level.is_level?
+      %div.control-group
+        .form-group
+          %label=t("information")
+          = f.cktext_area :description, :class => 'ckeditor form-control', :ckeditor => {:language => I18n.locale, :toolbar => 'dateprog'}
+          #description-error
+    - else
+      = f.hidden_field :description
+      = f.hidden_field :level_type, :value => :is_question
+      
+    %div.control-group
+      .form-group
+        %label=t("question")
+        = f.cktext_area :question, :class => 'ckeditor form-control', :ckeditor => {:language => I18n.locale, :toolbar => 'dateprog'}
+        #question-error
+    %div.control-group
+      .form-group
+        %label=t("course_level_answer")
+        .checkbox
+          %label
+            = f.check_box :case_sensitive
+            = t("case_sensitive")
+        .checkbox
+          %label         
+            = f.check_box :regular_expression
+            = t("regular_expression") 
+            = link_to "(open online regular expressions tester)", "http://rubular.com", :target => "_blank"
+        %div.regexp_tips{:id=>"regexp_tips", :style=>"display:none;"}
+          = render("regexp_tips")             
+            
+        = f.text_area :answer, :class => 'form-control', :rows => 5
+        #answer-error
+
+    %div.control-group
+      .form-group
+        %label=t("predefined_answer")
+        = f.text_area :predefined_answer, :class => 'form-control', :rows => 5, :id => "predefined_answer"
+        
+    - display = (flash[:ans_error].present? or flash[:ans_notice].present?) ? "block" : "none"
+    
+    #test-answer-block.control-group.form-group.bg-info.hidden
+      %label=t("enter_test_answer")
+      = f.text_area :test_answer, :class => 'form-control', :rows => 5, :id => "test_answer"
+      #verification-result.control-group.hidden
+        %label=t("verification_result")
+        %div
+      = f.submit :submit, :value => t("verify"), :class => "btn btn-primary btn-sm push-left", :name => "verify", data: {disable_with: t('please_wait')}
+      = link_to t("hide"), "javascript:void(0)", :class => "btn btn-primary btn-sm push-left", :onclick => "$('#test-answer-block').addClass('hidden');$('#test-answer-btn').removeClass('hidden');"
+
+    %div.form-group#test-answer-btn
+      = f.submit :test_answer, :value => t("test_answer"), :class => "btn btn-primary btn-sm push-left", :type => "button", :onclick => "$('#test-answer-block').removeClass('hidden'); $('#test-answer-btn').addClass('hidden');verify_answer(); var saved = $('#predefined_answer').val(); $('#test_answer').val(saved); $('#test_answer').focus(); ", data: {disable_with: "Please wait.."}
+        
+    %div.control-group
+      .form-group
+        %label=t("congratulations_msg")
+        = f.cktext_area :congratulations, :class => 'form-control', :ckeditor => {:language => I18n.locale, :toolbar => 'dateprog'}        
+
+    %div.control-group
+      .form-group
+        %label=t("error_message")
+        = f.cktext_area :error_message, :class => 'ckeditor form-control', :ckeditor => {:language => I18n.locale, :toolbar => 'dateprog'}
+
+
+    %div.control-group
+      .form-group
+        #notice
+        #error
+
+    .form-group
+      .btn-toolbar
+      
+        = link_to user_course_course_levels_path(@course), :class => "btn btn-primary btn-sm" do
+          %i.fa.fa-inverse.fa-arrow-left
+          = t("back_to_list_of_levels")
+          
+        = button_tag :type=>"submit", :value => t("submit"), :class => "btn btn-primary btn-sm submit", :name => "submit", data: {disable_with: t('please_wait')} do
+          %i.fa.fa-inverse.fa-check
+          = t("save_and_return")
+          
+        = button_tag :type=>"save", :value => t("save"), :class => "btn btn-primary btn-sm submit", :name => "save", data: {disable_with: t('please_wait')} do
+          %i.fa.fa-inverse.fa-floppy-o
+          = t("save")

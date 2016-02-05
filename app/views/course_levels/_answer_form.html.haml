@@ -1,0 +1,101 @@
+-# // show instructor info
+- instructor_user = @course.get_instructor_user
+
+.pull-right
+  - unless instructor_user.avatar.url(:small) == "/noimage.gif"
+    = link_to profile_show_url(instructor_user.id), :title => instructor_user.name do
+      .img-user
+        - unless instructor_user.avatar.url(:small) == "/noimage.gif"
+          = image_tag instructor_user.avatar(:small), :id => "img-responsive",  alt: instructor_user.name
+      = t('author')
+      = ': '
+      = instructor_user.name
+          
+  - else
+    = link_to profile_show_url(instructor_user.id), :title => instructor_user.name do
+      = t('author')
+      = ': '
+      = instructor_user.name
+      
+%p.h3.bg-info.text-center= @course.title
+
+#course-congratulations-title.col-lg-12.text-center.hidden
+  %h2=t("congratulations")
+
+#toolbar-sharing.text-center.form-group.hidden
+  %h4
+    = t("share_your_success")
+  %div.addthis_sharing_toolbox
+    
+#course-congratulations.col-lg-12.text-center.hidden
+  
+.col-lg-12.text-left
+  = form_for [@course, @course_level], :remote => true, :html => { :class => "form-horizontal", :id => 'level_form' } do |f|
+    
+    - if @course_level.is_level? 
+      .form-group#level-description
+        %p.bg-info.text-center
+          = t("level_header", level_title: @course_level.title, level_number: @level_number, total_levels: @course.course_levels.count) 
+        %span= @course_level.description.html_safe
+    
+    .form-group#level-challenge
+      %p.bg-info.text-center
+      
+        - if @course_level.is_level? 
+          = t("question")
+        - else 
+          = t("level_header", level_title: t("question"), level_number: @level_number, total_levels: @course.course_levels.count) 
+      
+      %span= @course_level.question.html_safe
+  
+    .form-group#level-answer
+      %p.bg-info.text-center
+        = t("enter_answer")
+      %textarea.form-control.box-shadow{:placeholder => t("please_your_answer"), :rows => "5", :name => "course_level[answer]"}
+        = @course_level.predefined_answer
+
+    -# // finish button
+    .form-group.text-center.hidden#finish-button-group
+      = link_to girls_path, :id => 'finish-button', :class => 'btn btn-primary btn-lg' do
+        %i.fa.fa-check.fa-1x.fa-inverse
+        = t('finish')
+
+    #success-message.form-group.hidden.alert.alert-success
+    #error-message.form-group.hidden.alert.alert-info
+
+    .form-group.btn-toolbar#main-buttons-group
+    
+      -# // next button
+      = link_to course_course_levels_path(@course.id), :id => 'next-button', :class => 'hidden text-center btn btn-primary' do
+        %i.fa.fa-arrow-circle-right.fa-inverse
+        = t('next_level')
+
+      -# // submit button 
+      = button_tag :type=>"submit", :value => t("submit"), :id => 'submit-button', :class => "btn btn-primary submit pull-left", :name => "submit-button", data: {disable_with: t('please_wait')} do
+        %i.fa.fa-inverse.fa-check
+        = t("submit")
+        
+      
+      -# // back button
+      = link_to course_path(@course.id), :id => "back-button", :class => "btn btn-default pull-left" do
+        %i.fa.fa-arrow-left.fa-1x
+        = t("back")
+        
+
+      -# // help button 
+      = link_to "javascript::void(0)", :class => "btn btn-info pull-right", :id => "help_button", :onclick => "$('#course_users').toggle('slow')" do
+        = t("ask_members_for_help")
+        %i.fa.fa-question.fa-1x.fa-inverse
+
+      = link_to show_messages_path(instructor_user.id, :message_id => ''), :id => "loader", :remote => true, :class => "btn btn-primary pull-right", :onclick => "track_google_analytics('chat_open', '#{current_user.referral_code}')" do
+        %i.fa.fa-weixin.fa-lg.fa-inverse
+        - unless instructor_user.avatar.url(:small) == "/noimage.gif"
+          = image_tag instructor_user.avatar(:small), :id => "img-responsive",  alt: instructor_user.name
+        = t("ask_author_for_help")
+
+
+    %p.clearb
+    = render :partial => "course_users", :locals => { :course => @course, :course_level => @course_level }            
+
+-# Go to www.addthis.com/dashboard to customize your tools -->
+%script{:src => "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-54d65a655e66e6b3", :type => "text/javascript", :async=>"async"}

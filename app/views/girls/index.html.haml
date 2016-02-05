@@ -1,0 +1,12 @@
+= content_for :page_title, "People"
+#referral-code{:style => "display:none;"}
+  = current_user.referral_code
+-# if current_user.battery_size == 0
+  =# render :partial => "invites/battery", :locals => {modal: false}
+-# else
+- if current_user.is_girl
+  = render :partial => "girls/girls_index"
+- else
+  = render :partial => "girls/programmers_index"
+
+  

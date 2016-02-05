@@ -1,0 +1,16 @@
+$("#portfolio<%= @user.id %>").html("<%= escape_javascript(render(:partial => "show_profile", :locals => {:user => @user, :chat => true, :tips => @tips})) %>");
+$("#main-loader-image").hide();
+$(".portfolio-lnk<%= @user.id %>").removeAttr("href");
+$(".portfolio-lnk<%= @user.id %>").removeAttr("id");
+
+setTimeout(function() {
+    $("#tip_<%= @user.id %>").show("slow");
+}, 3000);
+
+
+$("img.img_off").lazyload({
+        effect : "fadeIn",
+      });
+      
+$("img.img_off").removeClass("img_off");
+$("#main-loader-image").hide();

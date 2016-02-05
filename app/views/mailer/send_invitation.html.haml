@@ -1,0 +1,17 @@
+%p
+  = t("hello_name", email: @resource.username)
+  
+- if @resource.is_girl
+  %p
+    = t("go_to_demo_and_find_a_matching_programmer").html_safe
+- else
+  %p
+    = t("go_to_demo_and_find_a_matching_girl").html_safe
+   
+%p
+  = t("please_click_below_link_to_access_your_account")
+%p
+  = link_to t("access_your_account"), invitation_confirmation_url(email: @email, confirmation_token: @token)
+
+%p
+  = t("thanks_email_footer_send_invitation")

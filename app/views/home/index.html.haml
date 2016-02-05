@@ -1,0 +1,98 @@
+= cache do
+  %div.background-box
+    %div.custom-background.custom-background-image
+  .container
+    .row
+      .col-lg-12
+        .bs-component
+          .container
+            %div.jumbotron
+              %center
+                %h1
+                  .text-muted
+                    =t("home_main_message_title")
+                %p
+                  =t("home_main_message")
+                %p
+                  = link_to new_user_session_path, :class=>'btn btn-primary btn-lg' do
+                    %i.fa.fa-heart.fa-x2
+                    =t('home_main_button')
+                    
+                    -#=t('home_main_statistics', count: @users_count, messages_count: @messages_count)
+
+
+
+  -##myCarousel
+    .carousel-inner
+      .custom-background
+    .carousel-caption
+      %h1
+        = t("looking_for_a_boyfriend").html_safe
+      %h3
+        = t("looking_for_a_boyfriend_desc1").html_safe
+      = link_to  t("sign_up_sign_in"), new_user_session_path, :class => "btn btn-primary btn-lg btn-lrg"
+      -# addthis widget
+      %p    
+        #div.addthis_sharing_toolbox
+
+      %h3
+        = t("looking_for_a_boyfriend_desc2").html_safe        
+        %br/
+        %br/
+        %span.titletext
+          = t("looking_for_a_boyfriend_desc3").html_safe
+
+  -##middle-container
+    .row.contant-bg
+
+      .container
+        .col-md-12.how-it-works.how-it-works-heading
+          %p= t("how_it_works")
+
+        -# non programmers
+        .col-md-12
+          .col-md-6.col-xs-12
+            .screenshot-nonprogrammers{:style=>"align:center; vertical-align:middle;"}
+            =link_to image_tag("dev-img.png", :align => "right"), new_user_session_path 
+          .col-md-5.col-md-offset-1.col-xs-12
+            .programmerDetail
+              .nonprogrammers-text{:style => "text-align:left; vertical-align:middle;"}=t("how_it_works_girls").html_safe
+              #signup-button
+              =link_to  t("i_am_a_girl_ready"), new_user_session_path, :class => "btn btn-primary btn-lg"
+              .arrowCl
+
+    .row.contant-bg      
+      .container
+        -# programmers
+        .col-md-12
+          .col-md-5.col-md-offset-1.col-xs-12.visible-xs
+            #screenshot-programmers{:style=>"align:left; vertical-alignment:middle;"}
+            #signup-button
+            =link_to image_tag("programmer-img.png", :align => "left"), new_user_session_path               
+
+          .col-md-6.col-xs-12
+            .programmerDetail
+              #programmers-text{:style=>"text-align:left; vertical-align:middle;"}=t("how_it_works_programmers").html_safe
+              =link_to  t("i_am_a_prog_ready"), new_user_session_path, :class => "btn btn-primary btn-lg"
+              .arrowCl.visible-xs
+              .arrowCr.hidden-xs
+          .col-md-5.col-md-offset-1.col-xs-12.hidden-xs
+            #screenshot-programmers{:style=>"align:left; vertical-alignment:middle;"}
+            #signup-button
+            =link_to image_tag("programmer-img.png", :align => "left"), new_user_session_path               
+
+    .row.contant-bg 
+      .container
+        -# console
+        .col-md-12
+          .col-md-6.col-xs-12      
+            #screenshot-console{:style=>"align:left; vertical-align:middle;"}
+            =link_to image_tag("console-img.png", :align => "right", :hspace =>"2", :vspace =>"2"), new_user_session_path      
+          .col-md-5.col-md-offset-1.col-xs-12
+            .programmerDetail
+              #console-text{:style => "text-align:left; vertical-align:middle;"}
+              =t("how_it_works_console").html_safe
+              #signup-button
+              =link_to  t("i_am_a_prog_ready"), new_user_session_path, :class => "btn btn-primary btn-lg"
+              .arrowCl
+              

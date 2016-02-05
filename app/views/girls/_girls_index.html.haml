@@ -1,0 +1,13 @@
+- unless current_user.profile_completed?
+  = render :partial => "girls/complete_profile"
+- else
+  -#.row
+    - if params[:search].present? || !current_user.traits.present?      
+      = render :partial => "questions"
+
+  -#- if !params[:search].present? && current_user.traits.present?
+    = render :partial => "filter_users"
+  = render :partial => "filter_users"    
+    
+  / Programmers
+  #result

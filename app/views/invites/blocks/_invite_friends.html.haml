@@ -1,0 +1,44 @@
+.col-md-12
+  %h5
+    = t("invite_your_friends")
+  %p
+    = t("invite_your_friends_instruction", :battery_size_invite => current_user.battery_increase_percentage(50.0), :battery_size => current_user.battery_increase_percentage(200.0)).html_safe
+  %p.clearb
+  %p#myModalLabel.modal-title
+    %div#copy-paste.copy-paste{:onclick => "select_all(this, '#{current_user.referral_code}')"}
+      = "#{BASE_URL}sign-up/#{current_user.referral_code}"
+.row
+  .col-md-12
+    .share-button-block
+      %h5 
+        =t("invite_friends_via")
+      - if current_user.email.include? "gmail"
+        - invite_link = "http://mail.google.com/mail/?view=cm&fs=1&su=#{t('email_subject')}&body=#{t('email_body')} #{referral_url}"
+      - else
+        - invite_link = "mailto:FRIEND@EMAIL?subject=#{t('email_subject')}&body=#{t('email_body')}  #{referral_url}"
+      -# = link_to t("mail_to_friends"), invite_link, :class => "btn btn-sm btn-primary", :target => "_blank" do
+      %a.email.share-item{:href => invite_link, :target => "_blank", :class => "btn btn-sm btn-primary", :onclick => "track_google_analytics('gmail', '#{current_user.referral_code}')"}
+        %i.fa.fa-envelope
+        %em.message
+          = t("mail_to_friends")
+
+      %a.vkontakte.share-item{:href => "//vkontakte.ru/share.php?url=#{referral_url}&title=#{t('share_title')}&description=#{t('share_summary')}&noparse=true", :target => "_blank", :class => "btn btn-sm btn-primary", :onclick => "track_google_analytics('vkontakte', '#{current_user.referral_code}')"}
+        %i.fa.fa-vk
+        %em.message
+          = t("share_via_vkontakte")
+
+      %a.twitter.share-item{:href => "//twitter.com/intent/tweet?text=#{t('share_summary')} #{referral_url}", :target => "_blank", :class => "btn btn-sm btn-primary", :onclick => "track_google_analytics('twitter', '#{current_user.referral_code}')"}
+        %i.fa.fa-twitter
+        %em.message
+          = t("share_via_twitter")
+          &nbsp;&nbsp;
+
+      %a.facebook.share-item{:href => "//www.facebook.com/sharer/sharer.php?u=#{referral_url}", :class => "btn btn-sm btn-primary", :target => "_blank", :onclick => "track_google_analytics('facebook', '#{current_user.referral_code}')"}
+        %i.fa.fa-facebook
+        %em.message
+          = t("share_via_facebook")
+
+      %a.linkedin.share-item.last{:href => "//www.linkedin.com/shareArticle?mini=true&url=#{referral_url}&title=#{t('share_title')}&summary=#{t('share_summary')}&source=", :target => "_blank", :class => "btn btn-sm btn-primary", :onclick => "track_google_analytics('linkedin', '#{current_user.referral_code}')"}
+        %i.fa.fa-linkedin
+        %em.message
+          = t("share_via_linkedin")

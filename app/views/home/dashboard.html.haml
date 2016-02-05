@@ -1,0 +1,17 @@
+.clearb &nbsp;
+.container
+  .row
+    %ul.nav.nav-pills{:role => "tablist"}
+      %li.active
+        = link_to t("terms"), static_page_path("terms")
+      %li.active
+        = link_to t("privacy_policy"), static_page_path("privacypolicy")
+
+- case params[:page]
+- when "terms"
+  = render :partial => (I18n.locale.to_s == 'ru') ? "terms_ru" : "terms_en"
+- when "privacypolicy"
+  = render :partial => (I18n.locale.to_s == 'ru') ? "privacypolicy_ru" : "privacypolicy_en"
+- else
+  %h1
+    = t("page_not_found").html_safe

@@ -1,0 +1,38 @@
+<html>
+	<head></head>
+	<body>
+		<p>привет <%= @user.name %>,</p>
+
+		<p>На сайте зарегистрировалось <%= @match_users.count %> новых пользователей, подходящих согласно настроенному Вами фильтру:</p>
+
+	    <table style="font-family: verdana,arial,sans-serif; font-size:11px; color:#333333; border-width: 1px; border-color: #666666; border-collapse: collapse;">
+	    	<tr>
+	    		<th style="border-width: 1px;padding: 8px;border-style: solid;border-color: #666666;background-color: #dedede;">фото</th>
+	    		<th style="border-width: 1px;padding: 8px;border-style: solid;border-color: #666666;background-color: #dedede;">подробности</th>
+	    	</tr>
+	    	<% @match_users.limit(3).each do |profile| %>
+	    		<tr>
+	    			<td style="border-width: 1px;padding: 8px;border-style: solid;border-color: #666666;background-color: #ffffff;">
+						<%= link_to (image_tag profile.user_avatar_medium, :width => "100"), notification_confirmation_url(@user.notification_token, 'yes', profile.id) %>
+	    			</td>
+	    			<td style="border-width: 1px;padding: 8px;border-style: solid;border-color: #666666;background-color: #ffffff;">
+	    				<%= link_to profile.name, notification_confirmation_url(@user.notification_token, 'yes', profile.id) %>, <%= profile.user_age %>, <%= profile.city %>, <%= profile.country.present? ? profile.country_name : "-" %>
+	    			</td>
+	    		</tr>
+	    	<% end %>
+	    </table>.....
+
+		<p>
+			<%= link_to "Нажмите здесь чтобы посмотреть все найденные анкеты", notification_confirmation_url(@user.notification_token, 'yes') %>
+		</p>
+		
+		<p>P.S.: Если у Вас возникли вопросы или проблемы с сервисом, не стесняйтесь написать нам на support@demo.com.</p>
+		
+		<p>спасибо,<br />
+		Команда DateProg.</p>
+
+		<p style="font-size: 10px;">
+			это письмо отправлено с почтового ящика который не проверяется. <%= link_to "для отключения рассылки этих писем нажмите здесь", notification_confirmation_url(@user.notification_token, 'stop') %>
+		</p>
+	</body>	
+</html>

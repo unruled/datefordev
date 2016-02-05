@@ -1,0 +1,50 @@
+%div#portfolio
+  .col-sm-12.portfolio-item{:id => "message#{message.id}"}
+    %a
+      %strong= "<i class='name-green'>#{t('from')} #{sender.name}</i>".html_safe
+    %table
+      %tr
+        %td   
+          = "#{message.body} <i>#{time_difference(message.created_at)}</i> #{link_to image_tag('delete.png'), message_path(message), :method => 'delete', :remote => true, :data => {:confirm => t('are_you_sure')}}".html_safe
+        %td
+          &nbsp;  
+        %td
+          -#%a.portfolio-link{"data-toggle" => "modal", :href => "#portfolioModal#{k+1}"}
+          %a.portfolio-link{:href => profile_show_url(k+1), :title => t("open_in_new_window"), :target => "_blank"}
+            .caption
+              .caption-content
+                = ""
+            %strong= t('reply')
+            
+-#.portfolio-modal.modal.fade{"aria-hidden" => "true", :role => "dialog", :tabindex => "-1", :id => "portfolioModal#{k+1}"}
+  .modal-content
+    .container
+      .row
+        .col-lg-8.col-lg-offset-2
+          .modal-body
+            %h3
+              =sender.name
+              .close-modal{"data-dismiss" => "modal"}
+                = link_to t("back"), "javascrip:void(0)", :class => "btn btn-small btn-primary btn-sm"
+            - profile_image = sender.avatar.exists? ? sender.avatar(:medium) : "boy-default.jpeg"
+            = image_tag profile_image, :id => "img-responsive", :width => "256", :height => "256"
+            .text-center
+              = link_to t("open_chat"), show_messages_path(sender.id, :message_id => message.id),  :remote => true, :class => "btn btn-small btn-primary"
+            %p
+              = sender.about_me
+            %ul.list-inline.item-details
+              %li
+                = t("age")
+                %strong
+                  = sender.user_age
+              %li
+                = t("city")
+                %strong
+                  = sender.city.present? ? sender.city : "-"
+              %li
+                = t("country")
+                %strong
+                  = sender.country.present? ? sender.country : "-"
+        .row
+          .col-lg-8.col-lg-offset-2
+            = render :partial => "home/message", :locals => { :girl_or_prog => sender, :message_id =>  message.id}

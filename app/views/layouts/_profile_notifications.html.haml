@@ -1,0 +1,28 @@
+.notify-profile{:style => "display:none;"}
+  .row
+    .col-md-12
+      .close
+        %a{ :onclick => "$('.notify-profile').hide('slow');", :href => "javascript:void(0)" }
+          %i.fa.fa-close.fa-1x
+      - profile_notifications = current_user.profile_notifications
+      - if profile_notifications.count > 0
+        - if current_user.is_vip_status?
+          %h6= t("your_profile_viewed_from")
+          %ul.list-group
+            - profile_notifications.each do |profile_notification|
+              %li.list-group-item
+                %span.badge= t("last_seen", seen_date: time_difference(profile_notification.last_view))
+                = link_to "#{profile_notification.view_from.name} (#{profile_notification.view_count} #{t('times')})", profile_show_path(profile_notification.view_from.id), :id => "loader", "data-no-turbolink" => true
+        - else
+          %h6= t("your_profile_viewed_from")
+          %ul.list-group
+            - profile_notifications.each do |profile_notification|
+              %li.list-group-item.list-group-item-info1
+                %span.badge= t("last_seen", seen_date: time_difference(profile_notification.last_view))
+                %a{"data-target" => "#vipModal", "data-toggle" => "modal", :href => "javascript:void(0)", :title => "#{t('invite_friends_to_increase_vip_status')}"}
+                  = "#{profile_notification.view_from.profile_viewed_by} (#{profile_notification.view_count} #{t('times')})"
+      - else
+        %h6= t("no_profile_notifications")
+
+
+

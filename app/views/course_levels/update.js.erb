@@ -1,0 +1,61 @@
+$("#main-loader-image").hide();
+
+<% if @error.present? %>
+    $("#error-message").removeClass('hidden');
+    $("#error-message").html('<%= @error.html_safe %>');
+    $("#level-answer").addClass("has-error");
+<% else %>
+  $("#error-message").addClass('hidden');
+  $("#error-message").html("");
+  $("#level-answer").removeClass("has-error");
+<% end %>
+
+<% if @success_course.present?  %>
+
+  <%# finished last course and show the course congrats%>
+  $("#main-buttons-group").addClass('hidden');
+  
+  $("#finish-button-group").removeClass('hidden');
+
+  $("#success-message").addClass('hidden');
+  $("#success-message").html("");
+  
+  $('#course-congratulations-title').removeClass('hidden');
+  $('#course-congratulations').removeClass('hidden');
+  $('#course-congratulations').html('<%= @success_course.html_safe %>');
+  
+  // hide course level divs
+  
+  $("#level-description").addClass('hidden');
+  $("#level-challenge").addClass('hidden');
+  $("#level-answer").addClass('hidden');
+  
+  // show the sharing toolbar
+  $('#toolbar-sharing').removeClass('hidden');
+
+
+<% else %>
+  <%# level finished %>
+  <% if @success.present? %>
+    // success 
+    $('#submit-button').addClass('hidden');
+    $("#success-message").removeClass('hidden');
+    $("#success-message").html('<%= @success.html_safe %>');
+    <% if @completed %>
+    ;
+    <% else %>
+    ;
+    <% end %>  
+    $("#submit-button").addClass('hidden');
+    $("#back-button").addClass('hidden');
+    $("#next-button").removeClass('hidden');
+
+  <% else %>
+    // if success is not presented
+    $("#success-message").addClass('hidden');
+    $("#success-message").html("");
+    $("#next-button").addClass('hidden');
+    $("#submit-button").removeClass('hidden');
+    //$("#next-button").html('');
+  <% end %>
+<% end %>

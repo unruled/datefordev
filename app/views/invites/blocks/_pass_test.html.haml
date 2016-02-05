@@ -1,0 +1,10 @@
+.col-md-12
+  %h5
+    = t("pass_test_to_increase_battery")
+  %p
+    = t("pass_test_to_increase_battery_instruction", :battery_size => current_user.battery_increase_percentage(200.0)).html_safe
+  %a.console.open-console{ :href => programmers_path, :class => "btn btn-sm btn-primary", :id => "loader", "data-no-turbolink" => true}
+    %i.fa.fa-terminal
+    %em.message
+      = t("open_console_version")
+.row

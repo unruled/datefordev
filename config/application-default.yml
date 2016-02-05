@@ -1,0 +1,78 @@
+# config file for https://github.com/laserlemon/figaro
+# !! exclude this file from GIT when pushing to heroku!
+# !! instead set all these variables int ENV[] using the following command:
+# $ figaro heroku:set -e production
+
+production:
+    # WEB_CONCURRENCY: 2 # puma web concurrency on production
+    # MAX_THREADS: 3 # max threads for puma server
+    MANDRILLAPP_USER_NAME: ~
+    MANDRILLAPP_PASSWORD: ~
+    AWS_ACCESS_KEY_ID: ~
+    AWS_SECRET_ACCESS_KEY: ~
+    FACEBOOK_TOKEN: ~
+    TWITTER_TOKEN: ~
+    LINKEDIN_TOKEN: ~
+    GITHUB_TOKEN: ~
+    GOOGLE_TOKEN: ~
+    CLOUDFRONT_ENDPOINT: "/" # should be changed to the cloudfront assets domain like abcdef1234.cloudfront.net
+    FAYE_ENDPOINT: "https://YOURFAYEINSTANCE.herokuapp.com"
+    # faye token (for chat, change the password to some unique). NEED to be CHANGED!
+    FAYE_TOKEN: "changethispasswordforchat"
+    APP_ENDPOINT: "https://YOURAPPINSTANCE.herokuapp.com"
+    APP_DOMAIN: "YOURAPPINSTANCE.herokuapp.com"
+    ERROR_NOTIFICATION_EMAIL: "" # space separated emails to get notifications about errors
+    MIXPANEL_TOKEN: ~
+    # secret key base for the dev and test env, you HAVE to generate your own using "rake secret"
+    # commented our as secrets.yml uses HEROKU's predefined SECRET_KEY_BASE env
+    # SECRET_KEY_BASE: ~
+
+    # devise secret key (used to generate passwords). REGENERATE it using "rake secret" command
+    DEVISE_SECRET_KEY: "5777516d6e646a7937ad64fcd3e013f7ddd3d72f9c6edfd1a115c4d83a61ad0db4f9f01710260088f574d4ae67b87efd10c55ff047ce23b7cbd2ce93a509af11"
+    
+development:
+    MANDRILLAPP_USER_NAME: ~
+    MANDRILLAPP_PASSWORD: ~
+    AWS_ACCESS_KEY_ID: ~
+    AWS_SECRET_ACCESS_KEY: ~
+    FACEBOOK_TOKEN: ~
+    TWITTER_TOKEN: ~
+    LINKEDIN_TOKEN: ~
+    GITHUB_TOKEN: ~
+    GOOGLE_TOKEN: ~
+    CLOUDFRONT_ENDPOINT: "" # should be the cloudfront assets domain like abcdef1234.cloudfront.net
+    # change it to the faye you running on the separte instance
+    FAYE_ENDPOINT: "https://YOURFAYEINSTANCE.herokuapp.com"
+    # faye token (for chat, change the password to some unique)
+    FAYE_TOKEN: changethispasswordforchat
+    APP_ENDPOINT: "https://demo.herokuapp.com"
+    APP_DOMAIN: "demo.herokuapp.com"
+    ERROR_NOTIFICATION_EMAIL: "" # space separated emails to get notifications about errors
+    MIXPANEL_TOKEN: ~
+    # secret key base for the dev and test env, you HAVE to generate your own using "rake secret"
+    SECRET_KEY_BASE: "2949767c5dadb103a3f6f6f62ef9b11c905a19613baec53e1c40ef5c3abb5c4ec85161def4799181378a8c32c8a0fb6c1cdab2238360ab56660b0fb438221e0b"
+    # devise secret key (used to generate passwords)
+    DEVISE_SECRET_KEY: "5777516d6e646a7937ad64fcd3e013f7ddd3d72f9c6edfd1a115c4d83a61ad0db4f9f01710260088f574d4ae67b87efd10c55ff047ce23b7cbd2ce93a509af11"
+test:
+    MANDRILLAPP_USER_NAME: ~
+    MANDRILLAPP_PASSWORD: ~
+    AWS_ACCESS_KEY_ID: ~
+    AWS_SECRET_ACCESS_KEY: ~
+    FACEBOOK_TOKEN: ~
+    TWITTER_TOKEN: ~
+    LINKEDIN_TOKEN: ~
+    GITHUB_TOKEN: ~
+    GOOGLE_TOKEN: ~
+    CLOUDFRONT_ENDPOINT: "" # should be the cloudfront assets domain like abcdef1234.cloudfront.net
+    # change it to the faye you running on the separte instance
+    FAYE_ENDPOINT: "https://YOURFAYEINSTANCE.herokuapp.com"
+    # faye token (for chat, change the password to some unique)
+    FAYE_TOKEN: changethispasswordforchat
+    APP_ENDPOINT: "https://demo.herokuapp.com"
+    APP_DOMAIN: "demo.herokuapp.com"
+    ERROR_NOTIFICATION_EMAIL: "" # space separated emails to get notifications about errors
+    MIXPANEL_TOKEN: ~
+    # secret key base for the dev and test env, you HAVE to generate your own using "rake secret"
+    SECRET_KEY_BASE: "7c3bf213988de9caae8e3a0eada70bd83256cfea73bfaf0da20cbe558ec4379932a3840153adf05675c9f0179abe78143742acad72c728cf1cbbdd54c344df8d"
+    # devise secret key (used to generate passwords)
+    DEVISE_SECRET_KEY: "5777516d6e646a7937ad64fcd3e013f7ddd3d72f9c6edfd1a115c4d83a61ad0db4f9f01710260088f574d4ae67b87efd10c55ff047ce23b7cbd2ce93a509af11"

@@ -1,0 +1,26 @@
+/ The Bootstrap Image Gallery lightbox, should be a child element of the document body
+#blueimp-gallery.blueimp-gallery{"data-use-bootstrap-modal" => "false"}
+  / The container for the modal slides
+  .slides
+  / Controls for the borderless lightbox
+  %h3.title
+  %a.prev ‹
+  %a.next ›
+  %a.close ×
+  %a.play-pause
+  %ol.indicator
+  / The modal dialog, which will be used to wrap the lightbox content
+  .modal.fade
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{"aria-hidden" => "true", :type => "button"} &times;
+          %h4.modal-title
+        .modal-body.next
+        .modal-footer
+          %button.btn.btn-default.pull-left.prev{:type => "button"}
+            %i.fa.fa-chevron-left
+            = t("previous")
+          %button.btn.btn-primary.next{:type => "button"}
+            = t("next")
+            %i.fa.fa-chevron-right

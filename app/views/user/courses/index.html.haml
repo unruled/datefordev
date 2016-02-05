@@ -1,0 +1,19 @@
+-# // rendering chat messages
+= render :partial => "girls/messages/index"
+
+.col-lg-12.course-header
+  %h4#course_header
+    = t("edit_your_courses")
+    .btn-toolbar.pull-right
+      = link_to new_user_course_path, :class => 'btn btn-primary', :title => t('add'), "data-no-turbolink" => true do
+        %i.fa.fa-plus.fa-1x.fa-inverse
+        %i.fa.fa-bars.fa-1x.fa-inverse
+        = t('add_course')
+  
+      = link_to new_user_course_path(:is_test => true), :class => 'btn btn-primary', :title => t('add'), "data-no-turbolink" => true do
+        %i.fa.fa-plus.fa-1x.fa-inverse
+        %i.fa.fa-check-square-o.fa-1x.fa-inverse
+        = t('add_test')
+      
+#div_update
+  = render "fetchAll"

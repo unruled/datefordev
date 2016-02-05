@@ -1,0 +1,16 @@
+- if @messages.present?
+  - @messages.each_with_index do |message, k|
+    - sender = message.sender
+    - recipient = message.recipient
+    - if sender == current_user
+      %div#portfolio
+        .col-sm-12.portfolio-item{:id => "message#{message.id}"}
+          .col-sm-1
+          .col-sm-11
+            %a.portfolio-link{:href => "javascript:void(0)"}
+              %strong= "<i class='name-blue'>#{t('from')} #{t('me')}</i>".html_safe
+            = "<u>#{t('to')} #{recipient.name}</u> - #{message.body} <i>#{time_difference(message.created_at)}</i> #{link_to image_tag('delete.png'), message_path(message), :method => 'delete', :remote => true, :data => {:confirm => t('are_you_sure')}}".html_safe 
+    - else
+      = render :partial => "message_popup", :locals => { :message => message, :sender => sender, :k => k }
+  - if @messages.count > 20
+    = link_to 'next', next_messages_path(:page => (params[:page].to_i + 1)), :remote => true

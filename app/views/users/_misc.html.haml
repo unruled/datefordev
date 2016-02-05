@@ -1,0 +1,89 @@
+.row
+  .col-lg-12.text-center
+    .row.control-group.clearb
+      %h5=t("delete_your_account")
+      %button#delete-account.btn.btn-warning{:type => "button", :class => "btn btn-sm btn-danger", :onclick => "$('#warning-details').toggle('slow');" }
+        = t("delete_account_link")
+
+#warning-details{:style => "display:none;"}
+  = form_for "", :url => delete_account_user_path, :method => 'post', :html => {:class => "form-horizontal" } do
+    %section
+      .row
+        %h5=t("warning_losse_permanently")
+        %p=t("loose_profile_and_photo")
+        %p=t("loose_chats_and_messages")
+
+        %h5=t("do_you_want_deactivate_profile")
+        %p=t("deactivate_profile_desc")
+      .row
+        .col-lg-8.text-center
+          .row.control-group.clearb
+            %button{:type => "button", :class => "btn btn-sm btn-primary", :onclick => "$('#delete-form').show('slow');" }
+              = t("no_remove_my_account")          
+            -#%button{:type => "submit", :class => "btn btn-sm btn-primary", :name => "deactivate", :value => "deactivate", :data => { :confirm => t("are_you_sure_to_deactivate")} }= t("deactivate_my_account")
+            %button{:type => "button", :class => "btn btn-sm btn-primary", :onclick=> "$('#deactivate-form').show('slow');" } 
+              = t("deactivate_my_account")
+
+    -# deactivation form  
+    #deactivate-form{:style => "display:none;"}
+      %section
+        .row
+          %h5=t("reason_header")
+        .row
+          .checkbox
+            %p
+              = radio_button_tag "delete_reason", "1", true, :onclick => "$('#other_reason').hide('slow');"
+              = t("delete_reason1")
+            %p
+              = radio_button_tag "delete_reason", "2", false, :onclick => "$('#other_reason').hide('slow');"
+              = t("delete_reason2")
+            %p
+              = radio_button_tag "delete_reason", "3", false, :onclick => "$('#other_reason').hide('slow');"
+              = t("delete_reason3")
+            %p
+              = radio_button_tag "delete_reason", "4", false, :onclick => "$('#other_reason').show('slow');"
+              = t("delete_reason4")
+
+        .row#other_reason{:style => "display:none;"}
+          %p
+            = text_area "reason", "reason", :name => "reason", :placeholder => t("please_provide_reason"), :class => "form-control"
+        .row
+          %p=t("delete_warning").html_safe
+        .row
+          .col-lg-8.text-center
+            .row.control-group.clearb
+              %button{:type => "submit", :name => "deactivate", :value => "deactivate", :class => "btn btn-sm btn-danger", :data => { :confirm => t("are_you_sure_to_deactivate")} }= t("deactivate_my_account")
+              %button{:type => "button", :class => "btn btn-sm btn-primary", :onclick => "$('#warning-details').hide('slow'); $('#delete-form').hide('slow'); $('#deactivate-form').hide('slow');" }
+                = t("cancel")
+
+    -# deletion form 
+    #delete-form{:style => "display:none;"}
+      %section
+        .row
+          %h5=t("reason_header")
+        .row
+          .checkbox
+            %p
+              = radio_button_tag "delete_reason", "1", true, :onclick => "$('#other_reason').hide('slow');"
+              = t("delete_reason1")
+            %p
+              = radio_button_tag "delete_reason", "2", false, :onclick => "$('#other_reason').hide('slow');"
+              = t("delete_reason2")
+            %p
+              = radio_button_tag "delete_reason", "3", false, :onclick => "$('#other_reason').hide('slow');"
+              = t("delete_reason3")
+            %p
+              = radio_button_tag "delete_reason", "4", false, :onclick => "$('#other_reason').show('slow');"
+              = t("delete_reason4")
+
+        .row#other_reason{:style => "display:none;"}
+          %p
+            = text_area "reason", "reason", :name => "reason", :placeholder => t("please_provide_reason"), :class => "form-control"
+        .row
+          %p=t("delete_warning").html_safe
+        .row
+          .col-lg-8.text-center
+            .row.control-group.clearb
+              %button{:type => "submit", :name => "remove", :value => "remove", :class => "btn btn-sm btn-danger", :data => { :confirm => t("are_you_sure_account_will_be_removed")} }= t("delete_account")
+              %button{:type => "button", :class => "btn btn-sm btn-primary", :onclick => "$('#warning-details').hide('slow'); $('#delete-form').hide('slow'); $('#deactivate-form').hide('slow');" }
+                = t("cancel")

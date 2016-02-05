@@ -1,0 +1,40 @@
+$("#main-loader-image").hide();
+
+$(".show-message-<%= params[:recipient_id] %>").html("<%= @recipient.name %>");
+
+<% if @report_abuse.present? %>
+	alert("<%= t('you_are_blocked_by_user', user: @recipient.name).html_safe %>");
+<% else %>
+	<% recipient_name = @recipient.name %>
+	chatWith("<%= @recipient.id %>", "<%= @recipient.id %>", "<%= current_user.id %>", "<%= recipient_name %>");
+	$("#chatbox_<%= @recipient.id %> .chatboxcontent").html("<%= escape_javascript(render("show_chat")) %>");
+		var resizeOpts = { 
+			handles: 'e, w'
+	}; 	
+	$( "#resizable" ).resizable(resizeOpts);
+	//$("#div_update_chat_<%= @recipient.id %>").html("<%= escape_javascript(render(:partial => "chat_profile", :locals => {:recipient => @recipient})) %>")
+	$("#div_update_body").html("<%= escape_javascript(render("show_body")) %>")	
+
+<% if false %>
+  setTimeout(function() {
+	      $("#portfolioModal<%= @recipient.id %>").modal('show');
+	}, 1000);
+<% end %>
+
+<% end %>
+
+
+$('.chatboxtextarea').click(function (e) {
+	$( "body .portfolio-modal" ).each(function( ) {
+		if($(this).css('display') == 'block'){ 
+			var p_id = $(this).attr('id');
+			var close_lnk = "#" + p_id + " #close_modal a";
+			$('#'+p_id).modal('hide');
+
+		}
+	});
+	e.preventDefault();
+	setTimeout(function() {
+	    $(this).focus();
+	}, 200);
+});

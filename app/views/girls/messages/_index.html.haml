@@ -1,0 +1,54 @@
+:javascript
+  var client = new Faye.Client("#{FAYE_URL}/faye");
+.messages-form
+  - @message_users_hash.each do |k, u|
+    - if u.present?
+      %div{:id => "div_update_chat_#{u.id}", :class => "div_update_chat"}
+  #menu-chats.cbp-spmenu.cbp-spmenu-vertical.cbp-spmenu-right
+    %div{style: "display:none;", id: "loader-image", class: "text-center"}
+      = image_tag 'loader.gif'
+    - chats = session[:chats].present? ? JSON.parse(session[:chats]) : {}
+    - if @message_users_hash.present?
+      .user-chat-list
+        %ul.nav.nav-pills.nav-stacked
+          -# // close button
+          %li.left
+            = link_to "javascript:void(0);", :class=>"btn btn-primary btn-sm", :onclick => "$('#menu-chats').removeClass('cbp-spmenu-open');" do
+              %i.fa.fa-caret-right.fa-inverse
+              = t("hide")
+          
+          - if mobile_or_tablet_request?
+            - @message_users_hash.each do |k, u|
+              - if u.present?
+                %li
+                  - if u.avatar(:thumb).present?
+                    = "#{image_tag u.avatar(:thumb), id: :thumb_avatar, align: 'left'}".html_safe                            
+                  - else 
+                    %i.fa.fa-user
+                  %span.online-offline
+                    = link_to mobile_show_messages_path(u.id, :message_id => '', :chat => "yes"), :id => "loader", :class => "show-message-#{u.id}", :onclick => "track_google_analytics('chat_open', '#{current_user.referral_code}')" do
+                      &nbsp;
+                      = u.name_with_unread_message(current_user)
+
+                - unless chats[u.id.to_s].present?    
+                  = render :partial => "girls/messages/chat_subscribe", :locals => {:user => u}
+          - else
+            - @message_users_hash.each do |k, u|
+              - if u.present?
+                %li
+                  -#.thumb-img
+                  - if u.avatar(:thumb).present?
+                    = "#{image_tag u.avatar(:thumb), id: :thumb_avatar, align: 'left'}".html_safe                            
+                  - else 
+                    %i.fa.fa-user
+                  %span.online-offline
+                    = link_to show_messages_path(u.id, :message_id => '', :chat => "yes"), :id => "loader", :remote => true, :class => "show-message-#{u.id}", :onclick => "track_google_analytics('chat_open', '#{current_user.referral_code}')" do
+                      &nbsp;
+                      = u.name_with_unread_message(current_user)
+
+                - unless chats[u.id.to_s].present?    
+                  = render :partial => "girls/messages/chat_subscribe", :locals => {:user => u}              
+    - else
+      .user-chat-list
+        %h5
+          = t("notifications_count", count: 0)

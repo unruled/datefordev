@@ -1,0 +1,29 @@
+.row
+  .col-lg-12.text-center
+    %h4
+      = t("allowed_private_profile")
+      .left
+        = link_to t("back"), profile_path, :class => "btn btn-info btn-sm", :id => "loader"
+    %hr.star-primary/
+.row
+  - if @allowed_profiles.present?
+    - @allowed_profiles.each do |profile|
+      - allow_from = profile.allow_from
+      - if allow_from.present?
+        .col-lg-12{:id => "access_delete_#{profile.id}"}
+          .col-lg-8.col-lg-offset-4
+            .col-lg-3
+              %h5
+                = allow_from.name
+            .col-lg-5
+              %span{:id => "allow_#{profile.id}"}
+                - if profile.allow
+                  = link_to t("disallow"), allow_disallow_user_path(profile.id), :remote => true, :class => "btn btn-sm btn-primary", :data => { :confirm => t("are_you_sure") }
+                - else  
+                  = link_to t("allow"), allow_disallow_user_path(profile.id), :remote => true, :class => "btn btn-sm btn-primary", :data => { :confirm => t("are_you_sure") }
+              %span  
+                = link_to t("delete"), delete_profile_access_user_path(profile.id), :remote => true, :class => "btn btn-sm btn-danger", :data => { :confirm => t("are_you_sure") }
+  - else
+    .row
+      .col-lg-12.text-center  
+        %h4=t("no_records_found")              

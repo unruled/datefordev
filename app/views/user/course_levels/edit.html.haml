@@ -1,0 +1,11 @@
+-# // rendering chat messages
+= render :partial => "girls/messages/index"
+
+.col-lg-12.text-center
+    %h4#course_header
+- if (@course.id.present? && !@course.is_published) || (!@course.id.present?)
+    = render 'form'
+- else 
+    .text-muted.text-center
+        = t("waiting_for_approval_by_moderator")
+

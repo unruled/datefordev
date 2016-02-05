@@ -1,0 +1,37 @@
+.col-lg-12.fetchall
+  %table.table.table-striped
+    %thead
+      %tr
+        %th.col-lg-5= t("title")
+        %th.col-lg-7= t("actions")
+        %th.col-lg-1
+    %tbody
+      - if @o_all.size > 0
+        - @o_all.each do |o_row|
+          %tr
+            %td.col-lg-4
+              = link_to edit_user_course_course_level_path(@course, o_row), "data-no-turbolink" => true, :class=>"btn btn-primary btn-sm"  do
+                - if o_row.is_question?
+                  %i.fa.fa-question-circle.fa-2x
+                - elsif o_row.is_level?
+                  %i.fa.fa-tasks.fa-2x
+                = o_row.title
+          
+            %td.col-lg-7
+              .btn-toolbar.pull-left
+                = link_to edit_user_course_course_level_path(@course, o_row), "data-no-turbolink" => true, :class=>"btn btn-primary btn-sm"  do
+                  %i.fa.fa-pencil-square-o.fa-2x
+                  = t("edit")
+              
+                = link_to user_course_course_levels_path(@course, :clone => true, :course_level_id => o_row.id), :title => t('clone'), "data-no-turbolink" => true, :class=>"btn btn-primary btn-sm"  do
+                  %i.fa.fa-files-o.fa-2x              
+                  = t("clone")
+            %td.col-lg-1
+              = link_to user_course_course_level_path(@course, o_row), :method => :delete, :data => { :confirm => t("are_you_sure_to_delete") }, "data-no-turbolink" => true, :class=>"btn btn-primary btn-sm"  do
+                %i.fa.fa-times.fa-2x.mr5
+                = t("delete")
+      - else
+        %tr
+          %th{:colspan => "3"}= t("record_not_found")
+  .right
+    = will_paginate @o_all

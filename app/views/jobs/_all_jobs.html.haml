@@ -1,0 +1,59 @@
+.col-lg-12.all-users{"id" => "all_users_group"}
+  - if @all_jobs.present?
+    %div.clearb{:id => (modal ? "job_jscroll" : "user_job_jscroll")}
+      - @all_jobs.each do |job|
+        .col-md-2.col-sm-4.col-xs-12
+          %div#portfolio{:class => ""}
+            .portfolio-item
+              -#- if modal
+                %a{:href => job_url(job.id), :title => t("open_in_new_window"), :target => "_blank"}
+                  .text-right
+                    %i.fa.fa-external-link.fa-4
+              -#%a.portfolio-link{:href => href, "data-remote" => true, "data-target" => "#portfolio#{job.id}", "data-toggle" => "collapse"}              
+              %a.portfolio-link{:href => job_url(job.id)}
+                -#.caption-visible
+                  = "#{job.title}"
+                .caption
+                  .caption-content
+                    = "#{job.title}"
+                    %br
+                    %h6= "(#{job.technology_list.join(',')})" if job.technology_list.present?
+
+                .img-user
+                  - if job.avatar_attached?
+                    -# //  showing the avatar of the job
+                    = image_tag job.avatar(:medium), :id => "img-responsive", alt: job.title, class: "img_off", lazy: true              
+                  - elsif job.user.avatar_attached?
+                    -# // showing the avatar of the instructor                    
+                    = image_tag job.user.avatar(:medium), :id => "img-responsive", alt: job.title, class: "img_off", lazy: true
+                  - else
+                    = image_tag "noimage.gif", :id => "img-responsive", alt: job.title, class: "img_off", lazy: true
+
+      .clearb
+      .next-scroll.right
+        = link_to t("more"), next_jobs_path(:page => 2, :modal => modal), :remote => true, :class => "job-next"
+
+    - if modal
+      :javascript
+        $('#job_jscroll').jscroll({
+          nextSelector: 'a.job-next:last'
+        });
+    - else
+      :javascript
+        $('#user_job_jscroll').jscroll({
+          nextSelector: 'a.job-next:last',
+          autoTrigger: false
+        });
+  - else
+    %h4=t("no_jobs_found")
+
+  - lazyload_placholder = image_url('gray.gif')
+
+  :javascript
+    $("img.img_off").lazyload({
+      effect : "fadeIn",
+      effectTime: 1000
+    });
+    $("img.img_off").removeClass("img_off");    
+    
+

@@ -1,0 +1,15 @@
+- if params[:message_id].present?
+  - message_form_id = "messageForm#{recipient_id}#{params[:message_id]}"   
+- else 
+  - message_form_id = "messageForm#{recipient_id}"          
+          
+= form_for @message, :method => 'post', :html => {:id => message_form_id, :class => "form-horizontal", :remote => true, :name => "messageForm", :novalidate => "" } do  
+  .row.control-group
+    .form-group.col-xs-12.floating-label-form-group.controls.brdbtm
+      %label= t("type_a_message_here")
+      %input#sender_id.form-control{:type => "hidden", :name => "message[sender_id]", :value => "#{current_user.id}"}/
+      %input#recipient_id.form-control{:type => "hidden", :name => "message[recipient_id]", :value => "#{recipient_id}"}/
+      %textarea.form-control.message_body{"data-validation-required-message" => t("required"), :placeholder => t("type_a_message_here"), :required => "", :rows => "5", :name => "message[body]", :id => "message_body_#{recipient_id}", :label => false}
+      %p.help-block.text-danger  
+    .send-btn
+      %button.btn.btn-success.btn-lg{:type => "submit"}= t("send")      

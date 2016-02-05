@@ -1,0 +1,135 @@
+%nav.navbar.navbar-default.navbar-fixed-top
+  .container
+    .navbar-header.page-scroll
+      %button.navbar-toggle.collapsed{"data-target" => "#navbar-main", "data-toggle" => "collapse", :type => "button", "aria-expanded" => "false"}
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      = link_to girls_path, :class => "navbar-brand", :id => "loader", "data-no-turbolink" => true do
+        %span.fa-stack
+          %i.fa.fa-heart.fa-stack-2x.fa-inverse
+          %i.fa.fa-terminal.fa-stack-1x
+
+    / Collect the nav links, forms, and other content for toggling
+    #navbar-main.collapse.navbar-collapse
+      %ul.nav.navbar-nav.navbar-right
+        - if user_signed_in?
+          %li{:class => @dashboard}
+            = link_to girls_path, :class => "", :id => "loader", "data-no-turbolink" => true, :data => {:toggle => 'collapse', :target => '#navbar-main.in'} do
+              %i.fa-bg.fa.fa-heart.fa-2x
+              = t("go_to_main_page")
+          %li{:class => @courses_active}
+            = link_to courses_path, :class => "", :id => "loader", "data-no-turbolink" => true, :data => {:toggle => 'collapse', :target => '#navbar-main.in'} do
+              %i.fa-bg.fa.fa-book.fa-2x
+              = t("courses")
+
+          %li{:class => @jobs_active}
+            = link_to jobs_path, :class => "", :id => "loader", "data-no-turbolink" => true, :data => {:toggle => 'collapse', :target => '#navbar-main.in'} do
+              %i.fa-bg.fa.fa-money.fa-2x
+              = t("jobs")              
+
+          -#%li{:class => @console}
+            = link_to programmers_path, :class => "", :id => "loader", "data-no-turbolink" => true, :data => {:toggle => 'collapse', :target => '#navbar-main.in'} do
+              %i.fa-bg.fa.fa-terminal.fa-2x
+              = t("console_version")
+
+          -#- if controller_name == "girls" && action_name == "index"
+            -#%li
+            -#  = link_to "javascript:void(0)", :class => "",  :id => "showRightPushTopNav" do
+            -#    %i.fa-bg.fa.fa-weixin.fa-2x
+            -#    = t("messages")
+
+          %li{:class => @profile}
+            - if current_user.avatar(:thumb).present?
+              = link_to ("#{image_tag current_user.avatar(:thumb), id: :thumb_avatar} #{current_user.name}".html_safe), profile_path, :id => "loader", "data-no-turbolink" => true, :data => {:toggle => 'collapse', :target => '#navbar-main.in'} 
+            - else            
+              = link_to current_user.name, profile_path, :id => "loader", "data-no-turbolink" => true
+          
+          -# // do not render VIP status counter at all!
+          -# // render vip counter for full version only
+          - if !mobile_or_tablet_request?
+            %li.text-center
+              %a{"data-target" => "#vipModal", "data-toggle" => "modal", :href => "javascript:void(0)", :title => "#{t('invite_friends_to_increase_vip_status')}", :onclick => "track_google_analytics('invite', '#{current_user.referral_code}')"}
+                - is_vip_status = current_user.is_vip_status?
+                - completed_courses_count = is_vip_status ? vip_status : current_user.completed_courses_count
+
+                - if is_vip_status
+                  %span.text-center= t("you_have_a_vip_status")
+                - else
+                  %span.text-center= t("vip_status_instruction", friend_count: (vip_status - completed_courses_count))
+                - remain_count = vip_status - completed_courses_count
+                %div{:style => current_user.is_vip_status? ? "margin-left: 0px;" : "margin-left: 15px;"}
+                  - completed_courses_count.times do
+                    .vip-status-true
+                  - remain_count.times do
+                    .vip-status-false
+          -#%li.point-bar
+          -#  %a{"data-target" => "#batteryModal", "data-toggle" => "modal", :href => "javascript:void(0)", :title => "#{t('invite_friends_to_increase_points')}", :onclick => "track_google_analytics('invite', '#{current_user.referral_code}')"}    
+          -#    .battery
+          -#      %div
+          
+          -#%li= render "layouts/language_switcher"
+          
+          %li
+            -# // link to chat messages
+            = link_to "javascript:void(0);", :title => "#{t('message_notifications')}", :onclick => "$('#menu-chats').toggleClass('cbp-spmenu-open');", :data => {:toggle => 'collapse', :target => '#navbar-main.in'}  do
+              %i.fa-bg.fa.fa-weixin.fa-2x
+              - if @unread_message_count > 0
+                %strong.notify-message-count
+                  = @unread_message_count
+
+
+            -#- if controller_name == "girls" && action_name == "index"
+              = link_to "javascript:void(0);", :title => "#{t('message_notifications')}", :onclick => "$('#menu-chats').toggleClass('cbp-spmenu-open');" do
+                %i.fa-bg.fa.fa-weixin.fa-2x
+                - if @unread_message_count > 0
+                  %strong.notify-message-count
+                    = @unread_message_count
+
+            -#- else
+              = link_to "javascript:void(0);", :title => "#{t('message_notifications')}", :id => "notify-message-link" do
+                %i.fa-bg.fa.fa-weixin.fa-2x
+                - if @unread_message_count > 0
+                  %strong.notify-message-count
+                    = @unread_message_count              
+          %li
+            = link_to read_notifications_user_path, :title => "#{t('profile_notifications')}", :remote => true, :class => "", :data => {:toggle => 'collapse', :target => '#navbar-main.in'} do
+              %i.fa.fa-bg.fa-globe.fa-2x
+              - notifications_count = current_user.unread_profile_notifications.count
+              - if notifications_count > 0
+                %strong.notify-profile-count
+                  = notifications_count  
+                  
+          -# // help
+          %li
+            = link_to "/profile/1", :title => "help" do
+              %i.fa.fa-bg.fa-question-circle.fa-2x
+                  
+          %li
+            = link_to destroy_user_session_path, :method=>'delete', :title => t("sign_out") do
+              %i.fa.fa-bg.fa-sign-out.fa-2x
+          
+-#- if @unread_message_count > 0 and controller_name == "girls" and action_name == "index"
+-#  .container
+-#    %section
+-#      .jquery-bar
+-#        %span.notification
+-#          .font-style
+-#            \«
+-#            = t("you_have_unread_messages", unread_msg: @unread_message_count)
+-#            = link_to t("click_here_to_read_them"), "javascript:void(0)", :id => "showRightPushLink"
+-#          %p.jquery-arrow.down{:style => "cursor:pointer;"}
+-#            %i.fa.fa-times
+-#      %span.downbar.jquery-arrow
+-#        %i.fa.fa-times
+
+
+- if user_signed_in?
+  -#= render :partial => "invites/index"
+  -#= render :partial => "invites/battery", :locals => {modal: true}
+  = render :partial => "invites/vip"
+
+  -# - if current_user.is_vip_status?
+  = render :partial => "layouts/profile_notifications"
+
+  = render :partial => "layouts/message_notifications"

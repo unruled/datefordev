@@ -1,0 +1,26 @@
+/ Footer
+
+%footer.footer
+  .container.bg-warning
+    .row
+      .col-lg-12.text-center.text-muted.bg-warning
+        -#%div
+          = t("credit_for_photo") if @_controller.action_name == 'index'  
+        -# mixpanel badge logo
+        %a.pull-right{:href=>"https://mixpanel.com/f/partner"}
+          %img{ :src=>"//cdn.mxpnl.com/site_media/images/partner/badge_light.png", :alt=>"Mobile Analytics"}
+
+
+= render :partial => 'layouts/feedback'
+= render :partial => 'layouts/tracking'
+
+- if Rails.env.production?
+  %script{:src => "//static.getclicky.com/js", :type => "text/javascript"}
+  :javascript
+    try{ clicky.init(100813570); }catch(e){}
+  %noscript
+    %p
+      %img{:alt => "Clicky", :height => "1", :src => "//in.getclicky.com/100813570ns.gif", :width => "1"}/
+
+-# Go to www.addthis.com/dashboard to customize your tools -->
+-#%script{:src => "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-54d65a655e66e6b3", :type => "text/javascript", :async=>"async"}

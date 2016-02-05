@@ -1,0 +1,12 @@
+-# rendering standalone page
+= cache @user do
+  .container
+    .show-profile-box
+      = render :partial => "girls/show_profile", :locals => {user: @user, current_user: @current_user}
+= render :partial => "invites/vip"    
+      
+-# // rendering chat messages
+= render :partial => "girls/messages/index"
+
+-# Go to www.addthis.com/dashboard to customize your tools -->
+%script{:src => "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-54d65a655e66e6b3", :type => "text/javascript", :async=>"async"}

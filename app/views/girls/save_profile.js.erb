@@ -1,0 +1,79 @@
+$("#loader-image").hide();
+$("#image-loader").hide();
+<% if @notice.present? %>
+	$("#error-profile").html(" ");
+	$("#notice-profile").html("<%= @notice %>");
+	$("#photo-success").hide();
+<% end %>
+<% if @error.present? %>
+	$("#notice-profile").html(" ");
+	$("#error-profile").html("<%= @error %>");
+	$("#photo-success").hide();
+<% end %>
+
+<% if @photo_notice.present? %>
+	$("#photo-success").show();
+<% end %>
+
+$( "#public-profile input,textarea" ).each(function() {
+	if ($(this).attr("id") == "required") {
+	    if ($(this).val().length == 0) {
+	        $(this).addClass('error-border');
+	    } else {
+	        $(this).removeClass('error-border');
+	    }
+
+	}
+});
+
+$('#public-profile, select').each(function(e) {
+    if ($(this).attr("id") == "required") {
+        if ($(this).val().length == 0) {
+            $(this).addClass('error-border');
+        } else {
+            $(this).removeClass('error-border');
+        }
+
+    }
+});
+
+
+$("#avatar").change(function(){
+  readURL(this);
+  $(this).closest('form').submit();
+});
+
+function readURL(input) {
+  $("#image-loader").show();
+  if (input.files && input.files[0]) {
+  	var f = input.files[0];
+  	var t = f.type;
+  	var s = f.size;
+  	if (t == "image/gif" || t == "image/jpeg" || t == "image/png") {
+  		if (s < 2500000) {
+		    var reader = new FileReader();
+		    reader.onload = function (e) {
+		        $('#avatar_thumb').attr('src', e.target.result);
+				$("#photo-error-size-msg").hide();
+				$("#photo-error-type-msg").hide();
+		        $("#photo-save-msg").show();
+		    }
+		    reader.readAsDataURL(input.files[0]);
+		} else {
+			$("#image-loader").hide();
+			$("#photo-success").hide();
+			$('#avatar_thumb').attr('src', "noimage.gif");
+			$("#photo-save-msg").hide();
+			$("#photo-error-type-msg").hide();
+			$("#photo-error-size-msg").show();
+		}    
+	} else {
+		$("#image-loader").hide();
+		$("#photo-success").hide();
+		$('#avatar_thumb').attr('src', "noimage.gif");
+		$("#photo-save-msg").hide();
+		$("#photo-error-size-msg").hide();
+		$("#photo-error-type-msg").show();
+	}    
+  }
+}

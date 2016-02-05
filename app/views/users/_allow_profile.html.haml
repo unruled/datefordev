@@ -1,0 +1,6 @@
+- if @allow == true
+  = link_to t("disallow_to_view_my_private_profile"), allow_profile_user_path(params[:user_id]), :remote => true, :class => "btn btn-sm btn-primary", :data => { :confirm => t("are_you_sure") }
+  %div= t('access_has_been_enabled')
+- else  
+  = link_to t("allow_to_view_my_private_profile"), allow_profile_user_path(params[:user_id]), :remote => true, :class => "btn btn-sm btn-primary", :data => { :confirm => t("are_you_sure") }
+  %div= t('access_has_been_disabled')

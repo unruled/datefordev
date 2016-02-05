@@ -1,0 +1,288 @@
+-# //this partial renders the profile info for standalone and embedded pages on dashboard
+-# //variables: 
+-# //@close_btn_visible: defines if close button visible (used in embedded forms) or not. If false then it shows Back button
+-# //mobile_chat_version: true if renders the mobile chat version (with small thumb and min info about the user)
+
+-# //set to full version if not variable defined about mobile version
+- if !defined? mobile_chat_version
+  - mobile_chat_version = false
+
+-# // the row with the back button if needed
+- if mobile_chat_version
+  = content_for :page_title, @recipient.name
+  .row
+    .col-lg-12.form-inline
+      -# show back button if no close button required
+      = link_to :back, :class => "btn btn-primary btn-sm push-left", "data-no-turbolink" => true do
+        %i.fa.fa-chevron-circle-left.fa-inverse
+        = t("back")
+    .row
+      .col-lg-12.form-inline.text-center
+        - if @recipient.avatar(:thumb).present?
+          = link_to ("#{image_tag @recipient.avatar(:thumb), id: :thumb_avatar} #{@recipient.name}".html_safe), profile_show_url(@recipient.id), "data-no-turbolink" => true 
+        - else            
+          = link_to @recipient.name, profile_show_url(@recipient.id), "data-no-turbolink" => true      
+- else
+  -# // if full version
+  - unless defined? @close_btn_visible
+    .row
+      .col-lg-12.form-inline
+        .col-lg-3
+          -# show back button if no close button required
+          = link_to :back, :class => "btn btn-primary btn-sm push-left", "data-no-turbolink" => true do
+            %i.fa.fa-chevron-circle-left.fa-inverse
+            = t("back")
+
+= content_for :page_title, user.name
+
+-# // mobile chat version with last seen only        
+- if mobile_chat_version
+  -# // commented out as we use small thumb avatar with name
+  -#.row
+    .col-lg-12
+      %p.text-center{:class => user.was_recently_active? ? "vip-profile" : ""}
+        - if user.online?
+          = image_tag("online.png", title: t("online"), width: "12", height: "12")
+        = user.name
+  .row
+    .col-lg-12.text-center
+      -# // not showing the full avatar
+      -#.img-user.profile-img{:class => user.was_recently_active? ? "vip-profile" : ""}
+        %a{:href => user.avatar.url, :title => "#{user.name} - #{profile_show_url(user.id)}", "data-gallery" => ""}
+          = image_tag user.avatar(:medium), :class => "img-responsive", :width => "256", :height => "256", :title => t("click_to_view_full_size_photo")
+      %p.text-muted.text-center
+        - user_last_seen = user.current_sign_in_at ? time_difference(user.current_sign_in_at.utc) : "-"              
+        = t("last_seen", seen_date: user_last_seen)
+- else 
+  -# //full version, row with photo and main info
+  .row
+    .col-lg-12
+      .col-lg-3
+        .text-center
+          .img-user.profile-img{:id => "img-user#{user.id}", :class => user.was_recently_active? ? "vip-profile" : ""}
+            %a{:href => user.avatar.url, :title => "#{user.name} - #{profile_show_url(user.id)}", "data-gallery" => ""}
+              = image_tag user.avatar(:medium), :class => "img-responsive", :width => "256", :height => "256", :title => t("click_to_view_full_size_photo")
+          %span{:class => user.was_recently_active? ? "vip-profile" : ""}
+            - if user.online?
+              = image_tag("online.png", title: t("online"), width: "12", height: "12")
+            = user.name
+      .col-lg-9
+        -# // row with buttons
+        .row
+          .col-lg-12.form-inline.btn-toolbar
+            -# // disabled vip status checking and allowing unlim number of chats
+            -#- if user.moderator? || (current_user.is_vip_status? || !@message_users_hash.present? || @message_users_hash.count <= vip_status_max_contacts)
+            - if true
+              = render :partial => "users/favorite_icon", :locals => { :user => user, :full_profile => true } 
+              - if mobile_or_tablet_request? 
+                = link_to mobile_show_messages_path(user.id, :message_id => ''), :class=> "btn btn-sm btn-primary", :remote => false, :onclick => "track_google_analytics('chat_open', '#{current_user.referral_code}')", role: 'button' do
+                  %i.fa.fa-weixin.fa-lg.fa-inverse
+                  &nbsp;
+                  = t("open_chat")
+              - else 
+                = link_to show_messages_path(user.id, :message_id => ''), :class=> "btn btn-sm btn-primary", :remote => true, :onclick => "track_google_analytics('chat_open', '#{current_user.referral_code}')", role: 'button', :data => {:disable_with => "wait.."} do
+                  %i.fa.fa-weixin.fa-lg.fa-inverse
+                  &nbsp;
+                  = t("open_chat")
+            - else
+              %a{"data-target" => "#vipModal", "data-toggle" => "modal", :href => "javascript:void(0)", :title => "#{t('invite_friends_to_increase_vip_status')}", :onclick => "track_google_analytics('invite', '#{current_user.referral_code}')", :class => "btn btn-sm btn-primary"}
+                %i.fa.fa-weixin.fa-lg.fa-inverse
+                &nbsp;                
+                = t("open_chat")
+
+            &nbsp;
+            
+            - profile_access = current_user.is_requested?(user.id)
+            
+            - request_sent = false;
+            - if profile_access.present?
+              - request_sent = true
+        
+            - if request_sent 
+              - if profile_access.allow
+                %span.label.label-success
+                  %i.fa.fa-key.fa-inverse
+                  = t("you_are_allowed_to_view_private_profile")
+              - else
+                %span.label.label-default
+                  %i.fa.fa-key
+                  = t("you_have_requested_to_view_private_profile")
+            - else 
+              - if current_user.is_vip_status? or current_user.allowed_to.count <= vip_status_max_contacts
+                - if mobile_or_tablet_request?             
+                  = link_to mobile_show_messages_path(user.id, :profile_request => true), :remote => true, :class => "btn btn-sm btn-primary close-modal-open-chat",  role: 'button', data: {dismiss: "modal"}, :id => 'btn-ask-priv', :onclick => "$('#btn-ask-priv').addClass('disabled btn-default').removeClass('btn-primary');" do
+                    %i.fa.fa-key.fa-inverse
+                    = t("ask_to_view_private_profile")
+                - else 
+                  = link_to show_messages_path(user.id, :profile_request => true), :remote => true, :class => "btn btn-sm btn-primary close-modal-open-chat",  role: 'button', data: {dismiss: "modal"}, :id => 'btn-ask-priv', :onclick => "$('#btn-ask-priv').addClass('disabled btn-default').removeClass('btn-primary');" do
+                    %i.fa.fa-key.fa-inverse
+                    = t("ask_to_view_private_profile")
+              - else
+                %a{"data-target" => "#vipModal", "data-toggle" => "modal", :href => "javascript:void(0)", :title => "#{t('invite_friends_to_increase_vip_status')}", :onclick => "track_google_analytics('invite', '#{current_user.referral_code}')", :class => "btn btn-sm btn-primary close-modal-open-chat"}
+                  = t("ask_to_view_private_profile")
+                
+            &nbsp;
+            
+            -# // now check if current user allows to user to view private profile
+            -# //check if this user is allowed to view currentuser's private profile
+            - profile_access = current_user.is_allow?(user.id)
+            
+            -# //set to false by default
+            - profile_access_exists = false;
+            - if profile_access.present?
+              - profile_access_exists = true
+              
+            -# // show button to permit view of private profile      
+            - if !profile_access_exists
+              - if mobile_or_tablet_request?             
+                = link_to mobile_show_messages_path(user.id, :profile_allow => true), :remote => true, :class => "btn btn-sm btn-primary close-modal-open-chat",  role: 'button', data: {dismiss: "modal"}, :id => 'btn-allow-priv', :onclick => "$('#btn-allow-priv').addClass('disabled btn-default').removeClass('btn-primary');" do
+                  %i.fa.fa-gift.fa-inverse
+                  = t("allow_to_view_my_private_profile")                
+              - else 
+                = link_to show_messages_path(user.id, :profile_allow => true), :remote => true, :class => "btn btn-sm btn-primary close-modal-open-chat",  role: 'button', data: {dismiss: 'modal'}, :id => 'btn-allow-priv', :onclick => "$('#btn-allow-priv').addClass('disabled btn-default').removeClass('btn-primary');" do
+                  %i.fa.fa-gift.fa-inverse
+                  = t("allow_to_view_my_private_profile")                
+            - else 
+              -# // else showing the label
+              - if profile_access.allow
+                &nbsp;
+                %span.label.label-success
+                  %i.fa.fa-info.fa-inverse
+                  = t("allowed_to_view_my_private_profile")
+            
+            -# // if access was asked but not allowed yet
+            -# // then informing about it
+            - if profile_access_exists && !profile_access.allow
+              &nbsp;
+              %span.label.label-default
+                %i.fa.fa-question.fa-inverse
+                = t("asked_to_view_private_profile")
+
+            - if defined? @close_btn_visible
+              -# link to open in new window
+              .pull-right
+                %a{:href => profile_show_url(user.id), :title => t("open_in_new_window"), :target => "_blank"}
+                  %i.fa.fa-external-link.fa-2x.fa-icon-highlighted
+    
+                %button.close{'data-target' => @close_btn_target, "aria-hidden" => "true", :type => "button", "data-dismiss" => "modal", 'data-toggle' => "collapse"}
+                  %i.fa.fa-times.fa-2.fa-icon-highlighted
+        
+        -# // main info about the user
+        .row.col-lg-12
+          -# tips to show how to start chat
+          - if current_user.gender == 1 && user.gender == 2
+            - if @tips.present?
+              %div{ :style => "display:none;", :id => "tip_#{user.id}" }              
+                .talkbubble
+                  %i.fa.fa-lightbulb-o
+                  = @tips.sample.html_safe        
+          
+          %div.table-responsive
+            %table.table.table-condensed.table-bordered
+              %tr
+                %td.col-lg-1
+                  -#%div= t("last_seen") 
+                %td
+                  %span.text-muted
+                  - if current_user.is_vip_status?
+                    - user_last_seen = user.current_sign_in_at ? time_difference(user.current_sign_in_at.utc) : "-"              
+                    %h6= t("last_seen", seen_date: user_last_seen)
+                  - else
+                    %a{"data-target" => "#vipModal", "data-toggle" => "modal", :href => "javascript:void(0)", :title => "#{t('invite_friends_to_increase_vip_status')}"}
+                      %h6= t("last_seen", seen_date: "*****")
+
+              %tr
+                %td
+                  -# programmer test
+                %td
+                  - if !user.is_girl && user.skill_id.present?
+                    %i.fa.fa-keyboard-o.fa-4
+                      = t("programmer_test_passed")
+                  - else 
+                    %i.fa.fa-exclamation-circle-o.fa-4
+                      = t("programmer_test_not_passed")
+                              
+                %tr
+                  %td
+                    %div= t("age") 
+                  %td= user.user_age
+            
+                %tr
+                  %td
+                    %div= t("city")
+                  %td= user.city.present? ? I18n.locale.to_s != 'ru' ? user.city.to_lat : user.city : "-"
+            
+                %tr
+                  %td
+                    %div= t("country")
+                  %td= user.country.present? ? user.country_name : "-"
+            
+                %tr
+                  %td
+                    %div= t("show_about_me")              
+                  %td= user.about_me.present? ? user.about_me : "-"
+            
+                %tr
+                  %td
+                    %div= t("technologies")
+                  %td= user.technology_list
+                %tr
+                  %td
+                    %div= t("courses_completed")
+                  %td
+                    - courses = user.courses
+                    - if courses.present?
+                      %ul
+                        - courses.each do |course|
+                          - course_info = user.get_course_info(course.id)
+                          - is_completed = course_info[0]
+                          - total_levels = course_info[1]
+                          - passed_levels = course_info[2]
+                          
+                          %li
+                            = link_to course_course_levels_path(course.id), :title => t("take_this_course") do
+                              = course.title
+                              - if is_completed
+                                %i.fa.fa-check-circle.text-success
+                                %h7.text-success=t('has_completed_course')
+                              - else 
+                                %i.fa.fa-spinner.text-primary
+                                %h7.text-primary=t('has_completed_levels', total_levels: total_levels, passed_levels: passed_levels)
+                          
+                    - else
+                      %p=t("no_records_found")
+                      
+-# // if not moderator then show private profile and abuse button
+- if !user.moderator?
+  - if mobile_chat_version
+    -# // not showing the private profile part
+  - else 
+    -# // private profile part, full version
+    .row
+      .col-lg-12
+        - if current_user.request_accepted? user.id
+          = render :partial => "girls/show_private_profile", :locals => {user: user}
+        - else
+          = render :partial => "girls/show_private_profile_hidden", :locals => {user: user}
+    
+    .row
+      .col-lg-12        
+        .text-right
+          = link_to t("report_abuse"), report_abuse_user_path(user.id), :remote => true, :class => "btn-sm btn btn-danger", :data => { :confirm => t("confirm_report_abuse"), :disable_with => "wait..."  }                                                
+        
+-# // enable zooming preview if avatar is attached and not mobile versionc
+- if !mobile_chat_version && user.avatar_attached?
+  :javascript
+    $(document).ready( function() {
+      $("#img-user#{user.id}").zoom({
+        url: "#{user.avatar.url}",
+        on: 'grab'
+      });
+    });
+        
+:javascript
+  $(document).ready( function() {
+    track_google_analytics('results_view_profile', '#{current_user.referral_code}', '#{user.id}');
+  } );                
+
+

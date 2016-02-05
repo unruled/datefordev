@@ -1,0 +1,22 @@
+<p>Hi <%= @user.name %>,</p>
+
+<p>Congratulations on unlocking the full database through the console and confirming that you are a programmer!</p>
+
+<p>Now you have access to all profiles including programmers and non programmers.</p>
+
+<p>Also now you may use the Console instead of Desktop.</p>
+
+<p>Here are some features available through commands in the Console:<br />
+- finding profiles<br />
+- viewing detailed information about profiles<br />
+- viewing inbox, sending and replying to messages<br />
+- and more!</p>
+
+<p>P.S.: If you are having issues with the service then don't heistate to drop us a line at <a href="mailto:support@demo.com?subject=Need%20Help">support@demo.com</a>.</p>
+
+<p>thanks,<br />
+DateProg Team.</p>
+
+<p style="font-size: 10px;">
+	this email was sent from unmonitored address. <%= link_to "to unsubscribe from these notifications please click here", notification_confirmation_url(@user.notification_token, 'stop') %>
+</p>

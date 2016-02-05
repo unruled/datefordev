@@ -1,0 +1,15 @@
+<% if @error %>
+	$(".text-email-error").html("<%= t('required') %>");
+	$(".text-errors").empty();
+	$(".text-success").empty();
+<% elsif @error_email %>	
+	$(".text-errors").html("<%= t('email_is_not_valid') %>");
+	$(".text-email-error").empty();
+	$(".text-success").empty();
+<% else %>
+	$("#text-success").html("<%= t('invitation_sent_successfully') %>");
+	$(".text-email-error").empty();
+	$(".text-errors").empty();
+	$("#inviteForm")[0].reset();
+<% end %>
+

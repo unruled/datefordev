@@ -1,0 +1,12 @@
+%p
+  = t("hello_name", email: (@invite.name.present? ? @invite.name : @invite.email))
+  
+  %p
+    = t("invitation_text_body", name: @invite.user.name, email: @invite.user.email).html_safe
+  %p
+    = @invite.body.html_safe
+%p
+  = link_to t("please_click_here"), invitation_signup_url(@invite.user.referral_code)
+
+%p
+  = t("thanks_email_footer_send_invitation")

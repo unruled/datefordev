@@ -1,0 +1,16 @@
+<p>Hi <%= @user.name %>,</p>
+
+<p>Just to let you know that your public profile on Date A Programmer was viewed <strong><%= @user.profile_views %> times </strong> since your last visit!</p>
+
+<p>If you want to check new people registered on the site and chat with them then just 
+	<%= link_to "click here to view your account and new messages.", notification_confirmation_url(@user.notification_token, 'yes') %>
+</p>
+
+<p>P.S.: If you are having issues with the service then don't heistate to drop us a line at <a href="mailto:support@demo.com?subject=Need%20Help">support@demo.com</a>.</p>
+
+<p>thanks,<br />
+DateProg Team.</p>
+
+<p style="font-size: 10px;">
+	this email was sent from unmonitored address. <%= link_to "to unsubscribe from these notifications please click here", notification_confirmation_url(@user.notification_token, 'stop') %>
+</p>

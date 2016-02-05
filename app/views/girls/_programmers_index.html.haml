@@ -1,0 +1,14 @@
+- if !current_user.profile_completed? || !current_user.skill.present?
+  .row
+    .col-lg-12.text-center
+      %h4= t("please_complete_profile_to_find_girl_desktop")
+    .col-lg-12.text-center    
+      %a.profile.open-profile{ :href => profile_path, :class => "btn btn-sm btn-primary", :id => "loader", "data-no-turbolink" => true}
+        %i.fa-bg.fa.fa-user.fa-2x
+        = t("open_my_profile")
+      
+- else
+  = render :partial => "filter_users"
+    
+  / Girls
+  #result

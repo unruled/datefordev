@@ -1,0 +1,87 @@
+-# // get number of levels passed already
+.row
+  .col-lg-12.form-inline 
+    .col-lg-3.pull-left
+      -# show back button if no close button required
+      - unless defined? @close_btn_visible && !current_user
+        = link_to girls_path, :class => "btn btn-primary btn-sm", :id => "loader", "data-no-turbolink" => true do
+          %i.fa.fa-chevron-circle-left.fa-inverse
+          = t("back")
+    
+    - right_class = (defined? @close_btn_visible) ? 'col-lg-4': 'col-lg-5'
+    %div{ :class => "#{right_class}"}
+      - if !@mobile_or_tablet_request
+        -# // sharing toolbox
+        %div.pull-right.addthis_sharing_toolbox{ "data-url" => "#{request.original_url}", "data-title" => "#{job.title}"}
+        
+    - if defined? @close_btn_visible
+      .col-lg-1.pull-right
+        %button.btn-primary.close{'data-target' => @close_btn_target, "aria-hidden" => "true", :type => "button", "data-dismiss" => "modal", 'data-toggle' => "collapse"}
+          %i.fa.fa-times.fa-2
+
+-# // now the job details    
+
+- job_instructor = job.user
+.row
+  .col-lg-12
+    .col-lg-3
+      .align-left
+        .img-user.profile-img
+          %a{:href => job_path(job.id) }
+            - if job.avatar_attached?
+              -# //  showing the avatar of the job
+              = image_tag job.avatar(:medium), :id => "img-responsive", alt: job.title
+            - else 
+              = image_tag job_instructor.avatar(:medium), :id => "img-responsive", alt: job.title
+              -# // showing the avatar of the job
+              
+            
+        -#= link_to profile_show_url(job_instructor.id), :title => job_instructor.name do
+
+        - unless job_instructor.avatar.url(:thumb) == "/noimage.gif"
+          = link_to profile_show_url(job_instructor.id), :title => job_instructor.name do
+            .img-user
+              - unless job_instructor.avatar.url(:thumb) == "/noimage.gif"
+                = image_tag job_instructor.avatar(:thumb), :id => "img-responsive",  alt: job_instructor.name
+        - else
+          = link_to profile_show_url(job_instructor.id), :title => job_instructor.name do
+            = t("author")
+            = ": "
+            = job_instructor.name
+
+        - if current_user
+          = link_to show_messages_path(job_instructor.id, :message_id => ''), :id => "loader", :remote => true, :class => "btn btn-primary", :onclick => "track_google_analytics('chat_open', '#{current_user.referral_code}')" do
+            %i.fa.fa-weixin.fa-lg.fa-inverse
+            = t('ask_author_for_help')
+
+
+    %br
+    .col-lg-9.container
+      %table.table-bordered.table-condensed.table-responsive.col-lg-12
+        %tr
+          %td{ :colspan => 2 }
+            %h3= job.title
+        %tr
+          %td.col-lg-1
+            %div= t("description")
+          %td
+            = job.description.html_safe
+        %tr
+          %td
+            %div= t("author")
+          %td
+            .pull-left
+              - unless job_instructor.avatar.url(:thumb) == "/noimage.gif"
+                = link_to profile_show_url(job_instructor.id), :title => job_instructor.name do
+                  .img-user
+                    - unless job_instructor.avatar.url(:thumb) == "/noimage.gif"
+                      = image_tag job_instructor.avatar(:thumb), :id => "img-responsive",  alt: job_instructor.name
+              - else
+                = link_to profile_show_url(job_instructor.id), :title => job_instructor.name do
+                  = job_instructor.name
+                  = ' - '
+                  = t('view_profile')
+                  
+        %tr
+          %td= t("technologies")
+          %td= job.technology_list.join(',')

@@ -1,0 +1,6 @@
+locale:
+  languages:
+    - code: RU
+      display_name: 'Russian'
+    - code: EN
+      display_name: 'English'

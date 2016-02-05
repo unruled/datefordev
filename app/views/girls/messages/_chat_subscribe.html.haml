@@ -1,0 +1,13 @@
+:javascript
+  $(function() {  
+    var public_subscription = client.subscribe('/messages/public/#{current_user.id.to_s}/#{user.id.to_s}', function(data) {
+      var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
+      $.ajax({
+        url:"/chat_room?authenticity_token="+AUTH_TOKEN,
+        type: "POST",
+        data:  ({ message_id: data["message_id"] }),
+        success:function(data) {
+        }
+      });
+    });  
+  });

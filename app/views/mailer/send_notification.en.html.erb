@@ -1,0 +1,30 @@
+<p>Hi <%= @recipient.name %>,</p>
+
+<p>You have new message(s) from <%= @sender.name %></p>
+
+<p><%= link_to (image_tag @sender.user_avatar_medium), notification_confirmation_url(@recipient.notification_token, 'yes', @sender.id) %></p>
+
+<p>
+	<% if @message.system_message %>
+		<%= @message.body.html_safe if @message.body.present? %>
+	<% elsif @message.body.present? %>
+		<% message_length_left = [@message.body.html_safe.length - 20, 0].max %>	
+		<%#= @message.body.html_safe.truncate(20) + "[#{message_length_left} characters left]" %>
+		<%= @message.body.html_safe %>
+	<% end %>
+</p>
+
+<p>
+	<strong>
+	<%= link_to "Click Here to view full message and reply", notification_confirmation_url(@recipient.notification_token, 'yes', @sender.id) %>
+	</strong>
+</p>
+
+<p>P.S.: If you are having issues with the service then don't heistate to drop us a line at <a href="mailto:support@demo.com?subject=Need%20Help">support@demo.com</a>.</p>
+
+<p>thanks,<br />
+DateProg Team.</p>
+
+<p style="font-size: 10px;">
+	this email was sent from unmonitored address. <%= link_to "to unsubscribe from these notifications please click here", notification_confirmation_url(@user.notification_token, 'stop') %>
+</p>

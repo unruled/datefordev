@@ -1,0 +1,77 @@
+= form_for '', :url => filter_users_path, :method => 'post', :remote => true, :authenticity_token => false, :html => {:id => 'filterForm', :class => 'fnavbar-form', :role => 'form' } do
+  .col-md-12
+    = hidden_field_tag :authenticity_token, form_authenticity_token
+    .col-md-2
+      = link_to (image_tag current_user.avatar(:medium), :width => '100%', :height => '100%', :class => 'filter-avatar center'), profile_path
+    .col-md-4
+      - saved_values = @filter_values.present?
+      .form-group
+        .checkbox
+          %label
+            - if saved_values && @filter_values['is_country']
+              = check_box_tag 'is_country', true, :checked => 'checked'
+            - else
+              = check_box_tag 'is_country', true
+            = t('country')
+        - country = saved_values && @filter_values['country'] ? @filter_values['country'] : current_user.country
+        = country_select('user', 'country', locale: I18n.locale, selected: country, class: 'form-control', :include_blank => t('select_country'))
+        .checkbox
+          %label
+            - if saved_values && @filter_values['is_city']
+              = check_box_tag 'is_city', true, :checked => 'checked'
+            - else
+              = check_box_tag 'is_city', true
+            = t('city')
+        - city = saved_values && @filter_values['city'] ? @filter_values['city'] : current_user.city
+        %input#city.form-control{:placeholder => t('city'), :type => 'textl', :value => "#{city}", :name => 'city'}/
+    .col-md-6
+      .form-group
+        .checkbox
+          %label
+          - if saved_values && @filter_values['is_age']
+            = check_box_tag 'is_age', true, :checked => 'checked'
+          - else
+            = check_box_tag 'is_age', true
+          = t('age')
+          .clearfix
+          &nbsp;
+          - age = saved_values && @filter_values['age'] ? @filter_values['age'] : '18, 40'
+          %input#age.form-control.range-slider{:type => 'hidden', :value => age, :name => 'age'}
+          .clearfix
+          &nbsp;
+      .form-group
+        .checkbox
+          %label
+            - if saved_values && @filter_values['avatar']
+              = check_box_tag 'avatar', true, :checked => 'checked'
+            - else
+              = check_box_tag 'avatar', true
+            = t('photo')
+      .form-group
+        .checkbox
+          %label
+            - if saved_values && @filter_values['programmer']
+              = check_box_tag 'programmer', true, :checked => 'checked'
+            - else
+              = check_box_tag 'programmer', true
+            %i.fa.fa-keyboard-o.fa-2
+            = t('programmers_only')
+    .col-md-12
+      -# // notify about new results switcher
+      .col-md-6.form-group.text-right
+        = render "notify_on_off"
+      .col-md-6.form-group.form-inline
+        %button.btn.btn-primary.btn-sm.push-left{:type => 'submit', :name => 'filter_reset', :value => '1', :id => 'filter-reset-btn', :onclick => 'resetFilter()' }
+          = t('reset_filter')
+        %button.btn.btn-primary.btn-sm.push-left{:type => 'submit', :id => 'filter-btn', :onclick => "track_google_analytics(\"filter\", \"#{current_user.referral_code}\")" }
+          %i.fa-bg.fa.fa-filter
+          = t('filter')
+    
+%div{style: 'display:none;', id: 'loader-image', class: 'right'}
+  = image_tag 'loader.gif'
+
+  :javascript
+    function resetFilter() {
+      // uncheck all filtering checkboxes
+      $('#programmer,#avatar,#is_age,#is_city,#is_country').prop('checked', false);
+    };

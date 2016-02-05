@@ -1,0 +1,45 @@
+#course_users{:style => "display:none;"}
+  
+  %strong= t("ask_members_for_help")
+  .text-right
+    = link_to "javascript:void(0)", :class => "btn btn-info btn-xs", :onclick => "$('#course_users').hide('slow')" do
+      %i.fa.fa-times.fa-lg.fa-inverse
+  %table.table.table-striped.course_ask_for_help_result
+    - completed_and_other_users = @course.completed_and_other_users.limit(10)
+    
+    -# // show instructor info
+    - instructor_user = @course.get_instructor_user
+
+    - if completed_and_other_users.present?
+      - completed_and_other_users.each do |user|
+
+        - if user.id == @course.instructor_id
+          - next 
+
+        - course_info = user.get_course_info(@course.id)
+        - is_completed = course_info[0]
+        - total_levels = course_info[1]
+        - passed_levels = course_info[2]
+        %tr
+          %td{:width => "30%"}
+            - unless user.avatar.url(:thumb) == "/noimage.gif"
+              %a{:href => profile_show_url(user.id), :title => t("open_in_new_window"), :target => "_blank"}
+                .img-user
+                  - unless user.avatar.url(:thumb) == "/noimage.gif"
+                    = image_tag user.avatar(:thumb), :id => "img-responsive",  alt: user.name
+            - else 
+              = link_to user.name, profile_show_url(user.id), :title => t("open_in_new_window"), :target => "_blank"
+
+      
+          - if is_completed
+            %td{:width => "50%"}
+              %h7.text-muted=t('has_completed_course')
+
+            %td{:width => "20%"}
+              = link_to show_messages_path(user.id, :message_id => ''), :id => "loader", :remote => true, :class => "", :onclick => "track_google_analytics('chat_open', '#{current_user.referral_code}')", :class => "btn btn-xs btn-primary" do
+                %i.fa.fa-weixin.fa-lg.fa-inverse
+                &nbsp;
+                = t("ask_members_for_help")
+    - else
+      %tr
+        %td= t("no_one_has_tried_this_course")

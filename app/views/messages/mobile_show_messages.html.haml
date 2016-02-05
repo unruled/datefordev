@@ -1,0 +1,46 @@
+.row
+  = render :partial => "girls/show_profile", :locals => { :user => @recipient, :chat => false, :tips => '', :mobile_chat_version => true }
+  .clearfix
+
+.row
+  .col-lg-12
+    .col-lg-10
+      .left#chat_room.chat_room
+        - if @messages.present?
+          - @messages.each_with_index do |message, k|
+            - sender = message.sender
+            -# the code below duplicates "mobile_chat_room" partial
+            - if sender == current_user
+              = "<span class='label label-primary'>#{t('me')}</span> #{message.body} - <span class='text-muted'><small>#{time_difference(message.created_at)}</small></span>".html_safe
+            - else  
+              = "<span class='label label-success'>#{sender.name}</span> #{message.body} - <span class='text-muted'><small>#{time_difference(message.created_at)}</small></span>".html_safe
+            %br
+    .col-sm-2
+      = render :partial => "girls/messages/index"
+
+= render :partial => "messages/chat_box_mobile", :locals => { :recipient_id => @recipient.id }
+
+:javascript
+  $(function() {
+    var client = new Faye.Client("#{FAYE_URL}/faye");
+    var public_subscription = client.subscribe('/messages/public/#{current_user.id.to_s}/#{@recipient.id.to_s}', function(data) {
+      var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
+      $.ajax({
+        url:"/chat_room?authenticity_token="+AUTH_TOKEN,
+        type: "POST",
+        data:  ({ message_id: data["message_id"] }),
+        success:function(data) {
+        }
+      });
+    });
+
+    $('.message_body').keypress(function(e) {
+      if (e.keyCode == 13 && !e.shiftKey) {
+        e.preventDefault();
+        $("form[name='messageForm']").submit();
+        $("#chat_room").animate({ scrollTop: $('#chat_room').height()+5000}, 1000);
+      }
+    });
+    $("#chat_room").animate({ scrollTop: $('#chat_room').height()+5000}, 1000);
+    $('.message_body').focus();    
+  });

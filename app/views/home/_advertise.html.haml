@@ -1,0 +1,14 @@
+- if @advertise.present?
+  .container
+    .jquery-bar
+      %span.notification
+        %p.font-style
+          = @advertise.body.gsub("<br>", "").html_safe
+        %p.jquery-arrow.down{:style => "cursor:pointer;"}
+          - if @advertise.close_text.present?
+            = link_to @advertise.close_text, close_advert_path, remote: true
+          - else
+            = link_to close_advert_path, remote: true do
+              %i.fa.fa-times
+    %span.downbar.jquery-arrow{:style => "cursor:pointer;"}
+      %i.fa.fa-times

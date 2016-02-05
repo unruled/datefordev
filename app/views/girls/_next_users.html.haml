@@ -1,0 +1,90 @@
+-#- cache do
+- unless @users.present?
+  -# if current_user.is_girl
+    .container
+      %section
+        .row
+          .col-12
+            %p.alert.alert-info
+              = t("confirm_that_i_am_a_programmer").html_safe
+              %button{ :class => "btn btn-sm btn-primary", :onclick => "location.href='#{programmers_url}';"}
+                %i.fa-bg.fa.fa-terminal
+                %em.message
+                  = t("open_console_version")
+          .col-12
+            %p.clearb
+- else
+  - @users.each_with_index do |user, k|
+    -# // skip hidden users
+    - next if user.hidden?
+    .col-md-2.col-sm-4.col-xs-12
+      %div#portfolio{:class => user.was_recently_active? ? "vip-profile" : ""}
+        .portfolio-item
+          %div.portfolio-link
+            .caption
+              %a{"data-target" => "#portfolio#{user.id}", "data-toggle" => "collapse", :href => show_profile_path(user), "data-remote" => true, :id => "loader", :class => "portfolio-lnk#{user.id}" }                
+                %div.caption-content
+                  - if !user.is_girl && user.skill_id.present?
+                    %i.fa.fa-keyboard-o.fa-4
+                  = "#{user.name}"
+                  %br
+                  %h7= "#{user.user_age} #{I18n.t('years')}"
+                  -#%h8= "#{user.profile_without_about_me}".html_safe
+                  -#- if current_user.is_vip_status?
+                    - user_last_seen = user.current_sign_in_at ? time_difference(user.current_sign_in_at.utc) : "-"
+                    %h6= t("last_seen", seen_date: user_last_seen)
+                  -#- else
+                    %a{"data-target" => "#vipModal", "data-toggle" => "modal", :href => "javascript:void(0)", :title => "#{t('invite_friends_to_increase_vip_status')}"}
+                      %h6= t("last_seen", seen_date: "*****")
+                    
+    
+
+            .img-user
+
+              .box-icon-top-left-small
+                -# link to open in new window
+                %a{:href => profile_show_url(user.id), :title => t("open_in_new_window"), :target => "_blank"}
+                  %i.fa.fa-external-link.fa-1x.fa-icon-highlighted
+            
+              -# // adding like/dislike icons
+              .box-icon-top-right
+                = render :partial => "users/favorite_icon", :locals => { :user => user, :full_profile => false }                   
+
+              - unless user.avatar.url(:medium) == "/noimage.gif"
+                = image_tag user.avatar(:medium), :id => "img-responsive", :class=> "img_off", alt: user.name, lazy: true
+              - else
+                = image_tag user.random_image, :id => "img-responsive", :class=> "img_off", alt: user.name, lazy: true
+          -#.user-detail
+            .text-center
+              %strong
+                -# if user.online?
+                  =# image_tag("online.png", title: t("online"), width: "12", height: "12")
+                -# else
+                  =# image_tag("offline.png", title: t("offline"), width: "12", height: "12")
+                - if !user.is_girl && user.skill_id.present?
+                  %i.fa.fa-keyboard-o.fa-2
+                = "#{user.name}, #{user.user_age} #{I18n.t('years')}"
+                %br.text-center
+              = "#{user.profile_without_about_me}".html_safe
+            .text-center
+              %a
+                %strong
+                  = t("matching_ratio", ratio: @ratio_hash[user.id])
+    -#- cache do
+    .col-lg-12.collapse{:id => "portfolio#{user.id}", "aria-expanded" => "false"}
+    =# render :partial => "girls/show_profile", :locals => { :user => user, :profile_image => profile_image, :chat => true, :tips => @tips}
+  .clearb
+  .next-scroll
+    = link_to 'next', next_users_path(:page => (params[:page].to_i + 1), :age => params[:age], :avatar => params[:avatar], :country => params[:country], :city => params[:city], :is_age => params[:is_age], :is_country => params[:is_country], :is_city => params[:is_city], :programmer => params[:programmer]), :remote => true, :class => "feed-next"
+  
+  :javascript
+    $("img.img_off").lazyload({
+      effect : "fadeIn",
+      effectTime: 5000
+    });
+    $("img.img_off").removeClass("img_off");  
+  
+  :javascript
+    $('.feed_jscroll').jscroll({
+      nextSelector: 'a.feed-next:last'
+    });      

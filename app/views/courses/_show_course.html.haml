@@ -1,0 +1,202 @@
+-# // get number of levels passed already
+- if current_user
+  - course_info = current_user.get_course_info(course.id)
+- else
+  - course_info = [false, 0, 0]
+  
+- is_completed = course_info[0]
+- total_levels = course_info[1]
+- passed_levels = course_info[2].present? ? course_info[2] : 0
+
+.row
+  .col-lg-12.form-inline 
+    .col-lg-3.pull-left
+      -# show back button if no close button required
+      - unless defined? @close_btn_visible && !current_user
+        = link_to girls_path, :class => "btn btn-primary btn-sm", :id => "loader", "data-no-turbolink" => true do
+          %i.fa.fa-chevron-circle-left.fa-inverse
+          = t("back")
+    
+    .col-lg-4.pull-left
+    
+      = link_to course_course_levels_path(course.id), :class => 'btn btn-primary' do
+        %i.fa.fa-lg.fa-inverse.fa-play
+        
+        -# // if haven't yet started the course
+        - if passed_levels == 0
+          = t("take_this_course")
+        - else 
+          -# // continue the course
+          = t("click_here_and_pass_course")
+
+    - right_class = (defined? @close_btn_visible) ? 'col-lg-4': 'col-lg-5'
+    %div{ :class => "#{right_class}"}
+      - if passed_levels > 0
+        -# // display info that the course was passed
+        %h7.pull-left.text-muted=t('you_have_completed_levels', total_levels: total_levels, passed_levels: passed_levels)
+  
+      - if !@mobile_or_tablet_request
+        -# // sharing toolbox
+        %div.pull-right.addthis_sharing_toolbox{ "data-url" => "#{request.original_url}", "data-title" => "#{course.title}"}
+        
+    - if defined? @close_btn_visible
+      .col-lg-1.pull-right
+        %button.btn-primary.close{'data-target' => @close_btn_target, "aria-hidden" => "true", :type => "button", "data-dismiss" => "modal", 'data-toggle' => "collapse"}
+          %i.fa.fa-times.fa-2
+
+-# // now the course details    
+
+- course_instructor = course.get_instructor_user
+.row
+  .col-lg-12
+    .col-lg-3
+      .align-left
+        .user-name.text-center
+          = course.title
+        .img-user.profile-img
+          - img_title = ""
+          - if passed_levels == 0
+            - img_title = t("take_this_course")
+          - else 
+            -# // continue the course
+            - img_title = t("click_here_and_pass_course")
+        
+          %a{:href => course_course_levels_path(course.id), :title => img_title }
+            - if course.avatar_attached?
+              -# //  showing the avatar of the course
+              = image_tag course.avatar(:medium), :id => "img-responsive", alt: course.title
+            - else 
+              = image_tag course_instructor.avatar(:medium), :id => "img-responsive", alt: course.title
+              -# // showing the avatar of the course
+              
+            
+        -#= link_to profile_show_url(course_instructor.id), :title => course_instructor.name do
+
+        - unless course_instructor.avatar.url(:thumb) == "/noimage.gif"
+          = link_to profile_show_url(course_instructor.id), :title => course_instructor.name do
+            .img-user
+              - unless course_instructor.avatar.url(:thumb) == "/noimage.gif"
+                = image_tag course_instructor.avatar(:thumb), :id => "img-responsive",  alt: course_instructor.name
+        - else
+          = link_to profile_show_url(course_instructor.id), :title => course_instructor.name do
+            = t("author")
+            = ": "
+            = course_instructor.name
+
+        - if current_user
+          = link_to show_messages_path(course_instructor.id, :message_id => ''), :id => "loader", :remote => true, :class => "btn btn-primary", :onclick => "track_google_analytics('chat_open', '#{current_user.referral_code}')" do
+            %i.fa.fa-weixin.fa-lg.fa-inverse
+            = t('ask_author_for_help')
+
+
+    %br
+    .col-lg-9.container
+      %table.table-bordered.table-condensed.table-responsive.col-lg-12
+        %tr
+          %td.col-lg-1
+            %div= t("description")
+          %td
+            = course.description.html_safe
+            -# // listing course levels
+            %ul
+              - course.course_levels.each do |level|
+                %li
+                  = level.title
+        -#%tr
+          %td
+            %div= t("author")
+          %td
+            .pull-left
+              - unless course_instructor.avatar.url(:thumb) == "/noimage.gif"
+                = link_to profile_show_url(course_instructor.id), :title => course_instructor.name do
+                  .img-user
+                    - unless course_instructor.avatar.url(:thumb) == "/noimage.gif"
+                      = image_tag course_instructor.avatar(:thumb), :id => "img-responsive",  alt: course_instructor.name
+              - else
+                = link_to profile_show_url(course_instructor.id), :title => course_instructor.name do
+                  = course_instructor.name
+                  = ' - '
+                  = t('view_profile')
+                  
+        %tr
+          %td= t("technologies")
+          %td= course.technology_list.join(',')
+  
+        %tr
+          %td= t("levels")
+          %td= course.course_levels.count
+        %tr
+          %td{:colspan => '2'}= t("members_of_the_course")
+          
+          
+        %tr
+          %td{:colspan => '2'}
+            %table.table.col-lg-12.table-hover
+              - completed_and_other_users = course.completed_and_other_users.limit(12)
+              - if completed_and_other_users.present?
+                -# // list members of the course
+                - completed_and_other_users.each do |user|
+                  -# // skip the author of the course in the list of members
+                  - if course_instructor.id == user.id 
+                    - next 
+                  - course_info = user.get_course_info(course.id)
+                  - is_completed = course_info[0]
+                  - total_levels = course_info[1]
+                  - passed_levels = course_info[2]
+                  %tr.col-lg-12
+                    %td.col-lg-6
+                      .pull-left
+                        - unless user.avatar.url(:thumb) == "/noimage.gif"
+                          %a{:href => profile_show_url(user.id), :title => user.name, :target => "_blank"}
+                            .img-user
+                              - unless user.avatar.url(:thumb) == "/noimage.gif"
+                                = image_tag user.avatar(:thumb), :id => "img-responsive",  alt: user.name
+                        = link_to user.name, profile_show_url(user.id), :title => user.name
+      
+                    %td.col-lg-4
+                      .pull-left
+                        - if is_completed
+                          %i.fa.fa-check-circle.text-success
+                          %h7.text-success=t('has_completed_course')
+                        - else 
+                          %i.fa.fa-spinner.text-primary
+                          %h7.text-primary=t('has_completed_levels', total_levels: total_levels, passed_levels: passed_levels)
+
+                      %td.col-lg-2
+                        - if current_user
+
+                          -# // disabled checking for vip status and allowing unlim chats  
+                          -#- if current_user.is_vip_status? or !@message_users_hash.present? or @message_users_hash.count <= vip_status_max_contacts
+
+                          - if true
+                            = link_to show_messages_path(user.id, :message_id => ''), :id => "loader", :remote => true, :class => "btn-primary btn-sm pull-right", :onclick => "track_google_analytics('chat_open', '#{current_user.referral_code}')" do
+                              %i.fa.fa-weixin.fa-lg.fa-inverse
+                              = t("ask_for_help")
+                          - else
+                            %a{"data-target" => "#vipModal", "data-toggle" => "modal", :href => "javascript:void(0)", :title => "#{t('invite_friends_to_increase_vip_status')}", :onclick => "track_google_analytics('invite', '#{current_user.referral_code}')", :class => "btn-primary btn-sm pull-right"}
+                              %i.fa.fa-weixin.fa-lg.fa-inverse
+                              = t("ask_for_help")
+                        - else 
+                          = link_to profile_show_url(user.id), :class => "btn-primary btn-sm pull-right", :onclick => "track_google_analytics('chat_open', '')" do
+                            %i.fa.fa-weixin.fa-lg.fa-inverse
+                            = t("ask_for_help")
+                          
+                    
+
+                  -# // show "show more" link
+                  - if completed_and_other_users.length > 12
+                    %tr
+                      %td{:colspan => '2'}
+                      - if completed_and_other_users.present?
+                        = link_to t("click_to_show_all_users"), course_users_path(course.id), :title => t("click_to_show_all_users"), :class => "pull-right"                  
+                          
+              - else
+                %tr
+                  %td
+                    = link_to course_course_levels_path(course.id), :class => 'btn btn-primary' do
+                      %i.fa.fa-lg.fa-inverse.fa-play
+                      =t("no_one_has_tried_this_course")
+                  
+                  
+                  
+  

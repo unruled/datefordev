@@ -1,0 +1,84 @@
+.row
+  .col-lg-12
+    .panel.with-nav-tabs.panel-primary
+      .panel-heading
+        %ul#profileTabs.nav.nav-tabs
+          %li.active
+            %a{"data-toggle" => "tab", :href => "#technology"}
+              %i.fa-bg.fa.fa-eye
+              = t("technologies_you_know")
+          %li
+            %a{"data-toggle" => "tab", :href => "#completed-courses"}
+              %i.fa-bg.fa.fa-lock
+              = t("courses_you_completed")
+          %li
+            %a{"data-toggle" => "tab", :href => "#created-courses"}
+              %i.fa-bg.fa.fa-key                
+              = t("courses_you_created")
+
+      
+      
+      #myTabContent.tab-content
+        #technology.tab-pane.fade.in.active
+          .row
+            .col-lg-12
+              - technologies = current_user.technology_list
+              - if technologies.present?
+                %ul
+                  - technologies.each do |technology|
+                    %li
+                      %p= technology
+              - else
+                %p=t("no_records_found")
+
+        #completed-courses.tab-pane.fade
+          .row
+            .col-lg-12
+              - courses = current_user.courses
+              - if courses.present?
+                %ul
+                  - courses.each do |course|
+                    - course_info = current_user.get_course_info(course.id)
+                    - is_completed = course_info[0]
+                    - total_levels = course_info[1]
+                    - passed_levels = course_info[2]                       
+                    - if is_completed
+                      %li
+                        %p
+                          = link_to course.title, course_path(course)
+                          = ' - '
+                          = t("has_completed_course")
+              - else
+                %p=t("no_records_found")  
+
+        #created-courses.tab-pane.fade
+          .row
+            .col-lg-12
+              - if current_user.is_instructor
+                - created_courses = current_user.instructor_courses
+                .col-lg-12
+                  .form-group
+                    %label
+                      = link_to t("create_course"), new_user_course_path, :class => "btn btn-info btn-sm", "data-no-turbolink" => true
+                - if created_courses.present?
+                  .col-lg-12
+                    %table{:class => "table table-striped"}
+                      %tr
+                        %th{:width => "70%"}= t("title")
+                        %th{:width => "30%"}= t("approved")
+                      - created_courses.each do |course|
+                        %tr
+                          %td= link_to course.title, edit_user_course_path(course)
+                          %td{:width => "30%"}= image_tag (course.is_approved ? 'checkmark.png' : 'delete.png')
+                - else
+                  %p=t("no_records_found")
+              - else
+                .form-group 
+                  .col-lg-9
+                    %p=t("you_do_not_have_rights_to_create_courses")
+                  .col-lg-3
+                    = link_to t("request_to_create_course"), request_create_course_user_path, :remote => true, :data => { :confirm => t("are_you_sure") }, :class => "btn btn-info btn-sm"
+                .form-group 
+                  .col-lg-12
+                    #success-msg
+

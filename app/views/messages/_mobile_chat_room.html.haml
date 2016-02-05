@@ -1,0 +1,6 @@
+- if @sender.present?
+  - if @sender == current_user
+    = "<span class='label label-primary'>#{t('me')}</span> #{@sender_message.body} - <span class='text-muted'><small>#{time_difference(@sender_message.created_at)}</small></span>".html_safe
+  - else  
+    = "<span class='label label-success'>#{@sender.name}</span> #{@sender_message.body} - <span class='text-muted'><small>#{time_difference(@sender_message.created_at)}</small></span>".html_safe
+  %br

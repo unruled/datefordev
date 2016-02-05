@@ -1,0 +1,33 @@
+- if current_user
+  -# // if rendering full profile
+  -# // see also like_dislike.js.erb
+  - if full_profile 
+    - like_id = "profile_like_#{user.id}"
+    - if current_user.liked? user    
+      = link_to like_dislike_user_path(:id => user.id, :full_profile => full_profile), :remote => true, class: "btn btn-sm btn-primary", :id => like_id, :title => t("favorite") do
+        %i.fa.fa-heart.fa-1x.text-danger
+        =t("favorite")
+        - if current_user.moderator?
+          = user.get_likes.size
+        
+    - else
+      = link_to like_dislike_user_path(:id => user.id, :full_profile => full_profile), :remote => true, class: "btn btn-sm btn-primary", :id => like_id, :title => t("favorite")  do
+        %i.fa.fa-heart-o.fa-1x
+        =t("favorite")      
+        - if current_user.moderator?      
+          = user.get_likes.size
+  - else
+    -# // embedded shorten version 
+    - like_id = "like_#{user.id}"
+    - if current_user.liked? user    
+      = link_to like_dislike_user_path(:id => user.id, :full_profile => full_profile), :remote => true, :id => like_id, :title => t("favorite") do
+        %i.fa.fa-heart.fa-4x.text-danger
+        - if current_user.moderator?
+          = user.get_likes.size
+        
+    - else
+      = link_to like_dislike_user_path(:id => user.id, :full_profile => full_profile), :remote => true, :id => like_id, :title => t("favorite") do
+        %i.fa.fa-heart-o.fa-4x.fa-icon-highlighted
+        - if current_user.moderator?      
+          = user.get_likes.size
+  

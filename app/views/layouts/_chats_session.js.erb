@@ -1,0 +1,34 @@
+<% chats = JSON.parse(session[:chats]) %>
+
+<% if chats.present? %>
+	<script type="text/javascript">var client = new Faye.Client("<%= FAYE_URL %>/faye");</script>
+	<% chats.each do |id, recipient_name| %>
+		<div id="div_update_chat_<%= id %>"></div>
+		<% @messages = current_user.received_or_sent_messages_user(id).includes(:sender, :recipient).order("id desc").paginate(:per_page => 100,:page => 1).reverse %>
+		<script type="text/javascript">
+			chatWith("<%= id %>", "<%= id %>", "<%= current_user.id %>", "<%= recipient_name %>");
+			$("#chatbox_<%= id %> .chatboxcontent").html("<%= escape_javascript(render("messages/show_chat")) %>");
+			
+			<% @recipient = User.find_by_id(id) %>
+
+			<% if @recipient.present? %>
+			
+				//$("#div_update_chat_<%= @recipient.id %>").html("<%= escape_javascript(render(:partial => "messages/chat_profile", :locals => {:recipient => @recipient})) %>")
+			
+				$(function() {
+				  var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
+				  var public_subscription = client.subscribe('/messages/public/<%= current_user.id.to_s %>/<%= id.to_s %>', function(data) {
+				    $.ajax({
+				      url:"/chat_room?authenticity_token="+AUTH_TOKEN,
+				      type: "POST",
+				      data:  ({ message_id: data["message_id"] }),
+				      success:function(data) {
+				      }
+				   });
+				  });  
+				});
+
+			<% end %>
+		</script>	
+	<% end %>
+<% end %>

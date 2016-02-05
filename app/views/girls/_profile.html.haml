@@ -1,0 +1,132 @@
+= form_for current_user, :url => save_profile_path, :method => :post, :remote => true, :html => { :id => "avatar_form", :class => "form-horizontal",  :multipart => true } do |f|
+  = hidden_field_tag :authenticity_token, form_authenticity_token
+  .row
+    .col-lg-12
+    
+      .form-group 
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("choose_photo")
+        .col-sm-9
+          %p
+            %span.label.label-default= t("avatar_size_and_format")
+          .fileUpload.btn.btn-primary
+            %span= t("choose_photo")
+            %input#avatar.upload{:type => "file", :name => "user[avatar]"}/
+          - if current_user.avatar.present?
+            .clearb &nbsp;
+            .photo-instruction
+              = link_to t("how_to_make_photo_profile"), "javascript:void(0)", "data-toggle" => "modal", "data-target" => "#myModal"
+            .clearb &nbsp; 
+            .image-fixer                 
+              = image_tag current_user.avatar(:medium), :id => "avatar_thumb", :alt => '', :class => "img-responsive"
+          - else
+            .clearb &nbsp;
+            .right
+              = link_to t("how_to_make_photo_profile"), "javascript:void(0)", "data-toggle" => "modal", "data-target" => "#myModal"
+            .clearb &nbsp;
+            .wrapper-img
+              %div
+                = image_tag "noimage.gif", :id => "avatar_thumb", :width => "256", :height => "256", :alt => t("upload_your_photo"), :title => t("upload_your_photo"), :class => "img-responsive"
+              .desc_content=t("upload_your_photo")
+            
+          #image-loader{:style => "display:none;"}
+            = image_tag "loader.gif"
+            = t("uploading_please_wait")
+          .photo-save-msg#photo-success{:style => "display:none;"}
+            %p.alert-success= t("photo_uploaded_successfully")
+          .photo-save-msg#photo-error-type-msg
+            %p.alert-warning= t("avatar_error_type_msg")
+          .photo-save-msg#photo-error-size-msg
+            %p.alert-warning= t("avatar_error_size_msg")
+    
+
+= form_for current_user, :url => save_profile_path, :method => 'post', :html => {:id => "profileForm", :class => "form-horizontal",  :multipart => true, :remote => true, :novalidate => "" } do |f|
+  = hidden_field_tag :authenticity_token, form_authenticity_token
+  .row
+    .col-lg-12
+      .form-group
+        %label.col-sm-3.control-label{:for => "inputEmail3"} 
+          = t("profile_username")
+        .col-sm-9
+          %input#required.form-control{"data-validation-required-message" => t("required"), :placeholder => t("profile_username"), :type => "text", :value => "#{current_user.username}", :name => "user[username]"}
+          %p.help-block.text-danger
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("select_gender")
+        .col-sm-9
+          %select#required.form-control{ "data-validation-required-message" => t("required"), :name => "user[gender]" }
+            %option{:value => ""}= t("select_a_gender")
+            - if current_user.gender == 1
+              %option{:value => 1, :selected => "selected"}= t("male")
+            - else
+              %option{:value => 1}= t("male")
+              
+            - if current_user.gender == 2
+              %option{:value => 2, :selected => "selected"}= t("female")
+            - else
+              %option{:value => 2}= t("female")
+          %p.help-block.text-danger              
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("looking_for")
+        .col-sm-9
+          %select#required.form-control{ :name => "user[looking_for]" }
+            %option{:value => ""}= t("select_a_gender")
+            - if current_user.looking_for == 1
+              %option{:value => 1, :selected => "selected"}= t("male")
+            - else
+              %option{:value => 1}= t("male")
+              
+            - if current_user.looking_for == 2
+              %option{:value => 2, :selected => "selected"}= t("female")
+            - else
+              %option{:value => 2}= t("female")              
+          %p.help-block.text-danger              
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_age")
+          - age = current_user.user_age
+        .col-sm-9
+          %input#age.form-control#required{"data-validation-required-message" =>  t("required"), :placeholder => t("profile_age"), :required => "", :type => "textl", :value => "#{age}", :name => "user[age]"}/
+          %p.help-block.text-danger
+      .form-group
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_city")
+        .col-sm-9
+          %input#city.form-control{:placeholder => t("profile_city"), :required => "", :type => "textl", :value => "#{current_user.city}", :name => "user[city]"}/
+          %p.help-block.text-danger
+          
+      .form-group    
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_country")
+        .col-sm-9
+          = country_select("user", "country", locale: I18n.locale, selected: (current_user.country.present? ? current_user.country : (I18n.locale =="ru" ? "RU" : "US")))
+          %p.help-block.text-danger              
+
+      .form-group 
+        %label.col-sm-3.control-label{:for => ""} 
+          = t("profile_about_me")
+        .col-sm-9
+          %textarea#about_me.form-control{:placeholder => t("profile_about_me"), :required => "", :rows => "5", :name => "user[about_me]"}
+            = current_user.about_me
+          %p.help-block.text-danger
+
+      .form-group
+        %label.col-sm-3.control-label{:for => "inputEmail3"} 
+          = t("technologies")
+        .col-sm-9
+          = f.autocomplete_field :technology_list, autocomplete_tag_name_girls_path, :value => current_user.technology_list, :class => "form-control", :multiple => true, 'data-delimiter' => ','        
+
+      .form-group 
+        .col-sm-9.col-sm-offset-3
+          %p.help-block.text-danger#error-profile
+          %p.help-block.text-success#notice-profile
+      .form-group 
+        .col-sm-9.col-sm-offset-3
+          .col-sm-3
+            %button.btn.btn-primary{:type => "submit", :id => "contact-btn", :onclick => "$('#loader-image').show()"}= t("update")
+          .col-sm-3
+            %div{style: "display:none;", id: "loader-image", class: ""}
+              = image_tag "loader.gif"
+  
+  = render :partial => "photo_instruction"

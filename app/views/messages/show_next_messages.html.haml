@@ -1,0 +1,5 @@
+- if @messages.present?
+  .left.txt-left
+    - @messages.each_with_index do |message, k|
+      = "<strong>#{message.body}</strong> - <i>#{time_difference(message.created_at)}</i>".html_safe
+      %br

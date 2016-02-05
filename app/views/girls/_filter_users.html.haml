@@ -1,0 +1,27 @@
+.row#profile
+  .col-md-12
+    = render :partial => "filter"
+.row#dashboard-header
+  .col-md-12.text-center
+    #profiles-header
+      = t("found_matches", count: (@users.nil? ? 0 : @users.count), total: @total_users_count)
+      %strong= "#{t('filter_by')} #{@filter_by}" if @filter_by.present?
+
+.row
+  .col-md-12
+    .col-sm-2
+      -#= render :partial => "filter"
+      .clearb
+    .col-lg-12
+      %div.text-center
+        .h5.text-muted=t("courses")
+    #filter_courses
+      = render :partial => "courses/all_courses", :locals => {:modal => false}
+    .col-lg-12
+      %div.text-center
+        .h5.text-muted=t("people")
+    #filter_users
+      = render :partial => "all_users"
+    -# unless mobile_request? || tablet_request?
+    .col-sm-2
+      = render :partial => "girls/messages/index"

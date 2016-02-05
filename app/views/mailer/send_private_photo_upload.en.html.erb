@@ -1,0 +1,18 @@
+<p>Hi <%= @user.name %>,</p>
+
+<p>Private profiles are designed to make it easier to share more photos and more about yourself with people you like!</p>
+
+<p>Adding new photos to your private profile and filling it takes a few minutes:</p>
+
+<p>
+	<%= link_to "Click here to open your private profile and upload a new photo.", notification_confirmation_url(@user.notification_token, 'yes') %>
+</p>
+
+<p>P.S.: If you are having issues with the service then don't heistate to drop us a line at <a href="mailto:support@demo.com?subject=Need%20Help">support@demo.com</a>.</p>
+
+<p>thanks,<br />
+DateProg Team.</p>
+
+<p style="font-size: 10px;">
+	this email was sent from unmonitored address. <%= link_to "to unsubscribe from these notifications please click here", notification_confirmation_url(@user.notification_token, 'stop') %>
+</p>

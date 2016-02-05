@@ -1,0 +1,25 @@
+.container
+  .row 
+    .col-lg-12.text-center
+      %h1= t("login_with")
+      = render "devise/shared/auth_links"
+      %div{:id => "u-login-id", :style => "display:none;"}
+        #uLogin6866fb94{"data-ulogin"=>"display=panel;fields=first_name,last_name,email, gender;providers=vkontakte,odnoklassniki,mailru,google;hidden=instagram,yandex,livejournal,openid,lastfm,liveid,soundcloud,steam,flickr,uid,youtube,webmoney,foursquare,tumblr,googleplus,dudu,vimeo,wargaming;redirect_uri;callback=uLoginFun"}"}
+    %script{:src => "//ulogin.ru/js/ulogin.js"}
+    %br
+    %br          
+  .row
+    .col-lg-12.text-muted.text-center
+      ="-- #{t("or")} --" 
+
+  .row
+    .sign-in-sign-up
+      .col-md-5.col-md-offset-1
+        = render :partial => "sign_up"
+      .col-md-5.col-md-offset-0 
+        = render :partial => "sign_in"
+        
+  .row 
+    .col-lg-12.text-center.text-muted
+      .clearb &nbsp;
+      %p= link_to t("sign_up_terms_and_privacy"), static_page_path("terms"), :target=>"_blank"    

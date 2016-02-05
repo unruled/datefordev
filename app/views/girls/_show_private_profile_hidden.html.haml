@@ -1,0 +1,49 @@
+- cache user do
+  - private_profile_filled = current_user.is_private_profile_filled?
+  - user_detail = user.user_detail
+  - user_detail = user_detail ? user_detail : UserDetail.new 
+  - field_id = 0
+  .table-responsive
+    %table.table.table-bordered
+      %tr
+        %td.col-lg-3= t("profile_from")
+        %td= render :partial => "girls/hidden_field_link", :locals => {user: user, :field_id => 1, :private_profile_filled => private_profile_filled}
+      %tr
+        %td= t("profile_fav_movie")
+        %td= render :partial => "girls/hidden_field_link", :locals => {user: user, :field_id => 2, :private_profile_filled => private_profile_filled}
+      %tr
+        %td= t("profile_last_movie")
+        %td= render :partial => "girls/hidden_field_link", :locals => {user: user, :field_id => 3, :private_profile_filled => private_profile_filled}
+      %tr
+        %td= t("profile_last_book")
+        %td= render :partial => "girls/hidden_field_link", :locals => {user: user, :field_id => 4 , :private_profile_filled => private_profile_filled}
+      %tr
+        %td= t("profile_fav_singer")
+        %td= render :partial => "girls/hidden_field_link", :locals => {user: user, :field_id => 5, :private_profile_filled => private_profile_filled}
+      %tr
+        %td= t("profile_make_laugh")
+        %td= render :partial => "girls/hidden_field_link", :locals => {user: user, :field_id => 6, :private_profile_filled => private_profile_filled}
+      %tr
+        %td= t("profile_make_cry")
+        %td= render :partial => "girls/hidden_field_link", :locals => {user: user, :field_id => 7, :private_profile_filled => private_profile_filled}
+      %tr
+        %td= t("profile_like_animals")
+        %td= render :partial => "girls/hidden_field_link", :locals => {user: user, :field_id => 8, :private_profile_filled => private_profile_filled}
+      %tr
+        %td= t("profile_my_dream")
+        %td= render :partial => "girls/hidden_field_link", :locals => {user: user, :field_id => 9, :private_profile_filled => private_profile_filled}
+
+      %tr
+        %td= t("profile_like_live")
+        %td= render :partial => "girls/hidden_field_link", :locals => {user: user, :field_id => 10, :private_profile_filled => private_profile_filled}
+      %tr
+        %td= t("profile_skype_name")
+        %td= render :partial => "girls/hidden_field_link", :locals => {user: user, :field_id => 11, :private_profile_filled => private_profile_filled}
+      %tr
+        %td= t("profile_facebook_link")
+        %td= render :partial => "girls/hidden_field_link", :locals => {user: user, :field_id => 12, :private_profile_filled => private_profile_filled}
+      %tr
+        %td= t("profile_social_network_links")
+        %td= render :partial => "girls/hidden_field_link", :locals => {user: user, :field_id => 13, :private_profile_filled => private_profile_filled}
+
+

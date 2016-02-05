@@ -1,0 +1,30 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}/
+    %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}/
+    %meta{:content => "", :name => "description"}/
+    %meta{:content => "", :name => "author"}/
+    = favicon_link_tag 'demo.ico'
+    %title= content_for?(:page_title) ? yield(:page_title) + " | " + t('date_a_programmer')  : t('date_a_programmer')
+    = stylesheet_link_tag 'girl', media: 'screen'
+    = javascript_include_tag 'application'
+    %script{:src => "#{FAYE_URL}/faye/faye.js"}
+    = csrf_meta_tags
+  %body#page-top.index.cbp-spmenu-push
+    = render :partial => "layouts/girl_header"
+    %div{style: "display:none;", id: "main-loader-image"}
+      = image_tag 'loader.gif'
+    - flash.each do |name, msg|
+      .container
+        %section.paddingBottom0
+          = content_tag :div, msg, :id => "flash_#{name}", :class => "alert alert-info"
+    %section.wrapper
+      - if controller_name == "girls" && action_name == "index"
+        = render :partial => "home/advertise"
+      - unless controller_name != "course" || controller_name != "course_levels"
+        = render :partial => "layouts/notifications"    
+      .container-fluid
+        = yield
+    = render :partial => "layouts/girl_footer"

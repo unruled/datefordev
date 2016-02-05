@@ -1,0 +1,30 @@
+$("#filter_users").html("<%= escape_javascript(render("all_users")) %>");
+
+$("#profiles-header").html("<%= t('found_matches', count: @users.count, total: @total_users_count) %>");
+
+<% if @filter_by.present? %>
+	$("#profiles-header").append(" <strong><%= "#{t('filter_by')} #{@filter_by}" %></strong>");
+<% end %>
+
+<%# if current_user.filter_on? %>
+	//$("#notify_on_off").html("<%= escape_javascript(render("notify_on_off")) %>");
+<%# else %>
+	//$("#notify_on_off").html("");
+<% #end %>
+
+$('#notify-profile').change(function() { 
+	$.ajax({
+	  url: "/notify_profile",
+	  cache: false,
+	  success: function(data) {}
+	}); 		
+});
+
+
+$("#loader-image").hide();
+$("img.img_off").lazyload({
+  effect : "fadeIn",
+  effectTime: 300
+});
+      
+$("img.img_off").removeClass("img_off");

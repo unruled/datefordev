@@ -1,0 +1,88 @@
+.pull-right
+  = link_to new_user_course_path, :class => '', :title => t('add_course'), "data-no-turbolink" => true do
+    %i.fa.fa-plus
+    = t('add_course')
+  
+  &nbsp;
+  
+  -# // link to how to create a course course
+  -# // TODO: add check for EN/RU locale and change the link to the course accordingly
+  = link_to "/courses/18", :class => '', :title => t('how_to_create_a_course'), "data-no-turbolink" => true do
+    %i.fa.fa-question
+    = t('how_to_create_a_course')
+
+
+
+.col-lg-12.all-users{"id" => "all_users_group"}
+  - if @all_courses.present?
+    %div.clearb{:id => (modal ? "course_jscroll" : "user_course_jscroll")}
+      - @all_courses.each do |course|
+        .col-md-2.col-sm-4.col-xs-12
+          %div#portfolio{:class => ""}
+            .portfolio-item
+              -#- if modal
+                %a{:href => course_url(course.id), :title => t("open_in_new_window"), :target => "_blank"}
+                  .text-right
+                    %i.fa.fa-external-link.fa-4
+              -#%a.portfolio-link{:href => href, "data-remote" => true, "data-target" => "#portfolio#{course.id}", "data-toggle" => "collapse"}              
+              %a.portfolio-link{:href => course_url(course.id)}
+                -#.caption-visible
+                  = "#{course.title}"
+                .caption
+                  .caption-content
+                    = "#{course.title}"
+                    %br
+                    %h6= "(#{course.technology_list.join(',')})" if course.technology_list.present?
+
+                .img-user
+                  - if current_user
+                    - course_info = current_user.get_course_info(course.id)
+                  - else
+                    - course_info = [false, 0, 0]
+                  
+                  - is_completed = course_info[0]
+                  - total_levels = course_info[1]
+                  - passed_levels = course_info[2]    
+                  
+                  -#= image_tag "box-icon.png", :class => "box-icon-top-right", :title => t("completed") if course_arr[0] and course_arr[1]
+
+                  -# // add the checkbox at the right top in case the course is completed by the current user
+                  - if is_completed
+                    %i.fa.fa-check.fa-4x.fa-inverse.box-icon-top-right
+
+                  - if course.avatar_attached?
+                    -# //  showing the avatar of the course
+                    = image_tag course.avatar(:medium), :id => "img-responsive", alt: course.title, class: "img_off", lazy: true              
+                  - else 
+                    -# // showing the avatar of the instructor
+                    - course_instructor = course.get_instructor_user
+                    = image_tag course_instructor.avatar(:medium), :id => "img-responsive", alt: course.title, class: "img_off", lazy: true
+
+      .clearb
+      .next-scroll.right
+        = link_to t("more"), next_courses_path(:page => 2, :modal => modal), :remote => true, :class => "course-next"
+
+    - if modal
+      :javascript
+        $('#course_jscroll').jscroll({
+          nextSelector: 'a.course-next:last'
+        });
+    - else
+      :javascript
+        $('#user_course_jscroll').jscroll({
+          nextSelector: 'a.course-next:last',
+          autoTrigger: false
+        });
+  - else
+    %h4=t("no_any_course_found")
+
+  - lazyload_placholder = image_url('gray.gif')
+
+  :javascript
+    $("img.img_off").lazyload({
+      effect : "fadeIn",
+      effectTime: 1000
+    });
+    $("img.img_off").removeClass("img_off");    
+    
+

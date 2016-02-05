@@ -1,0 +1,20 @@
+.signin-header
+  %h4.text-center.login-title= t("sign_up_with_email").html_safe
+.account-wall
+  -#%p Sorry, the registration is closed since May 2, 2015. Only previously registered users may access the site.
+  -#= image_tag "login_icon.png", :class => "profile-img"
+  = form_for(@user, :url => session_path(@user), :html => { :role => 'form', :class => "form-signin"}, authenticity_token: true) do |f|
+    -#= hidden_field_tag :authenticity_token, form_authenticity_token
+    - if params[:sign_up].present?
+      .form-group
+        - flash.each do |name, msg|
+          = content_tag :div, msg, :id => "flash_#{name}", :class => "alert alert-info"
+    .form-group
+      = f.text_field :username, :autofocus => true, class: 'form-control', :placeholder => t("your_name"), :value => session[:username]
+      .clearb &nbsp;        
+      = f.email_field :email, :autofocus => true, class: 'form-control', :placeholder => t("email"), :value => session[:email]
+      .clearb &nbsp;  
+      = f.password_field :password, class: 'form-control',  :placeholder => t("password")
+      = f.hidden_field "sign_up", :value => "sign_up", :name => "sign_up"
+    .form-group
+      = f.submit t("sign_up"), :class => 'btn btn-primary', :data => {:disable_with => "creating new account..."}

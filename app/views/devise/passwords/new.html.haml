@@ -1,0 +1,13 @@
+.container
+  .row
+    .col-sm-6.col-md-4.col-md-offset-4
+      .account-wall
+        %h1.text-center.login-title= t("forgot_pass").html_safe
+        - if resource.errors.any?
+          .alert.alert-warning
+            = devise_error_messages!
+        = form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => "post", :class => "form-signin"}) do |f|
+          = f.email_field :email, autofocus: true, class: 'form-control',  :placeholder => t("email")
+          .clearb &nbsp;
+          = f.submit t("reset_password"), :class => 'btn btn-primary btn-sm', data: { disable_with: "Please wait..." }
+          = link_to t("back"), root_url, :class => 'btn btn-primary btn-sm'

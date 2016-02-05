@@ -1,0 +1,18 @@
+= form_for "", :url => save_profile_notification_path, :method => 'post', :html => {:id => "profileNotificationsForm", :class => "form-horizontal",  :remote => true} do |f|
+  = hidden_field_tag :authenticity_token, form_authenticity_token
+  .row
+    .col-lg-12
+      .form-group       
+        .col-sm-9.col-sm-offset-3
+          = render :partial => "girls/notifications"
+      .form-group 
+        .col-sm-9.col-sm-offset-3
+          %p.help-block.text-success#notice-notification
+      .form-group 
+        .col-sm-9.col-sm-offset-3
+          .col-sm-3
+            %button.btn.btn-primary{:type => "submit", :id => "contact-btn", :onclick => "$('#loader-image-notifications').show()"}= t("update")
+          .col-sm-3
+            %div{style: "display:none;", id: "loader-image-notifications", class: ""}
+              = image_tag "loader.gif"
+  

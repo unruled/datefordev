@@ -1,0 +1,58 @@
+.col-lg-12.btn-toolbar.pull-left
+  = link_to user_jobs_path, :class => "btn btn-primary btn-sm" do
+    %i.fa.fa-inverse.fa-arrow-left
+    = t("back_to_jobs")
+  
+  
+.col-lg-12.container
+  - if (@job.id.present? && !@job.is_published) || (!@job.id.present?)
+    = form_for [:user, @job], :html => { :class => 'form-horizontal form-center' } do |f|
+      = f.hidden_field :user_id, :value => current_user.id      
+  
+      %div.form-group.control-group{:class => "#{@job.errors[:title].any? ? 'error' : ''}"}
+        %label=t("title")
+        = f.text_field :title, :class => "form-control"
+        - if @job.errors[:title].any?
+          %span.text-danger= t(@job.errors[:title].first)
+          
+      %div.form-group.control-group{:class => ""}
+        %label=t("job_description")
+        = f.cktext_area :description, :class => 'form-control', :ckeditor => {:language => I18n.locale, :toolbar => 'dateprog'}
+
+      %div.form-group.control-group{:class => ""}
+        %label=t("job_city")
+        = f.text_field :city, :class => "form-control"
+          
+      %div.form-group.control-group{:class => ""}
+        %label=t("job_country")        
+        = country_select("job", "country", locale: I18n.locale, selected: (@job.country.present? ? @job.country : (I18n.locale =="ru" ? "RU" : "US")))
+
+      %div.form-group.control-group{:class => "#{@job.errors[:avatar].any? ? 'error' : ''}"}
+        %label=t("job_avatar")
+        = f.file_field :avatar, :class => "form-control"
+
+      - if @job.avatar.present?
+        .form-group
+          = image_tag @job.avatar(:medium)
+
+      .control-group.form-group
+        %label=t("technologies_in_this_job")
+        =  f.autocomplete_field :technology_list, autocomplete_tag_name_user_jobs_path, :class => "form-control", :multiple => true, 'data-delimiter' => ','
+
+      .form-group
+        .col-lg-9.btn-toolbar.pull-left
+          = link_to user_jobs_path, :class => "btn btn-primary btn-sm" do 
+            %i.fa.fa-inverse.fa-arrow-left
+            = t("back_to_jobs")
+          
+          = button_tag :type => "submit", :value => t("save"), :class => "btn btn-primary btn-sm pull-left", data: {disable_with: "Please wait.."} do
+            %i.fa.fa-inverse.fa-check
+            = t("save_and_return")
+  
+  - else 
+    .text-muted.text-center
+      = t("waiting_for_approval_by_moderator")
+            
+              
+          
+      

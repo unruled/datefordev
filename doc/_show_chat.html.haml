@@ -1,0 +1,43 @@
+.row
+  .col-lg-12.text-center
+    .right
+      = render :partial => "user_profile"
+    .clearfix      
+    %hr.star-primary/
+.row
+  %div.feed_jscroll_msg
+    .left.txt-left#chat_room.chat_room
+      - if @messages.present?
+        - @messages.each_with_index do |message, k|
+          - sender = message.sender
+          - if sender == current_user
+            = "<i class='name-blue'>#{t('me')}</i>   --  <strong>#{message.body} - </strong><i>#{message.created_at.to_s(:default_date_time)}</i>".html_safe
+          - else  
+            = "<i class='name-green'>#{sender.name}</i>   --  <strong>#{message.body} - </strong><i>#{message.created_at.to_s(:default_date_time)}</i>".html_safe
+          %br
+                
+= render :partial => "chat_box", :locals => { :recipient_id => @recipient.id }
+          
+:javascript
+  $(function() {
+    var public_subscription = client.subscribe("/messages/public/#{current_user.id}/#{@recipient.id}", function(data) {
+      $.ajax({
+        url: "#{chat_room_path}",
+        data: data, 
+        method: "POST",
+        success:function(result){
+          $("#chat_room").animate({ scrollTop: $('#chat_room').height()+5000}, 1000);
+        }
+      });
+    });
+    
+    $('.message_body').keypress(function(e) {
+      if (e.keyCode == 13 && !e.shiftKey) {
+        e.preventDefault();
+        $("form[name='messageForm']").submit();
+        $("#chat_room").animate({ scrollTop: $('#chat_room').height()+5000}, 1000);
+      }
+    });
+    $("#chat_room").animate({ scrollTop: $('#chat_room').height()+5000}, 1000);
+    $('.message_body').focus();             
+  });  

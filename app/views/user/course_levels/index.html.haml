@@ -1,0 +1,30 @@
+-# // rendering chat messages
+= render :partial => "girls/messages/index"
+
+.btn-toolbar.pull-left
+  = link_to user_courses_path, :class => "btn btn-primary btn-sm submit" do
+    %i.fa.fa-inverse.fa-arrow-left
+    = t("back_to_courses")
+
+- if (@course.id.present? && !@course.is_published) || (!@course.id.present?)
+  .col-lg-12.course_levels
+    %h4#course_header
+      = t("course_levels")
+      = " - "
+      = @course.title
+      .btn-toolbar.pull-right
+        = link_to new_user_course_course_level_path, :class => 'btn btn-primary', :title => t('add'), "data-no-turbolink" => true do
+          %i.fa.fa-plus.fa-1x.fa-inverse
+          = t('add_level')          
+
+        = link_to new_user_course_course_level_path(:is_question => true), :class => 'btn btn-primary', :title => t('add'), "data-no-turbolink" => true do
+          %i.fa.fa-plus.fa-1x.fa-inverse
+          = t('add_question')          
+          
+  #div_update
+    = render "fetchAll"
+- else 
+  .text-muted.text-center
+    = t("waiting_for_approval_by_moderator")
+    
+  

@@ -1,0 +1,14 @@
+-# // rendering chat messages
+= render :partial => "girls/messages/index"
+
+.col-lg-12.job-header
+  %h4#job_header
+    = t("edit_your_jobs")
+    .btn-toolbar.pull-right
+      = link_to new_user_job_path, :class => 'btn btn-primary', :title => t('add'), "data-no-turbolink" => true do
+        %i.fa.fa-plus.fa-1x.fa-inverse
+        %i.fa.fa-bars.fa-1x.fa-inverse
+        = t('add_job')
+        
+#div_update
+  = render "fetchAll"

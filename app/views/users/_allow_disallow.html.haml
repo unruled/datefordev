@@ -1,0 +1,4 @@
+- if @profile_access.allow
+  = link_to t("disallow"), allow_disallow_user_path(@profile_access.id), :remote => true, :class => "btn btn-sm btn-primary", :data => { :confirm => t("are_you_sure") }
+- else  
+  = link_to t("allow"), allow_disallow_user_path(@profile_access.id), :remote => true, :class => "btn btn-sm btn-primary", :data => { :confirm => t("are_you_sure") }

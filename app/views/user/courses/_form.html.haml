@@ -1,0 +1,77 @@
+.col-lg-12.btn-toolbar.pull-left
+  = link_to user_courses_path, :class => "btn btn-primary btn-sm" do
+    %i.fa.fa-inverse.fa-arrow-left
+    = t("back_to_courses")
+  
+  -# // levels button if course created
+  - if (@course.id.present?)
+    = link_to user_course_course_levels_path(@course), :class => 'btn btn-primary btn-sm' do
+      %i.fa.fa-inverse.fa-list
+      = t("edit_levels")
+
+
+
+.col-lg-12.container
+  - if (@course.id.present? && !@course.is_published) || (!@course.id.present?)
+    = form_for [:user, @course], :html => { :class => 'form-horizontal form-center' } do |f|
+      = f.hidden_field :instructor_id, :value => current_user.id
+      = f.hidden_field :language_id, :value => I18n.locale
+  
+      %div.form-group.control-group{:class => "#{@course.errors[:title].any? ? 'error' : ''}"}
+        %label=t("title")
+        = f.text_field :title, :class => "form-control"
+        - if @course.errors[:title].any?
+          %span.text-danger= t(@course.errors[:title].first)
+          
+      %div.form-group.control-group{:class => "#{@course.errors[:description].any? ? 'error' : ''}"}
+        %label=t("course_description")
+        = f.cktext_area :description, :class => 'form-control', :ckeditor => {:language => I18n.locale, :toolbar => 'dateprog'}
+        - if @course.errors[:description].any?
+          %span.text-danger= t(@course.errors[:description].first)
+          
+      %div.form-group.control-group
+        %label=t("congratulations_msg")
+        = f.cktext_area :congratulations, :class => 'form-control', :ckeditor => {:language => I18n.locale, :toolbar => 'dateprog'}
+        
+      %div.form-group.control-group{:class => "#{@course.errors[:avatar].any? ? 'error' : ''}"}
+        %label=t("course_avatar")
+        = f.file_field :avatar, :class => "form-control"
+        - if @course.errors[:avatar].any?
+          %span.text-danger= t(@course.errors[:avatar].first)
+
+      - if @course.avatar.present?
+        .form-group
+          = image_tag @course.avatar(:medium)
+
+      .control-group.form-group
+        %label=t("technologies_in_this_course")
+        =  f.autocomplete_field :technology_list, autocomplete_tag_name_user_courses_path, :class => "form-control", :multiple => true, 'data-delimiter' => ','
+
+      -# // add "is_test" indicator if we have is_test type
+      - if @course.is_test?
+        = f.hidden_field :course_type, :value => :is_test
+
+
+      .form-group
+        .col-lg-9.btn-toolbar.pull-left
+          = link_to user_courses_path, :class => "btn btn-primary btn-sm" do 
+            %i.fa.fa-inverse.fa-arrow-left
+            = t("back_to_courses")
+          
+          = button_tag :type => "submit", :value => t("save"), :class => "btn btn-primary btn-sm pull-left", data: {disable_with: "Please wait.."} do
+            %i.fa.fa-inverse.fa-check
+            = t("save_and_return")
+  
+        -# // levels button if course created
+        - if (@course.id.present?)
+          .col-lg-3.pull-right
+            = link_to user_course_course_levels_path(@course), :class => 'btn btn-primary btn-sm' do
+              %i.fa.fa-list.fa-inverse
+              = t("edit_levels")
+  - else 
+    .text-muted.text-center
+      = t("waiting_for_approval_by_moderator")
+            
+              
+          
+      

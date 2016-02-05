@@ -1,0 +1,56 @@
+/ Footer
+.footer
+  %footer.text-center
+    .footer-below
+      .row
+        .col-lg-12
+          .col-lg-3
+          .col-lg-6
+            %div
+              = link_to  t("blog"), "http://demoblog.blogspot.com", :target=>'_blank'
+              = " | "
+              = link_to(t("feedback_forum"), (I18n.locale == "ru" ? "http://demo.reformal.ru/" : "http://demo.idea.informer.com/"), :target => "_blank")
+              = " | "
+              = link_to(t("contact_us"), "mailto:support@demo.com?subject=Question")
+            %div
+              = t("footer_msg")
+              = link_to t("en"), url_for(params.merge(:locale => "en")), :id => "loader"
+              = " | "
+              = link_to t("ru"), url_for(params.merge(:locale => "ru")), :id => "loader"
+          .col-lg-3
+                      
+/ Scroll to Top Button (Only visible on small and extra-small screen sizes)
+.scroll-top.page-scroll.visible-xs.visble-sm
+  %a.btn.btn-primary{:href => "#page-top"}
+    %i.fa.fa-chevron-up
+
+= render :partial => 'layouts/feedback' 
+= render :partial => 'layouts/image_gallery'
+= render :partial => 'layouts/tracking'
+- unless mobile_or_tablet_request?
+  - if session[:chats].present?
+    = render :partial => 'layouts/chats_session', formats: [:js]
+  
+- if Rails.env.production?
+  %script{:src => "//static.getclicky.com/js", :type => "text/javascript"}
+  :javascript
+    try{ clicky.init(100813570); }catch(e){}
+  %noscript
+    %p
+      %img{:alt => "Clicky", :height => "1", :src => "//in.getclicky.com/100813570ns.gif", :width => "1"}/
+
+:javascript
+  $(document).ready(function() {
+      $("#flash_notice").delay(3000).fadeOut(300);
+      // jBar Script by Todd Motto
+      $('.downbar').delay(100).fadeIn(400).addClass('up');
+      $('.jquery-bar').hide().delay(500).slideDown(400);
+      $('.jquery-arrow').click(function(){
+          $('.downbar').toggleClass('up', 400);          
+          $('.jquery-bar').slideToggle();
+      });
+  });
+  
+
+
+    

@@ -1,0 +1,11 @@
+%p
+  = t("hello", email: @from.name).html_safe
+
+%p
+  = t("accept_request_msg_body", user: @to.name, user_id: @to.id)
+
+%p
+  = link_to t("click_here_to_open_site"), root_url
+  
+%p
+  = t("thanks_email_footer_send_notification")

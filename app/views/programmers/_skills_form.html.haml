@@ -1,0 +1,20 @@
+.col-lg-12
+  = form_for "", :url => programmers_path, :method => 'post', :html => {:id => "div_update_search_tool", :class => "form-horizontal", :remote => true } do
+    .intro-text
+      %span.name= t("find_a_matching_girl")
+      %hr.star-light/
+      %span.skills= t("what_you_loved_prog")
+      .clearb &nbsp;
+      - @skills.each do |skill|
+        .col-sm-4.portfolio-item.textleft
+          - if current_user.skill_id == skill.id
+            = radio_button_tag "skill", skill.id, true, :class => "", :id => ""
+          - else
+            = radio_button_tag "skill", skill.id, false, :class => "", :id => ""
+          = skill.name.gsub(" ", "_").downcase
+      .row
+        .form-group.col-xs-12.page-scroll      
+          %button#find_a_mate.btn.btn-success.btn-lg{:type => "submit", :id => "fina_a_girl"}= t("find_a_girl")
+          
+/ Girls
+#result

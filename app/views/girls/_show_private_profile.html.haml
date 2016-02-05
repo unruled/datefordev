@@ -1,0 +1,61 @@
+- user_detail = user.user_detail
+- user_detail = user_detail ? user_detail : UserDetail.new 
+.table-responsive
+  %table.table-condensed.table-bordered
+    %tr
+      %td
+        - if user_detail.avatar1.present?
+          .img-user.text-center
+            %a{:href => user_detail.avatar1.url, :title => "#{user.name} - #{profile_show_url(user.id)}", "data-gallery" => ""}
+              = image_tag user_detail.avatar1.url(:medium), :id => "img-responsive", :width => "256", :height => "256"
+              
+      %td
+        - if user_detail.avatar2.present?
+          .img-user.text-center
+            %a{:href => user_detail.avatar2.url, :title => "#{user.name} - #{profile_show_url(user.id)}", "data-gallery" => ""}          
+              = image_tag user_detail.avatar2.url(:medium), :id => "img-responsive", :width => "256", :height => "256"
+              
+.table-responsive
+  %table.table-bordered              
+    %tr
+      %td.col-lg-3= t("profile_from")
+      %td= user_detail.from.present? ? user_detail.from : "-"
+    %tr
+      %td= t("profile_fav_movie")
+      %td= user_detail.fav_movie.present? ? user_detail.fav_movie : "-"
+  
+    %tr
+      %td= t("profile_last_movie")
+      %td= user_detail.last_movie.present? ? user_detail.last_movie : "-"
+  
+    %tr
+      %td= t("profile_last_book")
+      %td= user_detail.last_book.present? ? user_detail.last_book : "-"
+    %tr
+      %td= t("profile_fav_singer")
+      %td= user_detail.fav_singer.present? ? user_detail.fav_singer : "-"
+    %tr
+      %td= t("profile_make_laugh")
+      %td= user_detail.make_laugh.present? ? user_detail.make_laugh : "-"
+    %tr
+      %td=t("profile_make_cry")
+      %td= user_detail.make_cry.present? ? user_detail.make_cry : "-"
+    %tr
+      %td=t("profile_like_animals")
+      %td= user_detail.like_animals.present? ? user_detail.like_animals : "-"
+    %tr
+      %td=t("profile_my_dream")
+      %td= user_detail.my_dream.present? ? user_detail.my_dream : "-"
+  
+    %tr
+      %td=t("profile_like_live")
+      %td= user_detail.like_live.present? ? user_detail.like_live : "-"
+    %tr
+      %td=t("profile_skype_name")
+      %td= user_detail.skype_name.present? ? user_detail.skype_name : "-"
+    %tr
+      %td=t("profile_facebook_link")
+      %td= user_detail.facebook_link.present? ? user_detail.facebook_link : "-"
+    %tr
+      %td=t("profile_social_network_links")
+      %td= user_detail.social_network_links.present? ? user_detail.social_network_links : "-"

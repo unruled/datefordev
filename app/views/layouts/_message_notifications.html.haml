@@ -1,0 +1,18 @@
+.notify-message{:style => "display:none;"}
+  .row
+    .col-md-12
+      .close
+        %a{ :onclick => "$('.notify-message').hide('fast');", :href => "javascript:void(0)" }
+          %i.fa.fa-close.fa-1x
+      - if @unread_message_count > 0
+        %h6= t("you_have_new_messages")
+        %ul.list-group
+          - @unread_messages_hash.each do |id, unread_message|
+            %li.list-group-item
+              /%span.badge= t("last_sent", sent_date: time_difference(unread_message[2]))
+              = link_to "#{unread_message[0]} (#{unread_message[1]})", show_messages_path(id, :chat => "yes"), :id => "loader", :remote => true
+      - else
+        %h6= t("no_message_notifications")
+
+
+

@@ -1,0 +1,8 @@
+- if mobile_or_tablet_request?
+  = link_to "********", mobile_show_messages_path(user.id, :profile_request => true), :id => "loader"
+- else
+  = link_to "********", show_messages_path(user.id, :profile_request => true), :id => "loader", :remote => true
+
+
+  
+ 

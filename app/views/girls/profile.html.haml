@@ -1,0 +1,57 @@
+.container
+  .show-profile-box
+    .row
+      .col-lg-12
+        .panel.with-nav-tabs.panel-primary
+          %ul#profileTabs.nav.nav-tabs
+            %li.active
+              %a{"data-toggle" => "tab", :href => "#public-profile"}
+                %i.fa.fa-eye
+                = t("public_profile")
+            %li
+              %a{"data-toggle" => "tab", :href => "#private-profile"}
+                %i.fa.fa-lock
+                = t("private_profile")
+            %li
+              %a{"data-toggle" => "tab", :href => "#allowed-private-profile"}
+                %i.fa.fa-key                
+                = t("allowed_private_profile")                  
+            %li
+              %a{"data-toggle" => "tab", :href => "#change-your-password"}
+                %i.fa.fa-user                
+                = t("change_your_password")
+            %li
+              %a{"data-toggle" => "tab", :href => "#profile-notifications"}
+                %i.fa.fa-bell-o                             
+                = t("email_notifications")
+            -# // completed courses tab turned off temporary
+            -#%li
+              %a{"data-toggle" => "tab", :href => "#completed-courses"}
+                %i.fa.fa-bell-o                             
+                = t("courses_you_completed")
+            %li
+              %a{"data-toggle" => "tab", :href => "#misc"}
+                = t("misc")
+          
+          
+          #myTabContent.tab-content
+            #public-profile.tab-pane.fade.in.active
+              = render :partial => "girls/profile"
+            #private-profile.tab-pane.fade
+              = render :partial => "girls/profile_details"
+            #allowed-private-profile.tab-pane.fade
+              = render :partial => "users/allowed_private_profile"
+            #profile-notifications.tab-pane.fade
+              = render :partial => "girls/profile_notifications"
+            #change-your-password.tab-pane.fade
+              = render :partial => "users/change_password"
+            -# // completed courses tab turned off temporary
+            -##completed-courses.tab-pane.fade
+              = render :partial => "users/completed_courses"
+            #misc.tab-pane.fade
+              = render :partial => "users/misc"
+              
+-# // rendering chat messages
+= render :partial => "girls/messages/index"              
+
+                

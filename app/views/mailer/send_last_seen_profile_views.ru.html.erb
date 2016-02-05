@@ -1,0 +1,14 @@
+<p>привет <%= @user.name %>,</p>
+
+<p>Ваша анкета на Замуж За Программиста был <strong><%= @user.profile_views %> раз</strong> просмотрен с Вашего последнего визита на сайт!</p>
+
+<p>Если Вы хотите посмотреть какие новые интересные люди зарегистрировались на сайте и, возможно, пообщаться с ними то просто <%= link_to "кликните здесь для просмотра Вашей анкеты и новых сообщений.", notification_confirmation_url(@user.notification_token, 'yes') %></p>
+
+<p>P.S.: Если у Вас возникли вопросы или проблемы с сервисом, не стесняйтесь написать нам на <a href="mailto:support@demo.com?subject=Need%20Help">support@demo.com</a>.</p>
+
+<p>спасибо,<br />
+DateProg Team.</p>
+
+<p style="font-size: 10px;">
+	это письмо отправлено с почтового ящика который не проверяется. <%= link_to "для отключения рассылки этих писем нажмите здесь", notification_confirmation_url(@user.notification_token, 'stop') %>
+</p>

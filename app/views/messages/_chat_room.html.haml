@@ -1,0 +1,6 @@
+- if @sender.present?
+  - if @sender == current_user
+    = "<div class='chatboxmessage'><span class='chatboxmessagefrom'>#{t('me')}: </span><span class='chatboxmessagecontent'>#{@sender_message.body}</span></div><div class='chatboxmessage'><span class='chatboxinfo'>#{time_difference(@sender_message.created_at)}</span></div>".html_safe
+  - else
+    = "<div class='chatboxmessage'><span class='chatboxmessagefrom'>#{@sender.name}: </span><span class='chatboxmessagecontent'>#{@sender_message.body}</span></div><div class='chatboxmessage'><span class='chatboxinfo'>#{time_difference(@sender_message.created_at)}</span></div>".html_safe
+  %br

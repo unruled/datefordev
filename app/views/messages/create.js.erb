@@ -1,0 +1,24 @@
+<% if params[:message][:body].present? && @message.present? %>
+
+  <% if mobile_or_tablet_request? %>
+  	$("#chat_room").append("<%= escape_javascript(render("mobile_chat_room")) %>");
+	  $(".message_body").val("");
+	  $("#chat_room").animate({ scrollTop: $('#chat_room').height()+5000}, 1000);
+	  $('.message_body').focus();
+  <% else %>
+    <% if @message.recipient.present? %>
+  	  $("#chatbox_<%= @message.recipient.id %> .chatboxcontent").append("<%= escape_javascript(render("chat_room")) %>");
+    <% end %>
+  <% end %>
+  
+  $(function() {
+  	
+	var client = new Faye.Client("<%= FAYE_URL %>/faye");
+
+      client.publish("/messages/public/<%= @message.recipient_id.to_s %>/<%= @message.sender_id.to_s %>", {
+        message_id: "<%= @message.id %>"
+      });
+            
+  });
+
+<% end %>

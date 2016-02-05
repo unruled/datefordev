@@ -1,0 +1,15 @@
+.clearb
+  .row
+    .col-lg-12  
+  - if current_user.is_girl
+    .row
+      .col-lg-12
+        %h5= t("confirm_programmer_by_unlock_database")
+  .row
+    .col-lg-12
+      #console
+
+-# if I18n.locale.to_s == 'ru'
+  =# render :partial => "girls_console_js_ru"
+-# else
+= render :partial => "girls_console_js_en"

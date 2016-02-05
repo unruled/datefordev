@@ -1,0 +1,50 @@
+- if @girls.present?
+  - @girls.each_with_index do |girl, k|
+    %div#portfolio
+      .col-sm-3.portfolio-item
+        -#%a.portfolio-link{"data-toggle" => "modal", :href => "#portfolioModal#{girl.id}"}
+        %a.portfolio-link{:href => profile_show_url(girl.id), :target => "_blank"}
+          .caption
+            .caption-content
+              = girl.name
+          = image_tag girl.avatar(:medium), :id => "img-responsive", :width => "256", :height => "256"
+          
+    .portfolio-modal.modal.fade{"aria-hidden" => "true", :role => "dialog", :tabindex => "-1", :id => "portfolioModal#{girl.id}"}
+      .modal-content
+        .close-modal{"data-dismiss" => "modal"}
+          .lr
+            .rl
+        .container
+          .row
+            .col-lg-8.col-lg-offset-2
+              .modal-body
+                %h2=girl.name
+                %hr.star-primary/
+                = image_tag girl.avatar(:medium), :id => "img-responsive", :width => "256", :height => "256"
+                %p
+                  = girl.about_me
+                %ul.list-inline.item-details
+                  %li
+                    = t("age")
+                    %strong
+                      = girl.user_age
+                  %li
+                    = t("city")
+                    %strong
+                      /= girl.city
+                      = girl.city.present? ? I18n.locale.to_s != 'ru' ? girl.city.to_lat : girl.city : "-"                      
+                      
+                  %li
+                    = t("country")
+                    %strong
+                      = girl.country
+                      
+                .col-lg-12.text-center
+                  %h2= t("send_msg")
+                  %hr.star-primary/
+            .row
+              .col-lg-8.col-lg-offset-2
+                = render :partial => "home/message", :locals => { :girl_or_prog => girl }
+  = link_to 'next', next_girls_path(:page => (params[:page].to_i + 1)), :remote => true
+:javascript
+  $('.feed_jscroll').jscroll();

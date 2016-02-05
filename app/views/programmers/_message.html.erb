@@ -1,0 +1,22 @@
+<% 
+	profile_image = girl.avatar.exists? ? girl.avatar(:medium) : "girl-default.png"
+	height = "200"
+	width = "200"
+ %>
+<table width='100%'>
+	<tr>
+		<td width='3%'>&nbsp;</td>
+		<td width='10%'>
+			<strong><%= t('uid') %> <%= girl.id %></strong><br />
+			<%= image_tag profile_image, :width=> width, :height=>height %><br />
+		</td>
+		<td valign='top' width='87%'>
+			 
+			<i>
+				<%= girl.name %><br /> 
+				<%= time_difference(message.created_at) %><br /> 
+				<%= wrap(message.body, 100) %>
+			</i>
+		</td>
+	</tr>
+</table>

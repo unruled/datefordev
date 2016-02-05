@@ -1,0 +1,25 @@
+$.playSound('/chat-new-message');
+
+<%# sender_name = @sender.name.strip.gsub('.', "-").gsub(' ', "") %>
+
+<% if mobile_or_tablet_request? %>
+	$("#chat_room").append("<%= escape_javascript(render("mobile_chat_room")) %>");
+    $("#chat_room").animate({ scrollTop: $('#chat_room').height()+5000}, 1000);
+    $('.message_body').focus();	
+<% else %>
+	if ( $("#chatbox_<%= @sender.id %>").length ) {
+		$("#chatbox_<%= @sender.id %> .chatboxcontent").append("<%= escape_javascript(render("chat_room")) %>");
+		//$("#chatbox_<%= @sender.id %> .chatboxcontent").scrollTop(50000);
+		$('#chatbox_<%= @sender.id %> .chatboxhead').addClass('chatboxblink');	
+	} else {
+		chatWith("<%= @sender.id %>", "<%= @sender.id %>", "<%= current_user.id %>", "<%= @sender.name %>");
+		$("#chatbox_<%= @sender.id %> .chatboxcontent").html("<%= escape_javascript(render("show_chat")) %>");
+	 	var resizeOpts = { 
+	      handles: 'e, w'
+	    }; 	
+		$( "#resizable" ).resizable(resizeOpts);
+		$("#div_update_chat_<%= @sender.id %>").html("<%= escape_javascript(render(:partial => "chat_profile", :locals => {:recipient => @sender})) %>")
+	}
+	$("#chatbox_<%= @sender.id %>").show();
+	$("#chatbox_<%= @sender.id %> .chatboxcontent").scrollTop(50000);
+<% end %>

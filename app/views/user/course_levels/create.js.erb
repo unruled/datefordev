@@ -1,0 +1,57 @@
+<%# // actually duplicates update.js.erb but called on create/new action instead %>
+<%# // main fields in the form notices %>
+<% if @course_level.errors[:title].any? %>
+  $("#title-error").html("<span class='text-danger'><%= t(@course_level.errors[:title].first) %></span>");
+<% else %>
+  $("#title-error").html("");
+<% end %>
+
+<% if @course_level.errors[:description].any? %>
+  $("#description-error").html("<span class='text-danger'><%= t(@course_level.errors[:description].first) %></span>");
+<% else %>
+  $("#description-error").html("");  
+<% end %>
+
+<% if @course_level.errors[:question].any? %>
+  $("#question-error").html("<span class='text-danger'><%= t(@course_level.errors[:question].first) %></span>");
+<% else %>
+  $("#question-error").html("");  
+<% end %>
+
+<% if @course_level.errors[:answer].any? %>
+  $("#answer-error").html("<span class='text-danger'><%= t(@course_level.errors[:answer].first) %></span>");
+<% else %>
+  $("#answer-error").html("");  
+<% end %>
+
+<%# // answer test verification notices %>
+
+<% if @verification_success !=nil %>
+  $("#verification-result div").html('<%= @verification_success.html_safe %>');
+  $("#verification-result").removeClass('hidden');
+  $("#verification-result div").removeClass('text-danger').addClass('text-success');
+  $("#test_answer").focus();  
+<% elsif @verification_error !=nil %>
+  $("#verification-result div").html('<%= @verification_error.html_safe %>');
+  $("#verification-result").removeClass('hidden');
+  $("#verification-result div").removeClass('text-success').addClass('text-danger');
+  $("#test_answer").focus();
+<% else %>
+  $("#verification-result").addClass('hidden');
+  $("#verification-result div").removeClass('text-success text-danger');
+<% end %>
+
+<%# // flash notices %>
+
+<% if flash[:notice].present? %>
+  $("#notice").html("<div class='alert alert-success'><%= flash[:notice] %></div>");
+<% else %>
+  $("#notice").html('');    
+<% end %>
+
+<% if flash[:error].present? %>
+  $("#error").html("<div class='alert alert-danger'><%= flash[:error] %></div>");
+<% else %>
+  $("#error").html('');    
+<% end %>
+

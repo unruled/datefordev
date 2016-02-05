@@ -1,0 +1,26 @@
+<p>Hi <%= @user.name %>,</p>
+
+<p>Starting a conversation online is eaiser than you may think of.</p>
+
+<p>Here are some tips on starting a conversation on our web-site:</p>
+
+<p>
+- it's OK to send a simple "hello, how are you doing today?" because if someone registered on the web-site it means that this person is looking for a relationship with a programmer like you!<br />
+- try to answer to all incoming messages by saying hello or asking some simple questions in exchange. Who knows how the simple online chat will work out in the end?<br />
+- if you don't know how to start a chat then you may always make a simple compliment based on photo or ask about the place where photo was taken.<br />
+- write a short fun story about yourself to start a conversation.<br />
+- if you ran out of ideas then just write any rubbish you may think of (but don't be nasty!)
+</p>
+
+<p>
+	<%= link_to "Click here to open your account", notification_confirmation_url(@user.notification_token, 'yes') %>
+</p>
+
+<p>P.S.: If you are having issues with the service then don't heistate to drop us a line at <a href="mailto:support@demo.com?subject=Need%20Help">support@demo.com</a>.</p>
+
+<p>thanks,<br />
+DateProg Team.</p>
+
+<p style="font-size: 10px;">
+	this email was sent from unmonitored address. <%= link_to "to unsubscribe from these notifications please click here", notification_confirmation_url(@user.notification_token, 'stop') %>
+</p>

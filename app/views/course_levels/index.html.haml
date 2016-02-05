@@ -1,0 +1,11 @@
+-# // rendering chat messages
+= render :partial => "girls/messages/index"
+
+.container
+  .row
+    - if @course_level.present?
+      = render :partial => "answer_form", :locals => { :course => @course, :course_level => @course_level, :course_congrats => @course.congratulations }
+    - else
+      .col-lg-12
+        %h6= t("no_any_level_found")
+        

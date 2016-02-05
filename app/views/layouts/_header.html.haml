@@ -1,0 +1,20 @@
+-#= cache do
+  %nav.navbar.navbar-default.navbar-fixed-top
+    .container
+      .navbar-header.page-scroll
+        %button.navbar-toggle.collapsed{"data-target" => "#navbar-main", "data-toggle" => "collapse", :type => "button", "aria-expanded" => "false"}
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+        = link_to root_path, class: "navbar-brand" do
+          %span.fa-stack.fa-inverse
+            %i.fa.fa-heart.fa-stack-2x.fa-inverse
+            %i.fa.fa-terminal.fa-stack-1x
+            
+      / Collect the nav links, forms, and other content for toggling
+      -##navbar-main.collapse.navbar-collapse
+        %ul.nav.navbar-nav.navbar-right
+          %li= render "layouts/language_switcher"
+          %li
+            = link_to t("login"), new_user_session_path
+
