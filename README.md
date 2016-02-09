@@ -4,7 +4,7 @@ Date A Programmer ("Замуж За Программиста") -  online dating 
 
 ### Articles about the project
 
-[Date A Programmer: Post Mortem](https://medium.com/@emironic/date-a-programmer-post-mortem-f3de04abd537), Russian translation is [here](https://vc.ru/p/coder-dating)
+[**Date A Programmer: Post Mortem**](https://medium.com/@emironic/date-a-programmer-post-mortem-f3de04abd537), Russian translation is [**here**](https://vc.ru/p/coder-dating)
 
 ### Technology Stack
 
@@ -28,7 +28,12 @@ Date A Programmer ("Замуж За Программиста") -  online dating 
 * Founder and Junior Developer: Evgenii Mironichev [@emironic](https://twitter.com/emironic)
 * Leading Developer, Backend & Frontend, JS, Deployment, Design: Nitin Barai (http://www.sheltersoft.in) <a href="mailto:info@sheltersoft.in?subject=DATEPROG">info@sheltersoft.in</a>
 
-### Instruction
+#### Marketing, Emails, Analytics
+
+* [**Email Triggers.pdf**](/doc/doc/marketing/Email%20Triggers.pdf) - templates for 10+ emails (English, Russian) to be sent on triggers like welcome to the website, new unread message for the user, user was asked to open her private profile etc.
+* [**Actions To Log - Sheet1.pdf**](/doc/analytics/Actions%20To%20Log%20-%20Sheet1.pdf) - list of events logged and sent to the external analytics systems like Google Analytics and Mixpanel
+
+### Getting Started Instruction
 
 #### Setting up development environment on local machine
 
