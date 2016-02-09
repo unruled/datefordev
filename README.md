@@ -30,7 +30,7 @@ Date A Programmer ("Замуж За Программиста") -  online dating 
 
 #### Marketing, Emails, Analytics
 
-* [**Email Triggers.pdf**](/doc/doc/marketing/Email%20Triggers.pdf) - templates for 10+ emails (English, Russian) to be sent on triggers like welcome to the website, new unread message for the user, user was asked to open her private profile etc.
+* [**Email Triggers.pdf**](/doc/marketing/Email%20Triggers.pdf) - templates for 10+ emails (English, Russian) to be sent on triggers like welcome to the website, new unread message for the user, user was asked to open her private profile etc.
 * [**Actions To Log - Sheet1.pdf**](/doc/analytics/Actions%20To%20Log%20-%20Sheet1.pdf) - list of events logged and sent to the external analytics systems like Google Analytics and Mixpanel
 
 ### Getting Started Instruction
