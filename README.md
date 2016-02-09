@@ -1,7 +1,12 @@
-## Date A Programmer ("Замуж За Программиста") -  online dating for programmers and non programmers.
-Meet new smart people, learn and create programming, find a job
+### About
 
-## Technologies and services
+Date A Programmer ("Замуж За Программиста") -  online dating for programmers with public and private profiles, online chats, tests constructor, email notifications and more
+
+### Articles about the project
+
+[Date A Programmer: Post Mortem](https://medium.com/@emironic/date-a-programmer-post-mortem-f3de04abd537), Russian translation is [here](https://vc.ru/p/coder-dating)
+
+### Technology Stack
 
 * Ruby On Rails (Ruby Version 2.1.1, Rails Version 4.1.1)
 * HAML (for views)
@@ -13,16 +18,19 @@ Meet new smart people, learn and create programming, find a job
 * Faye (for the realtime chat) 
 * Puma web server
 
-## License
+### License
+
 * The code is licensed under Apache License 2.00
 * Copyright &copy; 2014-2015 Evgenii Mironichev
 
-#### Founder and Junior Developer: Evgenii Mironichev [@emironic](https://twitter.com/emironic)
-#### Leading Developer, Backend & Frontend, JS, Deployment, Design: Nitin Barai (http://www.sheltersoft.in) <a href="mailto:info@sheltersoft.in?subject=DATEPROG">info@sheltersoft.in</a>
+### Credits
 
-## Instructions
+* Founder and Junior Developer: Evgenii Mironichev [@emironic](https://twitter.com/emironic)
+* Leading Developer, Backend & Frontend, JS, Deployment, Design: Nitin Barai (http://www.sheltersoft.in) <a href="mailto:info@sheltersoft.in?subject=DATEPROG">info@sheltersoft.in</a>
 
-### Setting up development environment on local machine
+### Instruction
+
+#### Setting up development environment on local machine
 
 1. clone the repo, install required bundle, copy default files, run migrations and seed data on your local machine,
 
@@ -49,7 +57,7 @@ Note: If you are using [Cloud9](https://c9.io) IDE then use the following comman
 ~/dateprog $ rails s -b $IP -p $PORT
 ```
 
-**DEFAULT LOGINS**
+**Default Users**
 - admin control panel at `http://localhost:3000/admin/login` with `admin@example.com` as login and `dateprog` as password
 - test users: `test1@example.com` as login and `12345` as default password
 
