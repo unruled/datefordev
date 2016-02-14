@@ -1,18 +1,15 @@
 ### About
 
-Date A Programmer ("Замуж За Программиста") -  online dating for programmers with public and private profiles, online chats, tests constructor, email notifications and more
-
-### Articles about the project
-
-[**Date A Programmer: Post Mortem**](https://medium.com/@emironic/date-a-programmer-post-mortem-f3de04abd537), Russian translation is [**here**](https://vc.ru/p/coder-dating)
+Date A Programmer ("Замуж За Программиста") -  online dating for programmers with public and private profiles, online chats, tests constructor, email notifications and more. [**Date A Programmer: Post Mortem**](https://medium.com/@emironic/date-a-programmer-post-mortem-f3de04abd537) (Russian translation is [**here**](https://vc.ru/p/coder-dating)) Open sourced in January 2016 to help others save time building online dating services.
 
 ### Technology Stack
 
 * Ruby On Rails (Ruby Version 2.1.1, Rails Version 4.1.1)
 * HAML (for views)
-* Mandrill (to send emails with notifications)
-* Amazon AWS S3 (to store photo files)
-* Heroku to run the application and the chat server
+* Mandrill (to send emails with notifications, [welcome emails, reminders etc](/doc/marketing/Email%20Triggers.pdf)  )
+* Amazon AWS S3 (to store photo files from profiles)
+* Amazon CloudFront (as CDN for assets)
+* Heroku (hosting the application and separate server for faye chat server)
 * Cloudfront (to cache assets to get high performance of the main application)
 * Postgresql database
 * Faye (for the realtime chat) 
@@ -91,6 +88,7 @@ Note: If you are using [Cloud9](https://c9.io) IDE then use the following comman
 ~/dateprog $ git add .
 ~/dateprog $ git commit -m "assets were precompiled for the production"
 ````
+Amazon CloudFront note: if you have CloudFront set up then assets will be fetched from Heroku for the first time but then they will be served from `CLOUDFRONT_ENDPOINT`. When you are updating assets you may need to reset the cache in the CloudFront control panel. See [this article - see "Option 2"](http://brandonhilkert.com/blog/setting-up-a-cloudfront-cdn-for-rails/) for detailed instruction on setting up CloudFront
 
 5. Create the application on Heroku to deploy the `dateprog` app into it
 6. Setup the production environment varables for Heroku
