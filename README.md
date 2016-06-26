@@ -1,5 +1,5 @@
 ### About
-
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 Date A Programmer ("Замуж За Программиста") -  online dating for programmers with public and private profiles, online chats, tests constructor, email notifications and more. [**Date A Programmer: Post Mortem**](https://medium.com/@emironic/date-a-programmer-post-mortem-f3de04abd537) (Russian translation is [**here**](https://vc.ru/p/coder-dating)) Open sourced in January 2016 to help others save time building online dating services.
 
 ### Technology Stack
